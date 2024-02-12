@@ -1,5 +1,8 @@
-gen-parser:
-	rm -Rf parsing/ && go generate ./...
+clean:
+	rm -Rf parsing/ bin/
 
-run:
-	go run main.go
+gen-parser: clean
+	go generate ./...
+
+build: clean gen-parser
+	go build -o bin/ .
