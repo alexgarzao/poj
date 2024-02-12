@@ -16,16 +16,22 @@ func NewTreeShapeListener() *TreeShapeListener {
 	return new(TreeShapeListener)
 }
 
-func (this *TreeShapeListener) EnterEveryRule(ctx antlr.ParserRuleContext) {
+func (t *TreeShapeListener) EnterEveryRule(ctx antlr.ParserRuleContext) {
 	fmt.Println(ctx.GetText())
 }
 
 func main() {
-	input, _ := antlr.NewFileStream(os.Args[1])
+	input, err := antlr.NewFileStream(os.Args[1])
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
 	lexer := parsing.NewPascalLexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
 	p := parsing.NewPascalParser(stream)
 	p.AddErrorListener(antlr.NewDiagnosticErrorListener(true))
+
 	tree := p.Program()
 	antlr.ParseTreeWalkerDefault.Walk(NewTreeShapeListener(), tree)
 }
