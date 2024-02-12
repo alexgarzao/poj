@@ -43,12 +43,7 @@ options {
 }
 
 program
-    : programHeading (INTERFACE)? block DOT EOF
-    ;
-
-programHeading
-    : PROGRAM identifier (LPAREN identifierList RPAREN)? SEMI
-    | UNIT identifier SEMI
+    : PROGRAM identifier SEMI block DOT EOF
     ;
 
 identifier
@@ -767,14 +762,6 @@ LCURLY
 
 RCURLY
     : '}'
-    ;
-
-UNIT
-    : 'UNIT'
-    ;
-
-INTERFACE
-    : 'INTERFACE'
     ;
 
 USES
