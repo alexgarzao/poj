@@ -36,7 +36,7 @@ options {
 }
 
 program
-    : PROGRAM programID = identifier SEMI block DOT EOF
+    : PROGRAM identifier SEMI block DOT EOF
     ;
 
 identifier
