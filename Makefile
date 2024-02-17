@@ -1,6 +1,9 @@
 clean:
 	rm -Rf parsing/ bin/
 
+test:
+	go test ./...
+
 gen-parser: clean
 	go generate ./...
 
