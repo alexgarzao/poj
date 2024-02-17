@@ -6,18 +6,20 @@ import (
 
 type TreeShapeListener struct {
 	*parsing.BasePascalListener
+	filename                string
 	jasm                    *JASM
 	procedureDefinitionName string
 }
 
-func NewTreeShapeListener() *TreeShapeListener {
+func NewTreeShapeListener(filename string) *TreeShapeListener {
 	return &TreeShapeListener{
-		jasm: NewJASM(),
+		filename: filename,
+		jasm:     NewJASM(),
 	}
 }
 
 func (t *TreeShapeListener) EnterProgram(ctx *parsing.ProgramContext) {
-	t.jasm.StartMainClass(ctx.GetProgramID().GetText())
+	t.jasm.StartMainClass(t.filename)
 }
 
 func (t *TreeShapeListener) ExitProgram(ctx *parsing.ProgramContext) {
