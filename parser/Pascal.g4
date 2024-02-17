@@ -36,7 +36,7 @@ options {
 }
 
 program
-    : PROGRAM identifier SEMI block DOT EOF
+    : PROGRAM programID = identifier SEMI block DOT EOF
     ;
 
 identifier
@@ -143,11 +143,6 @@ typeIdentifier
     ;
 
 structuredType
-    : PACKED unpackedStructuredType
-    | unpackedStructuredType
-    ;
-
-unpackedStructuredType
     : arrayType
     | recordType
     | setType
@@ -240,7 +235,7 @@ procedureOrFunctionDeclaration
     ;
 
 procedureDeclaration
-    : PROCEDURE identifier (formalParameterList)? SEMI block
+    : PROCEDURE name = identifier (formalParameterList)? SEMI block
     ;
 
 formalParameterList
@@ -378,7 +373,7 @@ element
     ;
 
 procedureStatement
-    : identifier (LPAREN parameterList RPAREN)?
+    : procedureID = identifier (LPAREN parameterList RPAREN)?
     ;
 
 actualParameter
@@ -564,10 +559,6 @@ OR
     : 'OR'
     ;
 
-PACKED
-    : 'PACKED'
-    ;
-
 PROCEDURE
     : 'PROCEDURE'
     ;
@@ -722,10 +713,6 @@ LCURLY
 
 RCURLY
     : '}'
-    ;
-
-USES
-    : 'USES'
     ;
 
 STRING
