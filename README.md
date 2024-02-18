@@ -6,7 +6,7 @@ Qual a motivação para o projeto? Aprender temas relacionados a compiladores. E
 
 POJ é um projeto com escopo simples (na medida do possível) e de fácil entendimento. O foco é ser utilizado para estudos.
 
-# Dependências
+# Requisitos
 
 - Git
 - Go 1.22
@@ -95,6 +95,33 @@ end.
 ```
 
 No momento, apenas o "Hello world!" pode ser compilado com o POJ. Para quem tiver interesse de ver a execução destes outros programas, sugiro utilizar o [Free Pascal Compiler](https://www.freepascal.org/). Nas próximas semanas poderemos utilizar o POJ com todos estes exemplos :-)
+
+# Ajustes e melhorias
+
+O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
+
+- [x] Definir qual gerador de parser será utilizado
+- [x] Encontrar uma gramática de Pascal pronta no formato do gerador de parsers (ANTLR)
+- [x] Ajustar a gramática para reconhecer o subset de Pascal esperado
+- [x] No parser identificar a definição de procedimentos Pascal para determinar o bloco Pascal principal
+- [x] Encontrar um montador Java assembly (JASM)
+- [x] POJ gerar um código assembly Java válido para o assemblador
+- [x] Criar o README inicial
+- [ ] Declaração e uso de variáveis string
+- [ ] Saída de dados (terminal)
+- [ ] Instrução If/Else
+- [ ] Declaração e uso de variáveis inteiras
+- [ ] Operações aritméticas sem precedência de operadores
+- [ ] Instrução For
+- [ ] Instrução Repeat
+- [ ] Instrução While
+- [ ] Operações aritméticas com precedência de operadores
+- [ ] Entrada de dados (terminal)
+- [ ] Declaração e uso de variáveis booleanas
+- [ ] Declaração e uso de variáveis de ponto flutuante (Real)
+- [ ] Declaração e uso de procedures
+- [ ] Declaração e uso de funções
+- [ ] Uso de funções recursivas
 
 # Licença
 
