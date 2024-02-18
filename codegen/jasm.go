@@ -6,7 +6,7 @@ import (
 )
 
 type JASM struct {
-	code string
+	code []string
 	tabs string
 }
 
@@ -43,11 +43,11 @@ func (j *JASM) FinishMain() {
 }
 
 func (j *JASM) Code() string {
-	return j.code
+	return strings.Join(j.code, "")
 }
 
 func (j *JASM) addLine(line string) {
-	j.code += fmt.Sprintf("%s%s\n", j.tabs, line)
+	j.code = append(j.code, fmt.Sprintf("%s%s\n", j.tabs, line))
 }
 
 func (j *JASM) incTab() {
