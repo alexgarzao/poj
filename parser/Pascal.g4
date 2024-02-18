@@ -97,7 +97,7 @@ bool_
     ;
 
 string
-    : STRING_LITERAL
+    : STRING_LITERAL {$STRING_LITERAL.SetText($STRING_LITERAL.GetText()[1:len($STRING_LITERAL.GetText())-1])}
     ;
 
 typeDefinitionPart
