@@ -308,7 +308,7 @@ relationaloperator
     ;
 
 simpleExpression
-    : term (additiveoperator simpleExpression)?
+    : t1 = term (op = additiveoperator t2 = simpleExpression)?
     ;
 
 additiveoperator

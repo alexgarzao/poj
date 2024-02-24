@@ -62,6 +62,18 @@ func (t *TreeShapeListener) ExitBlock(ctx *parsing.BlockContext) {
 	t.procedureDefinitionName = ""
 }
 
+func (t *TreeShapeListener) ExitSimpleExpression(ctx *parsing.SimpleExpressionContext) {
+	if ctx.GetT2() != nil {
+		if ctx.GetOp() == ctx.Additiveoperator() {
+			// Only works for string types.
+			t.jasm.StartInvokeDynamic(`makeConcatWithConstants(java/lang/String, java/lang/String)java/lang/String`)
+			t.jasm.AddOpcode(`invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite`)
+			t.jasm.AddOpcode(`[""]`)
+			t.jasm.FinishInvokeDynamic()
+		}
+	}
+}
+
 func (t *TreeShapeListener) Code() string {
 	return t.jasm.Code()
 }

@@ -42,6 +42,16 @@ func (j *JASM) FinishMain() {
 	j.addLine("}")
 }
 
+func (j *JASM) StartInvokeDynamic(param string) {
+	j.addLine(fmt.Sprintf("invokedynamic %s {", param))
+	j.incTab()
+}
+
+func (j *JASM) FinishInvokeDynamic() {
+	j.decTab()
+	j.addLine("}")
+}
+
 func (j *JASM) Code() string {
 	return strings.Join(j.code, "")
 }
