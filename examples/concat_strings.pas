@@ -1,5 +1,5 @@
 program ConcatStrings;
 begin
-  writeln ('Hello ' + 'world!');
+  writeln ('Hello ' + 'world again!');
 end.
 
