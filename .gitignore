@@ -25,3 +25,5 @@ parser/.antlr/
 bin/
 *.o
 
+/*.jasm
+/*.class
