@@ -9,3 +9,9 @@ gen-parser: clean
 
 build: clean gen-parser
 	go build -o bin/ .
+
+compile-and-run-example:
+	rm -f $(program).jasm $(program).class
+	./bin/poj ./examples/$(program)
+	jasm $(program).jasm
+	java $(program)
