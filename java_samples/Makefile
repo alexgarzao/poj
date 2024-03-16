@@ -1,7 +1,7 @@
 clean:
 	rm -Rf *.class
 
-jasm-from-pas:
+jasm-from-java:
 	javac $(program).java && jasm -d $(program).class
 
 class-from-jasm:
