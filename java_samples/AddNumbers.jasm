@@ -1,0 +1,42 @@
+/*
+ * Disassembled from AddNumbers.class (originally AddNumbers.java) by JASM
+ *
+ * Original class version: 55
+ * Signature: <no signature>
+ */
+public class AddNumbers {
+    // <no signature>
+    // <no exceptions>
+    public <init>()V {
+        
+        label0:
+        aload 0
+        invokespecial java/lang/Object.<init>()V
+        return
+    }
+
+
+    // <no signature>
+    // <no exceptions>
+    public static main([java/lang/String)V {
+        
+        label0:
+        bipush 111
+        istore 1
+        
+        label1:
+        sipush 222
+        istore 2
+        
+        label2:
+        getstatic java/lang/System.out java/io/PrintStream
+        iload 1
+        iload 2
+        iadd
+        invokevirtual java/io/PrintStream.println(I)V
+        
+        label3:
+        return
+    }
+
+}

@@ -1,0 +1,50 @@
+/*
+ * Disassembled from StringConcat.class (originally StringConcat.java) by JASM
+ *
+ * Original class version: 55
+ * Signature: <no signature>
+ */
+public class StringConcat {
+    // <no signature>
+    // <no exceptions>
+    public <init>()V {
+        
+        label0:
+        aload 0
+        invokespecial java/lang/Object.<init>()V
+        return
+    }
+
+
+    // <no signature>
+    // <no exceptions>
+    public static main([java/lang/String)V {
+        
+        label0:
+        ldc "Code"
+        astore 1
+        
+        label1:
+        ldc "Gym"
+        astore 2
+        
+        label2:
+        aload 1
+        aload 2
+        invokedynamic makeConcatWithConstants(java/lang/String, java/lang/String)java/lang/String {
+            invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite
+            [""]
+        }
+
+        astore 3
+        
+        label3:
+        getstatic java/lang/System.out java/io/PrintStream
+        aload 3
+        invokevirtual java/io/PrintStream.println(java/lang/String)V
+        
+        label4:
+        return
+    }
+
+}
