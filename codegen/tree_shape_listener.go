@@ -73,33 +73,51 @@ func (t *TreeShapeListener) ExitBlock(ctx *parsing.BlockContext) {
 	t.procedureDefinitionName = ""
 }
 
-func (t *TreeShapeListener) ExitSimpleExpression(ctx *parsing.SimpleExpressionContext) {
-	if ctx.GetT2() != nil {
-		if ctx.GetOp() == ctx.Additiveoperator() {
-			pt1 := t.pst.Pop()
-			pt2 := t.pst.Pop()
-			if pt1 != pt2 {
-				t.jasm.AddOpcode("invalid types in add")
-				return
-			}
+func (t *TreeShapeListener) ExitAddOp(ctx *parsing.AddOpContext) {
+	pt1 := t.pst.Pop()
+	pt2 := t.pst.Pop()
+	if pt1 != pt2 {
+		t.jasm.AddOpcode("invalid types")
+		return
+	}
 
-			if pt1 == String {
-				// String types.
-				t.jasm.StartInvokeDynamic(`makeConcatWithConstants(java/lang/String, java/lang/String)java/lang/String`)
-				t.jasm.AddOpcode(`invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite`)
-				t.jasm.AddOpcode(`[""]`)
-				t.jasm.FinishInvokeDynamic()
-				t.pst.Push(String)
-			} else if pt1 == Integer {
-				// Integer types.
-				t.jasm.AddOpcode(`iadd`)
-				t.pst.Push(Integer)
-			} else {
-				// Undefined types.
-				t.jasm.AddOpcode("undefined type in add")
-			}
+	op := ctx.GetOp().GetText()
+	switch {
+	case op == "+":
+		switch pt1 {
+		case String:
+			t.GenAddStrings()
+		case Integer:
+			t.GenAddIntegers()
+		default:
+			t.jasm.AddOpcode("invalid type in add")
+		}
+	case op == "-":
+		switch pt1 {
+		case Integer:
+			t.GenSubIntegers()
+		default:
+			t.jasm.AddOpcode("invalid type in add")
 		}
 	}
+}
+
+func (t *TreeShapeListener) GenAddStrings() {
+	t.jasm.StartInvokeDynamic(`makeConcatWithConstants(java/lang/String, java/lang/String)java/lang/String`)
+	t.jasm.AddOpcode(`invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite`)
+	t.jasm.AddOpcode(`[""]`)
+	t.jasm.FinishInvokeDynamic()
+	t.pst.Push(String)
+}
+
+func (t *TreeShapeListener) GenAddIntegers() {
+	t.jasm.AddOpcode("iadd")
+	t.pst.Push(Integer)
+}
+
+func (t *TreeShapeListener) GenSubIntegers() {
+	t.jasm.AddOpcode("isub")
+	t.pst.Push(Integer)
 }
 
 func (t *TreeShapeListener) ExitUnsignedInteger(ctx *parsing.UnsignedIntegerContext) {
