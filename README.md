@@ -32,15 +32,23 @@ Após isso, o binário do POJ estará em na pasta bin.
 
 # Passos para compilar o hello_world.pas
 
+Segue abaixo o passo-a-passo para compilar o "Hello world!".
+
 ```
 # Executar o POJ para gerar o assembly Java (arquivo jasm)
-./bin/poj ./examples/hello_world
+./bin/poj ./tests/pascal_programs/hello_world
 
 # Executar o JASM (java assembler) para gerar o executável Java (arquivo class)
 jasm hello_world.jasm
 
 # Executar o arquivo class com a JVM
 java hello_world
+```
+
+Uma forma mais enxuta é utilizar o make:
+
+```
+make compile-and-run-example program=hello_world
 ```
 
 # Exemplos de programas aceitos
