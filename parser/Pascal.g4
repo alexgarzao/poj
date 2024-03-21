@@ -294,7 +294,10 @@ variable
     ;
 
 expression
-    : simpleExpression (relationaloperator expression)?
+    : expression op = relationaloperator expression # RelOp
+    | expression op = ('*' | '/') expression        # MulDivOp
+    | expression op = additiveoperator expression   # AddOp
+    | signedFactor                                  # ExpSignedFactor
     ;
 
 relationaloperator
@@ -305,10 +308,6 @@ relationaloperator
     | GE
     | GT
     | IN
-    ;
-
-simpleExpression
-    : t1 = term (op = additiveoperator t2 = simpleExpression)?
     ;
 
 additiveoperator
