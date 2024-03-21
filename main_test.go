@@ -6,7 +6,7 @@ import (
 )
 
 func Test_genCode(t *testing.T) {
-	// Files in examples/*.pas and examples/expected/*.jasm.
+	// Files in tests/pascal_programs/*.pas and tests/expected_jasm_files/*.jasm.
 	tests := []struct {
 		inputFile   string
 		expectedErr error
@@ -44,13 +44,13 @@ func Test_genCode(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.inputFile, func(t *testing.T) {
-			got, err := genCode("examples/" + tt.inputFile)
+			got, err := genCode("tests/pascal_programs/" + tt.inputFile)
 			if err != tt.expectedErr {
 				t.Errorf("genCode() error = %v, expectedErr %v", err, tt.expectedErr)
 				return
 			}
 
-			expectedOutputFile := "examples/expected/" + tt.inputFile + ".jasm"
+			expectedOutputFile := "tests/expected_jasm_files/" + tt.inputFile + ".jasm"
 
 			expectedOutput, err := os.ReadFile(expectedOutputFile)
 			if err != nil {

@@ -26,5 +26,4 @@ bin/
 *.o
 
 /*.jasm
-/*.class
-java_samples/*.class
+*.class
