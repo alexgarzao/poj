@@ -1,0 +1,32 @@
+/*
+ * Disassembled from SubNumbers.class (originally SubNumbers.java) by JASM
+ *
+ * Original class version: 55
+ * Signature: <no signature>
+ */
+public class SubNumbers {
+    // <no signature>
+    // <no exceptions>
+    public <init>()V {
+        
+        label0:
+        aload 0
+        invokespecial java/lang/Object.<init>()V
+        return
+    }
+
+
+    // <no signature>
+    // <no exceptions>
+    public static main([java/lang/String)V {
+        
+        getstatic java/lang/System.out java/io/PrintStream
+        sipush 456
+        sipush 789
+        isub
+        invokevirtual java/io/PrintStream.println(I)V
+        
+        return
+    }
+
+}
