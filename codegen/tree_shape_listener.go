@@ -97,7 +97,7 @@ func (t *TreeShapeListener) ExitAddOp(ctx *parsing.AddOpContext) {
 		case Integer:
 			t.GenSubIntegers()
 		default:
-			t.jasm.AddOpcode("invalid type in add")
+			t.jasm.AddOpcode("invalid type in sub")
 		}
 	}
 }
