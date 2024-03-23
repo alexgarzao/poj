@@ -2,6 +2,7 @@ clean:
 	rm -Rf parsing/ bin/
 
 test:
+	go clean -testcache
 	go test ./...
 
 gen-parser: clean
