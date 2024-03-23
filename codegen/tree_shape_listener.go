@@ -90,6 +90,13 @@ func (t *TreeShapeListener) ExitMulDivOp(ctx *parsing.MulDivOpContext) {
 		default:
 			t.jasm.AddOpcode("invalid type in mul")
 		}
+	case op == "/":
+		switch pt1 {
+		case Integer:
+			t.GenDivIntegers()
+		default:
+			t.jasm.AddOpcode("invalid type in div")
+		}
 	}
 }
 
@@ -142,6 +149,11 @@ func (t *TreeShapeListener) GenSubIntegers() {
 
 func (t *TreeShapeListener) GenMulIntegers() {
 	t.jasm.AddOpcode("imul")
+	t.pst.Push(Integer)
+}
+
+func (t *TreeShapeListener) GenDivIntegers() {
+	t.jasm.AddOpcode("idiv")
 	t.pst.Push(Integer)
 }
 
