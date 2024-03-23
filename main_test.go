@@ -43,6 +43,10 @@ func Test_genCode(t *testing.T) {
 			inputFile:   "mul_three_numbers",
 			expectedErr: nil,
 		},
+		{
+			inputFile:   "div_three_numbers",
+			expectedErr: nil,
+		},
 		// // examples/fatorial.pas
 		// // examples/name_and_age.pas
 	}
