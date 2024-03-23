@@ -1,0 +1,48 @@
+/*
+ * Disassembled from MulThreeNumbers.class (originally MulThreeNumbers.java) by JASM
+ *
+ * Original class version: 55
+ * Signature: <no signature>
+ */
+public class MulThreeNumbers {
+    // <no signature>
+    // <no exceptions>
+    public <init>()V {
+        
+        label0:
+        aload 0
+        invokespecial java/lang/Object.<init>()V
+        return
+    }
+
+
+    // <no signature>
+    // <no exceptions>
+    public static main([java/lang/String)V {
+        
+        label0:
+        bipush 8
+        istore 1
+        
+        label1:
+        iconst 4
+        istore 2
+        
+        label2:
+        iconst 2
+        istore 3
+        
+        label3:
+        getstatic java/lang/System.out java/io/PrintStream
+        iload 1
+        iload 2
+        imul
+        iload 3
+        imul
+        invokevirtual java/io/PrintStream.println(I)V
+        
+        label4:
+        return
+    }
+
+}
