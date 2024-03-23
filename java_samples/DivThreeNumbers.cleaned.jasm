@@ -1,0 +1,36 @@
+/*
+ * Disassembled from DivThreeNumbers.class (originally DivThreeNumbers.java) by JASM
+ *
+ * Original class version: 55
+ * Signature: <no signature>
+ */
+public class DivThreeNumbers {
+    // <no signature>
+    // <no exceptions>
+    public <init>()V {
+        
+        label0:
+        aload 0
+        invokespecial java/lang/Object.<init>()V
+        return
+    }
+
+
+    // <no signature>
+    // <no exceptions>
+    public static main([java/lang/String)V {
+        
+        getstatic java/lang/System.out java/io/PrintStream
+
+        bipush 60
+        bipush 5
+        idiv
+        bipush 3
+        idiv
+
+        invokevirtual java/io/PrintStream.println(I)V
+        
+        return
+    }
+
+}
