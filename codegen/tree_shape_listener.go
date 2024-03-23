@@ -73,6 +73,26 @@ func (t *TreeShapeListener) ExitBlock(ctx *parsing.BlockContext) {
 	t.procedureDefinitionName = ""
 }
 
+func (t *TreeShapeListener) ExitMulDivOp(ctx *parsing.MulDivOpContext) {
+	pt1 := t.pst.Pop()
+	pt2 := t.pst.Pop()
+	if pt1 != pt2 {
+		t.jasm.AddOpcode("invalid types")
+		return
+	}
+
+	op := ctx.GetOp().GetText()
+	switch {
+	case op == "*":
+		switch pt1 {
+		case Integer:
+			t.GenMulIntegers()
+		default:
+			t.jasm.AddOpcode("invalid type in mul")
+		}
+	}
+}
+
 func (t *TreeShapeListener) ExitAddOp(ctx *parsing.AddOpContext) {
 	pt1 := t.pst.Pop()
 	pt2 := t.pst.Pop()
@@ -117,6 +137,11 @@ func (t *TreeShapeListener) GenAddIntegers() {
 
 func (t *TreeShapeListener) GenSubIntegers() {
 	t.jasm.AddOpcode("isub")
+	t.pst.Push(Integer)
+}
+
+func (t *TreeShapeListener) GenMulIntegers() {
+	t.jasm.AddOpcode("imul")
 	t.pst.Push(Integer)
 }
 
