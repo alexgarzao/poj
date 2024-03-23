@@ -39,6 +39,10 @@ func Test_genCode(t *testing.T) {
 			inputFile:   "sub_three_numbers",
 			expectedErr: nil,
 		},
+		{
+			inputFile:   "mul_three_numbers",
+			expectedErr: nil,
+		},
 		// // examples/fatorial.pas
 		// // examples/name_and_age.pas
 	}
