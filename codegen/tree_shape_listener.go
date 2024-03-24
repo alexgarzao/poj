@@ -29,9 +29,11 @@ func (t *TreeShapeListener) ExitProgram(ctx *parsing.ProgramContext) {
 }
 
 func (t *TreeShapeListener) EnterProcedureStatement(ctx *parsing.ProcedureStatementContext) {
-	if ctx.GetProcedureID().GetText() == "writeln" {
-		t.jasm.AddOpcode("getstatic", "java/lang/System.out", "java/io/PrintStream")
-	}
+	t.procedureDefinitionName = ctx.GetProcedureID().GetText()
+}
+
+func (t *TreeShapeListener) ExitProcedureStatement(ctx *parsing.ProcedureStatementContext) {
+	t.procedureDefinitionName = ""
 }
 
 func (t *TreeShapeListener) ExitString(ctx *parsing.StringContext) {
@@ -40,8 +42,14 @@ func (t *TreeShapeListener) ExitString(ctx *parsing.StringContext) {
 	t.pst.Push(String)
 }
 
-func (t *TreeShapeListener) ExitProcedureStatement(ctx *parsing.ProcedureStatementContext) {
-	if ctx.GetProcedureID().GetText() == "writeln" {
+func (t *TreeShapeListener) EnterActualParameter(ctx *parsing.ActualParameterContext) {
+	if t.procedureDefinitionName == "writeln" {
+		t.jasm.AddOpcode("getstatic", "java/lang/System.out", "java/io/PrintStream")
+	}
+}
+
+func (t *TreeShapeListener) ExitActualParameter(ctx *parsing.ActualParameterContext) {
+	if t.procedureDefinitionName == "writeln" {
 		pt := t.pst.Pop()
 		if pt == String {
 			t.jasm.AddOpcode("invokevirtual", "java/io/PrintStream.println(java/lang/String)V")
