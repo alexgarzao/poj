@@ -23,7 +23,7 @@ public class TwoTypesInPrintln {
         label0:
         getstatic java/lang/System.out java/io/PrintStream
         ldc "Hello"
-        invokevirtual java/io/PrintStream.println(java/lang/String)V
+        invokevirtual java/io/PrintStream.print(java/lang/String)V
         
         label1:
         getstatic java/lang/System.out java/io/PrintStream
@@ -31,6 +31,10 @@ public class TwoTypesInPrintln {
         invokevirtual java/io/PrintStream.println(I)V
         
         label2:
+        getstatic java/lang/System.out java/io/PrintStream
+        invokevirtual java/io/PrintStream.println()V
+        
+        label3:
         return
     }
 

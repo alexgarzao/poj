@@ -8,7 +8,9 @@ public class concat_two_strings {
 			invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite 
 			[""] 
 		}
-		invokevirtual java/io/PrintStream.println(java/lang/String)V
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
 		return
 	}
 }
