@@ -3,6 +3,8 @@ package main
 import (
 	"os"
 	"testing"
+
+	"github.com/sergi/go-diff/diffmatchpatch"
 )
 
 func Test_genCode(t *testing.T) {
@@ -47,9 +49,21 @@ func Test_genCode(t *testing.T) {
 			inputFile:   "div_three_numbers",
 			expectedErr: nil,
 		},
+		// {
+		// 	inputFile:   "operator_precedence",
+		// 	expectedErr: nil,
+		// },
+		{
+			inputFile:   "hello_world_two_types",
+			expectedErr: nil,
+		},
+
 		// // examples/fatorial.pas
 		// // examples/name_and_age.pas
 	}
+
+	dmp := diffmatchpatch.New()
+
 	for _, tt := range tests {
 		t.Run(tt.inputFile, func(t *testing.T) {
 			got, err := genCode("tests/pascal_programs/" + tt.inputFile)
@@ -66,9 +80,14 @@ func Test_genCode(t *testing.T) {
 				return
 			}
 
-			if got != string(expectedOutput) {
-				t.Errorf("genCode() = %v, want %v", got, string(expectedOutput))
+			diffs := dmp.DiffMain(string(expectedOutput), got, false)
+			if len(diffs) > 1 {
+				t.Errorf("diff = %v", dmp.DiffPrettyText(diffs))
 			}
+
+			// if got != string(expectedOutput) {
+			// 	t.Errorf("genCode() = %v, want %v", got, string(expectedOutput))
+			// }
 		})
 	}
 }

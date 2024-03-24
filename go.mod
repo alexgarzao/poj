@@ -4,6 +4,7 @@ go 1.22.0
 
 require (
 	github.com/antlr4-go/antlr/v4 v4.13.0
+	github.com/sergi/go-diff v1.3.1
 	github.com/stretchr/testify v1.8.4
 )
 
