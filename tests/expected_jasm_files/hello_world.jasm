@@ -3,7 +3,9 @@ public class hello_world {
 	public static main([java/lang/String)V {
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "Hello world!"
-		invokevirtual java/io/PrintStream.println(java/lang/String)V
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
 		return
 	}
 }

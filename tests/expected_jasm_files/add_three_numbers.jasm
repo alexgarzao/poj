@@ -7,7 +7,9 @@ public class add_three_numbers {
 		iadd 
 		sipush 3
 		iadd 
-		invokevirtual java/io/PrintStream.println(I)V
+		invokevirtual java/io/PrintStream.print(I)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
 		return
 	}
 }
