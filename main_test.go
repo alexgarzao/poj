@@ -49,10 +49,6 @@ func Test_genCode(t *testing.T) {
 			inputFile:   "div_three_numbers",
 			expectedErr: nil,
 		},
-		// {
-		// 	inputFile:   "operator_precedence",
-		// 	expectedErr: nil,
-		// },
 		{
 			inputFile:   "hello_world_two_types",
 			expectedErr: nil,
@@ -84,10 +80,6 @@ func Test_genCode(t *testing.T) {
 			if len(diffs) > 1 {
 				t.Errorf("diff = %v", dmp.DiffPrettyText(diffs))
 			}
-
-			// if got != string(expectedOutput) {
-			// 	t.Errorf("genCode() = %v, want %v", got, string(expectedOutput))
-			// }
 		})
 	}
 }
