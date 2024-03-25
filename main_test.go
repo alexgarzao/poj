@@ -50,6 +50,10 @@ func Test_genCode(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
+			inputFile:   "operator_precedence",
+			expectedErr: nil,
+		},
+		{
 			inputFile:   "hello_world_two_types",
 			expectedErr: nil,
 		},
