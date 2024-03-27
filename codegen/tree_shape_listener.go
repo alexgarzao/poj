@@ -10,6 +10,8 @@ type TreeShapeListener struct {
 	jasm                    *JASM
 	procedureDefinitionName string
 	pst                     *StackType
+	endIfLabel              string
+	elseLabel               string
 }
 
 func NewTreeShapeListener(filename string) *TreeShapeListener {
@@ -167,6 +169,81 @@ func (t *TreeShapeListener) GenMulIntegers() {
 func (t *TreeShapeListener) GenDivIntegers() {
 	t.jasm.AddOpcode("idiv")
 	t.pst.Push(Integer)
+}
+
+func (t *TreeShapeListener) ExitRelOp(ctx *parsing.RelOpContext) {
+	pt1 := t.pst.Pop()
+	pt2 := t.pst.Pop()
+	if pt1 != pt2 {
+		t.jasm.AddOpcode("invalid types")
+		return
+	}
+
+	op := ctx.GetOp().GetText()
+	switch {
+	case op == ">":
+		switch pt1 {
+		case Integer:
+			t.jasm.AddOpcode("if_icmple", t.elseLabel)
+			t.pst.Push(Integer)
+		default:
+			t.jasm.AddOpcode("invalid type in comparison")
+		}
+	case op == "<":
+		switch pt1 {
+		case Integer:
+			t.jasm.AddOpcode("if_icmpge", t.elseLabel)
+			t.pst.Push(Integer)
+		default:
+			t.jasm.AddOpcode("invalid type in comparison")
+		}
+	case op == ">=":
+		switch pt1 {
+		case Integer:
+			t.jasm.AddOpcode("if_icmplt", t.elseLabel)
+			t.pst.Push(Integer)
+		default:
+			t.jasm.AddOpcode("invalid type in comparison")
+		}
+	case op == "<=":
+		switch pt1 {
+		case Integer:
+			t.jasm.AddOpcode("if_icmpgt", t.elseLabel)
+			t.pst.Push(Integer)
+		default:
+			t.jasm.AddOpcode("invalid type in comparison")
+		}
+	case op == "=":
+		switch pt1 {
+		case Integer:
+			t.jasm.AddOpcode("if_icmpne", t.elseLabel)
+			t.pst.Push(Integer)
+		default:
+			t.jasm.AddOpcode("invalid type in comparison")
+		}
+	case op == "<>":
+		switch pt1 {
+		case Integer:
+			t.jasm.AddOpcode("if_icmpeq", t.elseLabel)
+			t.pst.Push(Integer)
+		default:
+			t.jasm.AddOpcode("invalid type in comparison")
+		}
+	}
+}
+
+func (t *TreeShapeListener) EnterIfStatement(ctx *parsing.IfStatementContext) {
+	t.elseLabel = t.jasm.NewLabel()
+	t.endIfLabel = t.jasm.NewLabel()
+}
+
+func (t *TreeShapeListener) ExitIfStatement(ctx *parsing.IfStatementContext) {
+	t.jasm.AddLabel(t.endIfLabel)
+}
+
+func (t *TreeShapeListener) ExitThenStatement(ctx *parsing.ThenStatementContext) {
+	t.jasm.AddOpcode("goto", t.endIfLabel)
+	t.jasm.AddLabel(t.elseLabel)
 }
 
 func (t *TreeShapeListener) ExitUnsignedInteger(ctx *parsing.UnsignedIntegerContext) {
