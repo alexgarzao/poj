@@ -413,7 +413,15 @@ conditionalStatement
     ;
 
 ifStatement
-    : IF expression THEN statement (: ELSE statement)?
+    : IF expression thenStatement (: elseStatement)?
+    ;
+
+thenStatement
+    : THEN statement
+    ;
+
+elseStatement
+    : ELSE statement
     ;
 
 caseStatement
