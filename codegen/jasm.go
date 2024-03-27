@@ -6,8 +6,9 @@ import (
 )
 
 type JASM struct {
-	code []string
-	tabs string
+	code    []string
+	tabs    string
+	labelID int
 }
 
 func NewJASM() *JASM {
@@ -36,6 +37,10 @@ func (j *JASM) AddOpcode(opcode string, parameters ...string) {
 	j.addLine(fmt.Sprintf("%s %s", opcode, params))
 }
 
+func (j *JASM) AddLabel(label string) {
+	j.addLine(fmt.Sprintf("%s:", label))
+}
+
 func (j *JASM) FinishMain() {
 	j.addLine("return")
 	j.decTab()
@@ -50,6 +55,11 @@ func (j *JASM) StartInvokeDynamic(param string) {
 func (j *JASM) FinishInvokeDynamic() {
 	j.decTab()
 	j.addLine("}")
+}
+
+func (j *JASM) NewLabel() string {
+	j.labelID++
+	return fmt.Sprintf("L%d", j.labelID)
 }
 
 func (j *JASM) Code() string {
