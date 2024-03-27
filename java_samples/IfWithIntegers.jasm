@@ -1,0 +1,51 @@
+/*
+ * Disassembled from IfWithIntegers.class (originally IfWithIntegers.java) by JASM
+ *
+ * Original class version: 55
+ * Signature: <no signature>
+ */
+public class IfWithIntegers {
+    // <no signature>
+    // <no exceptions>
+    public <init>()V {
+        
+        label0:
+        aload 0
+        invokespecial java/lang/Object.<init>()V
+        return
+    }
+
+
+    // <no signature>
+    // <no exceptions>
+    public static main([java/lang/String)V {
+        
+        label0:
+        bipush 111
+        istore 1
+        
+        label1:
+        sipush 222
+        istore 2
+        
+        label2:
+        iload 1
+        iload 2
+        if_icmple label3
+        
+        label4:
+        getstatic java/lang/System.out java/io/PrintStream
+        ldc "v1>v2"
+        invokevirtual java/io/PrintStream.println(java/lang/String)V
+        goto label5
+        
+        label3:
+        getstatic java/lang/System.out java/io/PrintStream
+        ldc "v1<=v2"
+        invokevirtual java/io/PrintStream.println(java/lang/String)V
+        
+        label5:
+        return
+    }
+
+}
