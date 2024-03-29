@@ -6,8 +6,7 @@ import (
 )
 
 type JASM struct {
-	code       []string
-	tabs       string
+	code       *Code
 	labelID    int
 	pst        *StackType
 	endIfLabel string
@@ -16,7 +15,8 @@ type JASM struct {
 
 func NewJASM() *JASM {
 	return &JASM{
-		pst: NewStackType(),
+		code: NewCode(),
+		pst:  NewStackType(),
 	}
 }
 
@@ -94,6 +94,13 @@ func (j *JASM) AddOperatorOpcode(op string) {
 	}
 
 	switch {
+	case op == "and":
+		switch pt1 {
+		case Boolean:
+			j.genMulIntegers()
+		default:
+			j.AddOpcode("invalid type in mul")
+		}
 	case op == "*":
 		switch pt1 {
 		case Integer:
@@ -201,23 +208,19 @@ func (j *JASM) newLabel() string {
 }
 
 func (j *JASM) Code() string {
-	return strings.Join(j.code, "")
+	return j.code.Code()
 }
 
 func (j *JASM) addLine(line string) {
-	j.code = append(j.code, fmt.Sprintf("%s%s\n", j.tabs, line))
+	j.code.AddLine(line)
 }
 
 func (j *JASM) incTab() {
-	j.tabs += "\t"
+	j.code.IncTab()
 }
 
 func (j *JASM) decTab() {
-	if len(j.tabs) == 0 {
-		return
-	}
-
-	j.tabs = j.tabs[:len(j.tabs)-1]
+	j.code.DecTab()
 }
 
 func (j *JASM) genAddStrings() {
