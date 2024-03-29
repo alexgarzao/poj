@@ -6,13 +6,18 @@ import (
 )
 
 type JASM struct {
-	code    []string
-	tabs    string
-	labelID int
+	code       []string
+	tabs       string
+	labelID    int
+	pst        *StackType
+	endIfLabel string
+	elseLabel  string
 }
 
 func NewJASM() *JASM {
-	return &JASM{}
+	return &JASM{
+		pst: NewStackType(),
+	}
 }
 
 func (j *JASM) StartMainClass(name string) {
@@ -37,6 +42,139 @@ func (j *JASM) AddOpcode(opcode string, parameters ...string) {
 	j.addLine(fmt.Sprintf("%s %s", opcode, params))
 }
 
+func (j *JASM) AddLdcStringOpcode(text string) {
+	j.AddOpcode("ldc", text)
+	j.pst.Push(String)
+}
+
+func (j *JASM) AddSiPushOpcode(number string) {
+	j.AddOpcode("sipush", number)
+	j.pst.Push(Integer)
+}
+
+func (j *JASM) AddInvokeVirtualPrintWithType() {
+	pt := j.pst.Pop()
+	if pt == String {
+		j.AddOpcode("invokevirtual", "java/io/PrintStream.print(java/lang/String)V")
+	} else if pt == Integer {
+		j.AddOpcode("invokevirtual", "java/io/PrintStream.print(I)V")
+	} else {
+		j.AddOpcode("undefined type in write/writeln")
+	}
+}
+
+func (j *JASM) AddInvokeVirtualPrintln() {
+	j.AddOpcode("invokevirtual", "java/io/PrintStream.println()V")
+}
+
+func (j *JASM) AddStaticPrintStream() {
+	j.AddOpcode("getstatic", "java/lang/System.out", "java/io/PrintStream")
+}
+
+func (j *JASM) StartIfStatement() {
+	j.elseLabel = j.newLabel()
+	j.endIfLabel = j.newLabel()
+}
+
+func (j *JASM) FinishThenStatement() {
+	j.AddOpcode("goto", j.endIfLabel)
+	j.AddLabel(j.elseLabel)
+}
+
+func (j *JASM) FinishIfStatement() {
+	j.AddLabel(j.endIfLabel)
+}
+
+func (j *JASM) AddOperatorOpcode(op string) {
+	pt1 := j.pst.Pop()
+	pt2 := j.pst.Pop()
+	if pt1 != pt2 {
+		j.AddOpcode("invalid types")
+		return
+	}
+
+	switch {
+	case op == "*":
+		switch pt1 {
+		case Integer:
+			j.genMulIntegers()
+		default:
+			j.AddOpcode("invalid type in mul")
+		}
+	case op == "/":
+		switch pt1 {
+		case Integer:
+			j.genDivIntegers()
+		default:
+			j.AddOpcode("invalid type in div")
+		}
+	case op == "+":
+		switch pt1 {
+		case String:
+			j.genAddStrings()
+		case Integer:
+			j.genAddIntegers()
+		default:
+			j.AddOpcode("invalid type in add")
+		}
+	case op == "-":
+		switch pt1 {
+		case Integer:
+			j.genSubIntegers()
+		default:
+			j.AddOpcode("invalid type in sub")
+		}
+	case op == ">":
+		switch pt1 {
+		case Integer:
+			j.AddOpcode("if_icmple", j.elseLabel)
+			j.pst.Push(Integer)
+		default:
+			j.AddOpcode("invalid type in comparison")
+		}
+	case op == "<":
+		switch pt1 {
+		case Integer:
+			j.AddOpcode("if_icmpge", j.elseLabel)
+			j.pst.Push(Integer)
+		default:
+			j.AddOpcode("invalid type in comparison")
+		}
+	case op == ">=":
+		switch pt1 {
+		case Integer:
+			j.AddOpcode("if_icmplt", j.elseLabel)
+			j.pst.Push(Integer)
+		default:
+			j.AddOpcode("invalid type in comparison")
+		}
+	case op == "<=":
+		switch pt1 {
+		case Integer:
+			j.AddOpcode("if_icmpgt", j.elseLabel)
+			j.pst.Push(Integer)
+		default:
+			j.AddOpcode("invalid type in comparison")
+		}
+	case op == "=":
+		switch pt1 {
+		case Integer:
+			j.AddOpcode("if_icmpne", j.elseLabel)
+			j.pst.Push(Integer)
+		default:
+			j.AddOpcode("invalid type in comparison")
+		}
+	case op == "<>":
+		switch pt1 {
+		case Integer:
+			j.AddOpcode("if_icmpeq", j.elseLabel)
+			j.pst.Push(Integer)
+		default:
+			j.AddOpcode("invalid type in comparison")
+		}
+	}
+}
+
 func (j *JASM) AddLabel(label string) {
 	j.addLine(fmt.Sprintf("%s:", label))
 }
@@ -57,7 +195,7 @@ func (j *JASM) FinishInvokeDynamic() {
 	j.addLine("}")
 }
 
-func (j *JASM) NewLabel() string {
+func (j *JASM) newLabel() string {
 	j.labelID++
 	return fmt.Sprintf("L%d", j.labelID)
 }
@@ -80,4 +218,32 @@ func (j *JASM) decTab() {
 	}
 
 	j.tabs = j.tabs[:len(j.tabs)-1]
+}
+
+func (j *JASM) genAddStrings() {
+	j.StartInvokeDynamic(`makeConcatWithConstants(java/lang/String, java/lang/String)java/lang/String`)
+	j.AddOpcode(`invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite`)
+	j.AddOpcode(`[""]`)
+	j.FinishInvokeDynamic()
+	j.pst.Push(String)
+}
+
+func (j *JASM) genAddIntegers() {
+	j.AddOpcode("iadd")
+	j.pst.Push(Integer)
+}
+
+func (j *JASM) genSubIntegers() {
+	j.AddOpcode("isub")
+	j.pst.Push(Integer)
+}
+
+func (j *JASM) genMulIntegers() {
+	j.AddOpcode("imul")
+	j.pst.Push(Integer)
+}
+
+func (j *JASM) genDivIntegers() {
+	j.AddOpcode("idiv")
+	j.pst.Push(Integer)
 }
