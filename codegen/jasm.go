@@ -201,6 +201,27 @@ func (j *JASM) AddOperatorOpcode(op string) {
 	}
 }
 
+func (j *JASM) AddUnaryOperatorOpcode(op string) {
+	pt1 := j.pst.Pop()
+	if pt1 != Boolean {
+		j.AddOpcode("invalid type in unary operator")
+		return
+	}
+
+	switch op {
+	case "not":
+		lfalse := j.newLabel()
+		lnext := j.newLabel()
+		j.AddOpcode("ifne", lfalse)
+		j.AddPushTrue()
+		j.AddGotoOpcode(lnext)
+		j.AddLabel(lfalse)
+		j.AddPushFalse()
+		j.AddLabel(lnext)
+		j.pst.Push(Boolean)
+	}
+}
+
 func (j *JASM) AddLabel(label string) {
 	j.addLine(fmt.Sprintf("%s:", label))
 }

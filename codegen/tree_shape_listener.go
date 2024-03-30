@@ -75,6 +75,11 @@ func (t *TreeShapeListener) ExitBlock(ctx *parsing.BlockContext) {
 	t.procedureDefinitionName = ""
 }
 
+func (t *TreeShapeListener) ExitNotOp(ctx *parsing.NotOpContext) {
+	op := ctx.GetOp().GetText()
+	t.jasm.AddUnaryOperatorOpcode(op)
+}
+
 func (t *TreeShapeListener) ExitBoolOp(ctx *parsing.BoolOpContext) {
 	op := ctx.GetOp().GetText()
 	t.jasm.AddOperatorOpcode(op)
