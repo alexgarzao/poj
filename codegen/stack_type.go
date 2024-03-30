@@ -6,6 +6,7 @@ const (
 	Undefined PascalType = iota
 	String
 	Integer
+	Boolean
 )
 
 type StackType struct {

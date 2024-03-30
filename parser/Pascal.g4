@@ -294,8 +294,9 @@ variable
     ;
 
 expression
-    : expression op = relationaloperator expression # RelOp
-    | expression op = ('*' | '/') expression        # MulDivOp
+    : expression op = (AND | OR) expression         # BoolOp
+    | expression op = relationaloperator expression # RelOp
+    | expression op = (STAR | SLASH) expression     # MulDivOp
     | expression op = additiveoperator expression   # AddOp
     | signedFactor                                  # ExpSignedFactor
     ;
