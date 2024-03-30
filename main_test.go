@@ -65,6 +65,10 @@ func Test_genCode(t *testing.T) {
 			inputFile:   "if_with_integers_with_and_or",
 			expectedErr: nil,
 		},
+		{
+			inputFile:   "if_with_integers_with_not",
+			expectedErr: nil,
+		},
 		// // examples/fatorial.pas
 		// // examples/name_and_age.pas
 	}
