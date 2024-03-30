@@ -1,0 +1,75 @@
+/*
+ * Disassembled from IfWithAndOr.class (originally IfWithAndOr.java) by JASM
+ *
+ * Original class version: 55
+ * Signature: <no signature>
+ */
+public class IfWithAndOr {
+    // <no signature>
+    // <no exceptions>
+    public <init>()V {
+        
+        label0:
+        aload 0
+        invokespecial java/lang/Object.<init>()V
+        return
+    }
+
+
+    // <no signature>
+    // <no exceptions>
+    public static main([java/lang/String)V {
+        
+        label0:
+        bipush 111
+        istore 1
+        
+        label1:
+        sipush 222
+        istore 2
+        
+        label2:
+        sipush 333
+        istore 3
+        
+        label3:
+        getstatic java/lang/System.out java/io/PrintStream
+        ldc "v1>v2 and v2>v3? "
+        invokevirtual java/io/PrintStream.print(java/lang/String)V
+        
+        label4:
+        iload 1
+        iload 2
+        if_icmple label5
+        iload 2
+        iload 3
+        if_icmple label5
+        iconst 1
+        goto label6
+        
+        label5:
+        iconst 0
+        
+        label6:
+        istore 4
+        
+        label7:
+        iload 4
+        ifeq label8
+        
+        label9:
+        getstatic java/lang/System.out java/io/PrintStream
+        iconst 1
+        invokevirtual java/io/PrintStream.println(Z)V
+        goto label10
+        
+        label8:
+        getstatic java/lang/System.out java/io/PrintStream
+        iconst 0
+        invokevirtual java/io/PrintStream.println(Z)V
+        
+        label10:
+        return
+    }
+
+}
