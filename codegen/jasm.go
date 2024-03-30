@@ -52,6 +52,18 @@ func (j *JASM) AddSiPushOpcode(number string) {
 	j.pst.Push(Integer)
 }
 
+func (j *JASM) AddPushTrue() {
+	j.AddOpcode("iconst 1")
+}
+
+func (j *JASM) AddPushFalse() {
+	j.AddOpcode("iconst 0")
+}
+
+func (j *JASM) AddGotoOpcode(label string) {
+	j.AddOpcode("goto", label)
+}
+
 func (j *JASM) AddInvokeVirtualPrintWithType() {
 	pt := j.pst.Pop()
 	if pt == String {
@@ -76,6 +88,10 @@ func (j *JASM) StartIfStatement() {
 	j.endIfLabel = j.newLabel()
 }
 
+func (j *JASM) EnterThenStatement() {
+	j.AddOpcode("ifeq", j.elseLabel)
+}
+
 func (j *JASM) FinishThenStatement() {
 	j.AddOpcode("goto", j.endIfLabel)
 	j.AddLabel(j.elseLabel)
@@ -97,9 +113,18 @@ func (j *JASM) AddOperatorOpcode(op string) {
 	case op == "and":
 		switch pt1 {
 		case Boolean:
-			j.genMulIntegers()
+			j.AddOpcode("iand")
+			j.pst.Push(Boolean)
 		default:
-			j.AddOpcode("invalid type in mul")
+			j.AddOpcode("invalid type in boolean operator")
+		}
+	case op == "or":
+		switch pt1 {
+		case Boolean:
+			j.AddOpcode("ior")
+			j.pst.Push(Boolean)
+		default:
+			j.AddOpcode("invalid type in boolean operator")
 		}
 	case op == "*":
 		switch pt1 {
@@ -134,48 +159,42 @@ func (j *JASM) AddOperatorOpcode(op string) {
 	case op == ">":
 		switch pt1 {
 		case Integer:
-			j.AddOpcode("if_icmple", j.elseLabel)
-			j.pst.Push(Integer)
+			j.genBooleanOperatorTpl("if_icmple")
 		default:
 			j.AddOpcode("invalid type in comparison")
 		}
 	case op == "<":
 		switch pt1 {
 		case Integer:
-			j.AddOpcode("if_icmpge", j.elseLabel)
-			j.pst.Push(Integer)
+			j.genBooleanOperatorTpl("if_icmpge")
 		default:
 			j.AddOpcode("invalid type in comparison")
 		}
 	case op == ">=":
 		switch pt1 {
 		case Integer:
-			j.AddOpcode("if_icmplt", j.elseLabel)
-			j.pst.Push(Integer)
+			j.genBooleanOperatorTpl("if_icmplt")
 		default:
 			j.AddOpcode("invalid type in comparison")
 		}
 	case op == "<=":
 		switch pt1 {
 		case Integer:
-			j.AddOpcode("if_icmpgt", j.elseLabel)
-			j.pst.Push(Integer)
+			j.genBooleanOperatorTpl("if_icmpgt")
 		default:
 			j.AddOpcode("invalid type in comparison")
 		}
 	case op == "=":
 		switch pt1 {
 		case Integer:
-			j.AddOpcode("if_icmpne", j.elseLabel)
-			j.pst.Push(Integer)
+			j.genBooleanOperatorTpl("if_icmpne")
 		default:
 			j.AddOpcode("invalid type in comparison")
 		}
 	case op == "<>":
 		switch pt1 {
 		case Integer:
-			j.AddOpcode("if_icmpeq", j.elseLabel)
-			j.pst.Push(Integer)
+			j.genBooleanOperatorTpl("if_icmpeq")
 		default:
 			j.AddOpcode("invalid type in comparison")
 		}
@@ -249,4 +268,16 @@ func (j *JASM) genMulIntegers() {
 func (j *JASM) genDivIntegers() {
 	j.AddOpcode("idiv")
 	j.pst.Push(Integer)
+}
+
+func (j *JASM) genBooleanOperatorTpl(ifOpcode string) {
+	lfalse := j.newLabel()
+	lnext := j.newLabel()
+	j.AddOpcode(ifOpcode, lfalse)
+	j.AddPushTrue()
+	j.AddGotoOpcode(lnext)
+	j.AddLabel(lfalse)
+	j.AddPushFalse()
+	j.AddLabel(lnext)
+	j.pst.Push(Boolean)
 }
