@@ -6,7 +6,13 @@ public class if_with_integers_without_and_or {
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 111
 		sipush 222
-		if_icmple L1
+		if_icmple L3
+		iconst 1 
+		goto L4
+		L3:
+		iconst 0 
+		L4:
+		ifeq L1
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
@@ -25,28 +31,13 @@ public class if_with_integers_without_and_or {
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 333
 		sipush 222
-		if_icmple L3
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "true"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		goto L4
-		L3:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "false"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		L4:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "2>4? "
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		sipush 2
-		sipush 4
-		if_icmple L5
+		if_icmple L7
+		iconst 1 
+		goto L8
+		L7:
+		iconst 0 
+		L8:
+		ifeq L5
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
@@ -54,27 +45,26 @@ public class if_with_integers_without_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		goto L6
 		L5:
-		L6:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "4>2? "
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		sipush 4
-		sipush 2
-		if_icmple L7
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "true"
+		ldc "false"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		goto L8
-		L7:
-		L8:
+		L6:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111<222? "
+		ldc "2>4? "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		sipush 111
-		sipush 222
-		if_icmpge L9
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		sipush 2
+		sipush 4
+		if_icmple L11
+		iconst 1 
+		goto L12
+		L11:
+		iconst 0 
+		L12:
+		ifeq L9
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
@@ -82,37 +72,19 @@ public class if_with_integers_without_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		goto L10
 		L9:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "false"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
 		L10:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "222<111? "
+		ldc "4>2? "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		sipush 222
-		sipush 111
-		if_icmpge L11
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "true"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		goto L12
-		L11:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "false"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		L12:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "222>=111? "
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		sipush 222
-		sipush 111
-		if_icmplt L13
+		sipush 4
+		sipush 2
+		if_icmple L15
+		iconst 1 
+		goto L16
+		L15:
+		iconst 0 
+		L16:
+		ifeq L13
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
@@ -120,37 +92,19 @@ public class if_with_integers_without_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		goto L14
 		L13:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "false"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
 		L14:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111>=222? "
+		ldc "111<222? "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 111
 		sipush 222
-		if_icmplt L15
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "true"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		goto L16
-		L15:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "false"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		L16:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111>=111? "
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		sipush 111
-		sipush 111
-		if_icmplt L17
+		if_icmpge L19
+		iconst 1 
+		goto L20
+		L19:
+		iconst 0 
+		L20:
+		ifeq L17
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
@@ -165,30 +119,17 @@ public class if_with_integers_without_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		L18:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111<=222? "
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		sipush 111
-		sipush 222
-		if_icmpgt L19
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "true"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		goto L20
-		L19:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "false"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		L20:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "222<=111? "
+		ldc "222<111? "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 222
 		sipush 111
-		if_icmpgt L21
+		if_icmpge L23
+		iconst 1 
+		goto L24
+		L23:
+		iconst 0 
+		L24:
+		ifeq L21
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
@@ -203,30 +144,17 @@ public class if_with_integers_without_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		L22:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111<=111? "
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		sipush 111
-		sipush 111
-		if_icmpgt L23
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "true"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		goto L24
-		L23:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "false"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		L24:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "222=222? "
+		ldc "222>=111? "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 222
-		sipush 222
-		if_icmpne L25
+		sipush 111
+		if_icmplt L27
+		iconst 1 
+		goto L28
+		L27:
+		iconst 0 
+		L28:
+		ifeq L25
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
@@ -241,30 +169,17 @@ public class if_with_integers_without_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		L26:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111=222? "
+		ldc "111>=222? "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 111
 		sipush 222
-		if_icmpne L27
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "true"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		goto L28
-		L27:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "false"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		L28:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111<>222? "
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		sipush 111
-		sipush 222
-		if_icmpeq L29
+		if_icmplt L31
+		iconst 1 
+		goto L32
+		L31:
+		iconst 0 
+		L32:
+		ifeq L29
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
@@ -279,24 +194,205 @@ public class if_with_integers_without_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		L30:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111<>111? "
+		ldc "111>=111? "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 111
 		sipush 111
-		if_icmpeq L31
+		if_icmplt L35
+		iconst 1 
+		goto L36
+		L35:
+		iconst 0 
+		L36:
+		ifeq L33
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		goto L32
-		L31:
+		goto L34
+		L33:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "false"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		L32:
+		L34:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "111<=222? "
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		sipush 111
+		sipush 222
+		if_icmpgt L39
+		iconst 1 
+		goto L40
+		L39:
+		iconst 0 
+		L40:
+		ifeq L37
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "true"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		goto L38
+		L37:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "false"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		L38:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "222<=111? "
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		sipush 222
+		sipush 111
+		if_icmpgt L43
+		iconst 1 
+		goto L44
+		L43:
+		iconst 0 
+		L44:
+		ifeq L41
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "true"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		goto L42
+		L41:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "false"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		L42:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "111<=111? "
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		sipush 111
+		sipush 111
+		if_icmpgt L47
+		iconst 1 
+		goto L48
+		L47:
+		iconst 0 
+		L48:
+		ifeq L45
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "true"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		goto L46
+		L45:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "false"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		L46:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "222=222? "
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		sipush 222
+		sipush 222
+		if_icmpne L51
+		iconst 1 
+		goto L52
+		L51:
+		iconst 0 
+		L52:
+		ifeq L49
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "true"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		goto L50
+		L49:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "false"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		L50:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "111=222? "
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		sipush 111
+		sipush 222
+		if_icmpne L55
+		iconst 1 
+		goto L56
+		L55:
+		iconst 0 
+		L56:
+		ifeq L53
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "true"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		goto L54
+		L53:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "false"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		L54:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "111<>222? "
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		sipush 111
+		sipush 222
+		if_icmpeq L59
+		iconst 1 
+		goto L60
+		L59:
+		iconst 0 
+		L60:
+		ifeq L57
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "true"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		goto L58
+		L57:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "false"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		L58:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "111<>111? "
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		sipush 111
+		sipush 111
+		if_icmpeq L63
+		iconst 1 
+		goto L64
+		L63:
+		iconst 0 
+		L64:
+		ifeq L61
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "true"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		goto L62
+		L61:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "false"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		L62:
 		return
 	}
 }
