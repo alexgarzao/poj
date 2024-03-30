@@ -294,7 +294,8 @@ variable
     ;
 
 expression
-    : expression op = (AND | OR) expression         # BoolOp
+    : op = NOT expression                           # NotOp
+    | expression op = (AND | OR) expression         # BoolOp
     | expression op = relationaloperator expression # RelOp
     | expression op = (STAR | SLASH) expression     # MulDivOp
     | expression op = additiveoperator expression   # AddOp
@@ -339,7 +340,7 @@ factor
     | functionDesignator
     | unsignedConstant
     | set_
-    | NOT factor
+    // | NOT factor
     | bool_
     ;
 
