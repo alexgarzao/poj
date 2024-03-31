@@ -2,88 +2,36 @@ package main
 
 import (
 	"os"
+	"path"
+	"path/filepath"
 	"testing"
 
 	"github.com/sergi/go-diff/diffmatchpatch"
 )
 
 func Test_genCode(t *testing.T) {
-	// Files in tests/pascal_programs/*.pas and tests/expected_jasm_files/*.jasm.
-	tests := []struct {
-		inputFile   string
-		expectedErr error
-	}{
-		{
-			inputFile:   "hello_world",
-			expectedErr: nil,
-		},
-		{
-			inputFile:   "concat_two_strings",
-			expectedErr: nil,
-		},
-		{
-			inputFile:   "concat_three_strings",
-			expectedErr: nil,
-		},
-		{
-			inputFile:   "add_two_numbers",
-			expectedErr: nil,
-		},
-		{
-			inputFile:   "add_three_numbers",
-			expectedErr: nil,
-		},
-		{
-			inputFile:   "sub_two_numbers",
-			expectedErr: nil,
-		},
-		{
-			inputFile:   "sub_three_numbers",
-			expectedErr: nil,
-		},
-		{
-			inputFile:   "mul_three_numbers",
-			expectedErr: nil,
-		},
-		{
-			inputFile:   "div_three_numbers",
-			expectedErr: nil,
-		},
-		{
-			inputFile:   "operator_precedence",
-			expectedErr: nil,
-		},
-		{
-			inputFile:   "hello_world_two_types",
-			expectedErr: nil,
-		},
-		{
-			inputFile:   "if_with_integers_without_and_or",
-			expectedErr: nil,
-		},
-		{
-			inputFile:   "if_with_integers_with_and_or",
-			expectedErr: nil,
-		},
-		{
-			inputFile:   "if_with_integers_with_not",
-			expectedErr: nil,
-		},
-		// // examples/fatorial.pas
-		// // examples/name_and_age.pas
+	// Test all files in tests/pascal_programs/*.pas and tests/expected_jasm_files/*.jasm.
+	inputFiles, err := filepath.Glob("tests/pascal_programs/*.pas")
+	if err != nil {
+		t.Errorf("reading inputFiles = %v", err)
 	}
 
 	dmp := diffmatchpatch.New()
 
-	for _, tt := range tests {
-		t.Run(tt.inputFile, func(t *testing.T) {
-			got, err := genCode("tests/pascal_programs/" + tt.inputFile)
-			if err != tt.expectedErr {
-				t.Errorf("genCode() error = %v, expectedErr %v", err, tt.expectedErr)
+	for _, inputFile := range inputFiles {
+		t.Run(inputFile, func(t *testing.T) {
+			inputFile = path.Base(inputFile)
+			inputFile = inputFile[:len(inputFile)-4]
+
+			t.Logf("Running expected output for %s", inputFile)
+
+			got, err := genCode("tests/pascal_programs/" + inputFile)
+			if err != nil {
+				t.Errorf("genCode() error = %v", err)
 				return
 			}
 
-			expectedOutputFile := "tests/expected_jasm_files/" + tt.inputFile + ".jasm"
+			expectedOutputFile := "tests/expected_jasm_files/" + inputFile + ".jasm"
 
 			expectedOutput, err := os.ReadFile(expectedOutputFile)
 			if err != nil {
@@ -95,6 +43,8 @@ func Test_genCode(t *testing.T) {
 			if len(diffs) > 1 {
 				t.Errorf("diff = %v", dmp.DiffPrettyText(diffs))
 			}
+
+			t.Logf("Expected output for %s is fine", inputFile)
 		})
 	}
 }
