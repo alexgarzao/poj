@@ -99,6 +99,24 @@ func (t *TreeShapeListener) ExitUnsignedInteger(ctx *parsing.UnsignedIntegerCont
 	t.jasm.NewConstantInteger(ctx.GetText())
 }
 
+func (t *TreeShapeListener) ExitVariableDeclaration(ctx *parsing.VariableDeclarationContext) {
+	varNames := ctx.GetVarNames()
+	pascalType := ctx.GetPascalType().GetText()
+	for _, id := range varNames.GetIds() {
+		t.jasm.NewVariable(id.GetText(), pascalType)
+	}
+}
+
+func (t *TreeShapeListener) ExitAssignmentStatement(ctx *parsing.AssignmentStatementContext) {
+	varName := ctx.GetVarName().GetText()
+	t.jasm.FinishAssignmentStatement(varName)
+}
+
+func (t *TreeShapeListener) ExitFactorVariable(ctx *parsing.FactorVariableContext) {
+	varName := ctx.GetId().GetText()
+	t.jasm.LoadVarContent(varName)
+}
+
 func (t *TreeShapeListener) Code() string {
 	return t.jasm.Code()
 }
