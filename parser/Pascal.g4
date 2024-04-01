@@ -222,7 +222,7 @@ variableDeclarationPart
     ;
 
 variableDeclaration
-    : identifierList COLON type_
+    : varNames = identifierList COLON pascalType = type_
     ;
 
 procedureAndFunctionDeclarationPart
@@ -254,7 +254,7 @@ parameterGroup
     ;
 
 identifierList
-    : identifier (COMMA identifier)*
+    : ids += identifier (COMMA ids += identifier)*
     ;
 
 constList
@@ -281,7 +281,7 @@ simpleStatement
     ;
 
 assignmentStatement
-    : variable ASSIGN expression
+    : varName = variable ASSIGN expression
     ;
 
 variable
@@ -335,13 +335,13 @@ signedFactor
     ;
 
 factor
-    : variable
-    | LPAREN expression RPAREN
-    | functionDesignator
-    | unsignedConstant
-    | set_
+    : id = variable            # factorVariable
+    | LPAREN expression RPAREN # factorExpression
+    | functionDesignator       # factorFunctionDesignator
+    | unsignedConstant         # factorUnsignedConstant
+    | set_                     # factorSet
     // | NOT factor
-    | bool_
+    | bool_ # factorBool
     ;
 
 unsignedConstant

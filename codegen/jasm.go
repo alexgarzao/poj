@@ -12,12 +12,14 @@ type JASM struct {
 	pst                     *StackType
 	endIfLabel              string
 	elseLabel               string
+	st                      *SymbolTable
 }
 
 func NewJASM() *JASM {
 	return &JASM{
 		code: NewCode(),
 		pst:  NewStackType(),
+		st:   NewSymbolTable(),
 	}
 }
 
@@ -216,6 +218,44 @@ func (j *JASM) AddUnaryOperatorOpcode(op string) {
 		j.addPushFalse()
 		j.addLabel(lnext)
 		j.pst.Push(Boolean)
+	}
+}
+
+func (j *JASM) NewVariable(name, pst string) {
+	pt := ToPascalType(pst)
+	j.st.AddVariable(name, pt)
+}
+
+func (j *JASM) FinishAssignmentStatement(varName string) {
+	ok, symbol := j.st.Get(varName)
+	if !ok {
+		j.addOpcode("variable not found")
+		return
+	}
+
+	switch symbol.PascalType {
+	case String:
+		j.addOpcode("astore", fmt.Sprintf("%d", symbol.Index))
+	case Integer:
+		j.addOpcode("istore", fmt.Sprintf("%d", symbol.Index))
+	default:
+		j.addOpcode("invalid type in assignment")
+	}
+}
+
+func (j *JASM) LoadVarContent(varName string) {
+	ok, symbol := j.st.Get(varName)
+	if !ok {
+		j.addOpcode("variable not found")
+		return
+	}
+	switch symbol.PascalType {
+	case String:
+		j.addOpcode("aload", fmt.Sprintf("%d", symbol.Index))
+	case Integer:
+		j.addOpcode("iload", fmt.Sprintf("%d", symbol.Index))
+	default:
+		j.addOpcode("invalid type in load")
 	}
 }
 
