@@ -2,7 +2,7 @@
 public class if_with_integers_with_and_or {
 	public static main([java/lang/String)V {
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "2>1? "
+		ldc "2>1 must be true: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 2
 		sipush 1
@@ -27,7 +27,7 @@ public class if_with_integers_with_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		L2:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "1>2? "
+		ldc "1>2 must be false: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 1
 		sipush 2
@@ -52,7 +52,7 @@ public class if_with_integers_with_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		L6:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111>222 and 222>333? "
+		ldc "111>222 and 222>333 must be false: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 111
 		sipush 222
@@ -86,7 +86,7 @@ public class if_with_integers_with_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		L10:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111<222 and 222<333? "
+		ldc "111<222 and 222<333 must be true: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 111
 		sipush 222
@@ -120,7 +120,7 @@ public class if_with_integers_with_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		L16:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111>222 and 222<333? "
+		ldc "111>222 and 222<333 must be false: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 111
 		sipush 222
@@ -154,7 +154,7 @@ public class if_with_integers_with_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		L22:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111<222 and 222>333? "
+		ldc "111<222 and 222>333 must be false: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 111
 		sipush 222
@@ -188,7 +188,7 @@ public class if_with_integers_with_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		L28:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111>222 or 222>333? "
+		ldc "111>222 or 222>333 must be false: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 111
 		sipush 222
@@ -222,7 +222,7 @@ public class if_with_integers_with_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		L34:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111<222 or 222<333? "
+		ldc "111<222 or 222<333 must be true: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 111
 		sipush 222
@@ -256,7 +256,7 @@ public class if_with_integers_with_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		L40:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111>222 or 222<333? "
+		ldc "111>222 or 222<333 must be true: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 111
 		sipush 222
@@ -290,7 +290,7 @@ public class if_with_integers_with_and_or {
 		invokevirtual java/io/PrintStream.println()V
 		L46:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "111<222 or 222>333? "
+		ldc "111<222 or 222>333 must be true: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		sipush 111
 		sipush 222
