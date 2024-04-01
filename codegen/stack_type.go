@@ -1,14 +1,5 @@
 package codegen
 
-type PascalType uint8
-
-const (
-	Undefined PascalType = iota
-	String
-	Integer
-	Boolean
-)
-
 type StackType struct {
 	types []PascalType
 }
