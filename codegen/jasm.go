@@ -6,11 +6,12 @@ import (
 )
 
 type JASM struct {
-	code       *Code
-	labelID    int
-	pst        *StackType
-	endIfLabel string
-	elseLabel  string
+	code                    *Code
+	procedureDefinitionName string
+	labelID                 int
+	pst                     *StackType
+	endIfLabel              string
+	elseLabel               string
 }
 
 func NewJASM() *JASM {
@@ -31,81 +32,77 @@ func (j *JASM) FinishMainClass() {
 	j.addLine("}")
 }
 
-func (j *JASM) StartMain() {
-	j.addLine("public static main([java/lang/String)V {")
-	j.incTab()
+func (j *JASM) StartProcedureStatement(name string) {
+	j.procedureDefinitionName = name
 }
 
-func (j *JASM) AddOpcode(opcode string, parameters ...string) {
-	params := strings.Join(parameters, " ")
+func (j *JASM) FinishProcedureStatement() {
+	if j.procedureDefinitionName == "writeln" {
+		j.addStaticPrintStream()
+		j.addInvokeVirtualPrintln()
+	}
 
-	j.addLine(fmt.Sprintf("%s %s", opcode, params))
+	j.procedureDefinitionName = ""
 }
 
-func (j *JASM) AddLdcStringOpcode(text string) {
-	j.AddOpcode("ldc", text)
-	j.pst.Push(String)
-}
-
-func (j *JASM) AddSiPushOpcode(number string) {
-	j.AddOpcode("sipush", number)
-	j.pst.Push(Integer)
-}
-
-func (j *JASM) AddPushTrue() {
-	j.AddOpcode("iconst 1")
-}
-
-func (j *JASM) AddPushFalse() {
-	j.AddOpcode("iconst 0")
-}
-
-func (j *JASM) AddGotoOpcode(label string) {
-	j.AddOpcode("goto", label)
-}
-
-func (j *JASM) AddInvokeVirtualPrintWithType() {
-	pt := j.pst.Pop()
-	if pt == String {
-		j.AddOpcode("invokevirtual", "java/io/PrintStream.print(java/lang/String)V")
-	} else if pt == Integer {
-		j.AddOpcode("invokevirtual", "java/io/PrintStream.print(I)V")
-	} else {
-		j.AddOpcode("undefined type in write/writeln")
+func (j *JASM) StartParameter() {
+	if j.procedureDefinitionName == "write" || j.procedureDefinitionName == "writeln" {
+		j.addStaticPrintStream()
 	}
 }
 
-func (j *JASM) AddInvokeVirtualPrintln() {
-	j.AddOpcode("invokevirtual", "java/io/PrintStream.println()V")
+func (j *JASM) FinishParameter() {
+	if j.procedureDefinitionName == "write" || j.procedureDefinitionName == "writeln" {
+		j.addInvokeVirtualPrintWithType()
+	}
 }
 
-func (j *JASM) AddStaticPrintStream() {
-	j.AddOpcode("getstatic", "java/lang/System.out", "java/io/PrintStream")
+func (j *JASM) StartBlock() {
+	if j.procedureDefinitionName == "" {
+		// Main block.
+		j.startMain()
+	}
 }
 
+func (j *JASM) FinishBlock() {
+	if j.procedureDefinitionName == "" {
+		// Main block.
+		j.finishMain()
+	}
+
+	j.procedureDefinitionName = ""
+}
+
+func (j *JASM) NewConstantString(constant string) {
+	j.addLdcStringOpcode(constant)
+}
+
+func (j *JASM) NewConstantInteger(constant string) {
+	j.addSiPushOpcode(constant)
+}
 func (j *JASM) StartIfStatement() {
 	j.elseLabel = j.newLabel()
 	j.endIfLabel = j.newLabel()
 }
 
 func (j *JASM) EnterThenStatement() {
-	j.AddOpcode("ifeq", j.elseLabel)
+	j.addOpcode("ifeq", j.elseLabel)
 }
 
 func (j *JASM) FinishThenStatement() {
-	j.AddOpcode("goto", j.endIfLabel)
-	j.AddLabel(j.elseLabel)
+	j.addOpcode("goto", j.endIfLabel)
+	j.addLabel(j.elseLabel)
 }
 
 func (j *JASM) FinishIfStatement() {
-	j.AddLabel(j.endIfLabel)
+	j.addLabel(j.endIfLabel)
 }
 
 func (j *JASM) AddOperatorOpcode(op string) {
 	pt1 := j.pst.Pop()
 	pt2 := j.pst.Pop()
 	if pt1 != pt2 {
-		j.AddOpcode("invalid types")
+		j.addOpcode("invalid types")
 		return
 	}
 
@@ -113,32 +110,32 @@ func (j *JASM) AddOperatorOpcode(op string) {
 	case op == "and":
 		switch pt1 {
 		case Boolean:
-			j.AddOpcode("iand")
+			j.addOpcode("iand")
 			j.pst.Push(Boolean)
 		default:
-			j.AddOpcode("invalid type in boolean operator")
+			j.addOpcode("invalid type in boolean operator")
 		}
 	case op == "or":
 		switch pt1 {
 		case Boolean:
-			j.AddOpcode("ior")
+			j.addOpcode("ior")
 			j.pst.Push(Boolean)
 		default:
-			j.AddOpcode("invalid type in boolean operator")
+			j.addOpcode("invalid type in boolean operator")
 		}
 	case op == "*":
 		switch pt1 {
 		case Integer:
 			j.genMulIntegers()
 		default:
-			j.AddOpcode("invalid type in mul")
+			j.addOpcode("invalid type in mul")
 		}
 	case op == "/":
 		switch pt1 {
 		case Integer:
 			j.genDivIntegers()
 		default:
-			j.AddOpcode("invalid type in div")
+			j.addOpcode("invalid type in div")
 		}
 	case op == "+":
 		switch pt1 {
@@ -147,56 +144,56 @@ func (j *JASM) AddOperatorOpcode(op string) {
 		case Integer:
 			j.genAddIntegers()
 		default:
-			j.AddOpcode("invalid type in add")
+			j.addOpcode("invalid type in add")
 		}
 	case op == "-":
 		switch pt1 {
 		case Integer:
 			j.genSubIntegers()
 		default:
-			j.AddOpcode("invalid type in sub")
+			j.addOpcode("invalid type in sub")
 		}
 	case op == ">":
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmple")
 		default:
-			j.AddOpcode("invalid type in comparison")
+			j.addOpcode("invalid type in comparison")
 		}
 	case op == "<":
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmpge")
 		default:
-			j.AddOpcode("invalid type in comparison")
+			j.addOpcode("invalid type in comparison")
 		}
 	case op == ">=":
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmplt")
 		default:
-			j.AddOpcode("invalid type in comparison")
+			j.addOpcode("invalid type in comparison")
 		}
 	case op == "<=":
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmpgt")
 		default:
-			j.AddOpcode("invalid type in comparison")
+			j.addOpcode("invalid type in comparison")
 		}
 	case op == "=":
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmpne")
 		default:
-			j.AddOpcode("invalid type in comparison")
+			j.addOpcode("invalid type in comparison")
 		}
 	case op == "<>":
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmpeq")
 		default:
-			j.AddOpcode("invalid type in comparison")
+			j.addOpcode("invalid type in comparison")
 		}
 	}
 }
@@ -204,7 +201,7 @@ func (j *JASM) AddOperatorOpcode(op string) {
 func (j *JASM) AddUnaryOperatorOpcode(op string) {
 	pt1 := j.pst.Pop()
 	if pt1 != Boolean {
-		j.AddOpcode("invalid type in unary operator")
+		j.addOpcode("invalid type in unary operator")
 		return
 	}
 
@@ -212,32 +209,88 @@ func (j *JASM) AddUnaryOperatorOpcode(op string) {
 	case "not":
 		lfalse := j.newLabel()
 		lnext := j.newLabel()
-		j.AddOpcode("ifne", lfalse)
-		j.AddPushTrue()
-		j.AddGotoOpcode(lnext)
-		j.AddLabel(lfalse)
-		j.AddPushFalse()
-		j.AddLabel(lnext)
+		j.addOpcode("ifne", lfalse)
+		j.addPushTrue()
+		j.addGotoOpcode(lnext)
+		j.addLabel(lfalse)
+		j.addPushFalse()
+		j.addLabel(lnext)
 		j.pst.Push(Boolean)
 	}
 }
 
-func (j *JASM) AddLabel(label string) {
+func (j *JASM) Code() string {
+	return j.code.Code()
+}
+
+func (j *JASM) startMain() {
+	j.addLine("public static main([java/lang/String)V {")
+	j.incTab()
+}
+
+func (j *JASM) addOpcode(opcode string, parameters ...string) {
+	params := strings.Join(parameters, " ")
+
+	j.addLine(fmt.Sprintf("%s %s", opcode, params))
+}
+
+func (j *JASM) addLdcStringOpcode(text string) {
+	j.addOpcode("ldc", text)
+	j.pst.Push(String)
+}
+
+func (j *JASM) addSiPushOpcode(number string) {
+	j.addOpcode("sipush", number)
+	j.pst.Push(Integer)
+}
+
+func (j *JASM) addPushTrue() {
+	j.addOpcode("iconst 1")
+}
+
+func (j *JASM) addPushFalse() {
+	j.addOpcode("iconst 0")
+}
+
+func (j *JASM) addGotoOpcode(label string) {
+	j.addOpcode("goto", label)
+}
+
+func (j *JASM) addInvokeVirtualPrintWithType() {
+	pt := j.pst.Pop()
+	if pt == String {
+		j.addOpcode("invokevirtual", "java/io/PrintStream.print(java/lang/String)V")
+	} else if pt == Integer {
+		j.addOpcode("invokevirtual", "java/io/PrintStream.print(I)V")
+	} else {
+		j.addOpcode("undefined type in write/writeln")
+	}
+}
+
+func (j *JASM) addInvokeVirtualPrintln() {
+	j.addOpcode("invokevirtual", "java/io/PrintStream.println()V")
+}
+
+func (j *JASM) addStaticPrintStream() {
+	j.addOpcode("getstatic", "java/lang/System.out", "java/io/PrintStream")
+}
+
+func (j *JASM) addLabel(label string) {
 	j.addLine(fmt.Sprintf("%s:", label))
 }
 
-func (j *JASM) FinishMain() {
+func (j *JASM) finishMain() {
 	j.addLine("return")
 	j.decTab()
 	j.addLine("}")
 }
 
-func (j *JASM) StartInvokeDynamic(param string) {
+func (j *JASM) startInvokeDynamic(param string) {
 	j.addLine(fmt.Sprintf("invokedynamic %s {", param))
 	j.incTab()
 }
 
-func (j *JASM) FinishInvokeDynamic() {
+func (j *JASM) finishInvokeDynamic() {
 	j.decTab()
 	j.addLine("}")
 }
@@ -245,10 +298,6 @@ func (j *JASM) FinishInvokeDynamic() {
 func (j *JASM) newLabel() string {
 	j.labelID++
 	return fmt.Sprintf("L%d", j.labelID)
-}
-
-func (j *JASM) Code() string {
-	return j.code.Code()
 }
 
 func (j *JASM) addLine(line string) {
@@ -264,41 +313,41 @@ func (j *JASM) decTab() {
 }
 
 func (j *JASM) genAddStrings() {
-	j.StartInvokeDynamic(`makeConcatWithConstants(java/lang/String, java/lang/String)java/lang/String`)
-	j.AddOpcode(`invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite`)
-	j.AddOpcode(`[""]`)
-	j.FinishInvokeDynamic()
+	j.startInvokeDynamic(`makeConcatWithConstants(java/lang/String, java/lang/String)java/lang/String`)
+	j.addOpcode(`invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite`)
+	j.addOpcode(`[""]`)
+	j.finishInvokeDynamic()
 	j.pst.Push(String)
 }
 
 func (j *JASM) genAddIntegers() {
-	j.AddOpcode("iadd")
+	j.addOpcode("iadd")
 	j.pst.Push(Integer)
 }
 
 func (j *JASM) genSubIntegers() {
-	j.AddOpcode("isub")
+	j.addOpcode("isub")
 	j.pst.Push(Integer)
 }
 
 func (j *JASM) genMulIntegers() {
-	j.AddOpcode("imul")
+	j.addOpcode("imul")
 	j.pst.Push(Integer)
 }
 
 func (j *JASM) genDivIntegers() {
-	j.AddOpcode("idiv")
+	j.addOpcode("idiv")
 	j.pst.Push(Integer)
 }
 
 func (j *JASM) genBooleanOperatorTpl(ifOpcode string) {
 	lfalse := j.newLabel()
 	lnext := j.newLabel()
-	j.AddOpcode(ifOpcode, lfalse)
-	j.AddPushTrue()
-	j.AddGotoOpcode(lnext)
-	j.AddLabel(lfalse)
-	j.AddPushFalse()
-	j.AddLabel(lnext)
+	j.addOpcode(ifOpcode, lfalse)
+	j.addPushTrue()
+	j.addGotoOpcode(lnext)
+	j.addLabel(lfalse)
+	j.addPushFalse()
+	j.addLabel(lnext)
 	j.pst.Push(Boolean)
 }

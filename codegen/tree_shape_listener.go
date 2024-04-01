@@ -6,9 +6,8 @@ import (
 
 type TreeShapeListener struct {
 	*parsing.BasePascalListener
-	filename                string
-	jasm                    *JASM
-	procedureDefinitionName string
+	filename string
+	jasm     *JASM
 }
 
 func NewTreeShapeListener(filename string) *TreeShapeListener {
@@ -27,52 +26,32 @@ func (t *TreeShapeListener) ExitProgram(ctx *parsing.ProgramContext) {
 }
 
 func (t *TreeShapeListener) EnterProcedureStatement(ctx *parsing.ProcedureStatementContext) {
-	t.procedureDefinitionName = ctx.GetProcedureID().GetText()
+	t.jasm.StartProcedureStatement(ctx.GetProcedureID().GetText())
 }
 
 func (t *TreeShapeListener) ExitProcedureStatement(ctx *parsing.ProcedureStatementContext) {
-	if t.procedureDefinitionName == "writeln" {
-		t.jasm.AddStaticPrintStream()
-		t.jasm.AddInvokeVirtualPrintln()
-	}
-	t.procedureDefinitionName = ""
+	t.jasm.FinishProcedureStatement()
 }
 
 func (t *TreeShapeListener) ExitString(ctx *parsing.StringContext) {
 	str := ctx.GetText()
-	t.jasm.AddLdcStringOpcode("\"" + str + "\"")
+	t.jasm.NewConstantString("\"" + str + "\"")
 }
 
 func (t *TreeShapeListener) EnterActualParameter(ctx *parsing.ActualParameterContext) {
-	if t.procedureDefinitionName == "write" || t.procedureDefinitionName == "writeln" {
-		t.jasm.AddStaticPrintStream()
-	}
+	t.jasm.StartParameter()
 }
 
 func (t *TreeShapeListener) ExitActualParameter(ctx *parsing.ActualParameterContext) {
-	if t.procedureDefinitionName == "write" || t.procedureDefinitionName == "writeln" {
-		t.jasm.AddInvokeVirtualPrintWithType()
-	}
-}
-
-func (t *TreeShapeListener) ExitProcedureDeclaration(ctx *parsing.ProcedureDeclarationContext) {
-	t.procedureDefinitionName = ctx.GetName().GetText()
+	t.jasm.FinishParameter()
 }
 
 func (t *TreeShapeListener) EnterBlock(ctx *parsing.BlockContext) {
-	if t.procedureDefinitionName == "" {
-		// Main block.
-		t.jasm.StartMain()
-	}
+	t.jasm.StartBlock()
 }
 
 func (t *TreeShapeListener) ExitBlock(ctx *parsing.BlockContext) {
-	if t.procedureDefinitionName == "" {
-		// Main block.
-		t.jasm.FinishMain()
-	}
-
-	t.procedureDefinitionName = ""
+	t.jasm.FinishBlock()
 }
 
 func (t *TreeShapeListener) ExitNotOp(ctx *parsing.NotOpContext) {
@@ -117,7 +96,7 @@ func (t *TreeShapeListener) ExitThenStatement(ctx *parsing.ThenStatementContext)
 }
 
 func (t *TreeShapeListener) ExitUnsignedInteger(ctx *parsing.UnsignedIntegerContext) {
-	t.jasm.AddSiPushOpcode(ctx.GetText())
+	t.jasm.NewConstantInteger(ctx.GetText())
 }
 
 func (t *TreeShapeListener) Code() string {
