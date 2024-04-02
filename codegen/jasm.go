@@ -15,6 +15,8 @@ type JASM struct {
 	repeatLabel             string
 	whileTestLabel          string
 	nextStatementLabel      string
+	forTestLabel            string
+	forVariable             string
 	st                      *SymbolTable
 }
 
@@ -126,6 +128,31 @@ func (j *JASM) FinishWhileStatement() {
 
 func (j *JASM) StartWhileBlock() {
 	j.addOpcode("ifeq", j.nextStatementLabel)
+}
+
+func (j *JASM) FinishForInit(varName string) {
+	j.forVariable = varName
+	j.FinishAssignmentStatement(varName)
+}
+
+func (j *JASM) StartForUntil() {
+	j.forTestLabel = j.newLabel()
+	j.nextStatementLabel = j.newLabel()
+	j.addLabel(j.forTestLabel)
+	j.LoadVarContent(j.forVariable)
+}
+
+func (j *JASM) FinishForUntil() {
+	j.addOpcode("if_icmpgt", j.nextStatementLabel)
+}
+
+func (j *JASM) FinishForStatement() {
+	j.LoadVarContent(j.forVariable)
+	j.addSiPushOpcode("1")
+	j.addOpcode("iadd")
+	j.FinishAssignmentStatement(j.forVariable)
+	j.addGotoOpcode(j.forTestLabel)
+	j.addLabel(j.nextStatementLabel)
 }
 
 func (j *JASM) AddOperatorOpcode(op string) {

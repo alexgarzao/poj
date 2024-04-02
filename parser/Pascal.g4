@@ -453,19 +453,15 @@ repeatStatement
     ;
 
 forStatement
-    : FOR identifier ASSIGN forList DO statement
+    : FOR forInit forUntil DO statement
     ;
 
-forList
-    : initialValue (TO | DOWNTO) finalValue
+forInit
+    : varName = variable ASSIGN expression
     ;
 
-initialValue
-    : expression
-    ;
-
-finalValue
-    : expression
+forUntil
+    : (TO | DOWNTO) expression
     ;
 
 withStatement
