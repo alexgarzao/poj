@@ -117,6 +117,14 @@ func (t *TreeShapeListener) ExitFactorVariable(ctx *parsing.FactorVariableContex
 	t.jasm.LoadVarContent(varName)
 }
 
+func (t *TreeShapeListener) EnterRepeatStatement(ctx *parsing.RepeatStatementContext) {
+	t.jasm.StartRepeatStatement()
+}
+
+func (t *TreeShapeListener) ExitRepeatStatement(ctx *parsing.RepeatStatementContext) {
+	t.jasm.FinishRepeatStatement()
+}
+
 func (t *TreeShapeListener) Code() string {
 	return t.jasm.Code()
 }

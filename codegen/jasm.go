@@ -12,6 +12,7 @@ type JASM struct {
 	pst                     *StackType
 	endIfLabel              string
 	elseLabel               string
+	repeatLabel             string
 	st                      *SymbolTable
 }
 
@@ -82,6 +83,7 @@ func (j *JASM) NewConstantString(constant string) {
 func (j *JASM) NewConstantInteger(constant string) {
 	j.addSiPushOpcode(constant)
 }
+
 func (j *JASM) StartIfStatement() {
 	j.elseLabel = j.newLabel()
 	j.endIfLabel = j.newLabel()
@@ -98,6 +100,15 @@ func (j *JASM) FinishThenStatement() {
 
 func (j *JASM) FinishIfStatement() {
 	j.addLabel(j.endIfLabel)
+}
+
+func (j *JASM) StartRepeatStatement() {
+	j.repeatLabel = j.newLabel()
+	j.addLabel(j.repeatLabel)
+}
+
+func (j *JASM) FinishRepeatStatement() {
+	j.addOpcode("ifeq", j.repeatLabel)
 }
 
 func (j *JASM) AddOperatorOpcode(op string) {
@@ -236,8 +247,10 @@ func (j *JASM) FinishAssignmentStatement(varName string) {
 	switch symbol.PascalType {
 	case String:
 		j.addOpcode("astore", fmt.Sprintf("%d", symbol.Index))
+		j.pst.Pop()
 	case Integer:
 		j.addOpcode("istore", fmt.Sprintf("%d", symbol.Index))
+		j.pst.Pop()
 	default:
 		j.addOpcode("invalid type in assignment")
 	}
@@ -252,8 +265,10 @@ func (j *JASM) LoadVarContent(varName string) {
 	switch symbol.PascalType {
 	case String:
 		j.addOpcode("aload", fmt.Sprintf("%d", symbol.Index))
+		j.pst.Push(String)
 	case Integer:
 		j.addOpcode("iload", fmt.Sprintf("%d", symbol.Index))
+		j.pst.Push(Integer)
 	default:
 		j.addOpcode("invalid type in load")
 	}
