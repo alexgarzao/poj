@@ -461,7 +461,7 @@ forInit
     ;
 
 forUntil
-    : (TO | DOWNTO) expression
+    : step = (TO | DOWNTO) expression
     ;
 
 withStatement

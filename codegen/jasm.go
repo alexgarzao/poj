@@ -17,6 +17,7 @@ type JASM struct {
 	nextStatementLabel      string
 	forTestLabel            string
 	forVariable             string
+	forStep                 string
 	st                      *SymbolTable
 }
 
@@ -140,14 +141,23 @@ func (j *JASM) FinishForInit(varName string) {
 	j.LoadVarContent(j.forVariable)
 }
 
-func (j *JASM) FinishForUntil() {
-	j.addOpcode("if_icmpgt", j.nextStatementLabel)
+func (j *JASM) FinishForUntil(step string) {
+	j.forStep = step
+	if step == "to" {
+		j.addOpcode("if_icmpgt", j.nextStatementLabel)
+	} else {
+		j.addOpcode("if_icmplt", j.nextStatementLabel)
+	}
 }
 
 func (j *JASM) FinishForStatement() {
 	j.LoadVarContent(j.forVariable)
 	j.addSiPushOpcode("1")
-	j.addOpcode("iadd")
+	if j.forStep == "to" {
+		j.addOpcode("iadd")
+	} else {
+		j.addOpcode("isub")
+	}
 	j.FinishAssignmentStatement(j.forVariable)
 	j.addGotoOpcode(j.forTestLabel)
 	j.addLabel(j.nextStatementLabel)

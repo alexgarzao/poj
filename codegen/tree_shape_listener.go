@@ -142,7 +142,7 @@ func (t *TreeShapeListener) ExitForInit(ctx *parsing.ForInitContext) {
 }
 
 func (t *TreeShapeListener) ExitForUntil(ctx *parsing.ForUntilContext) {
-	t.jasm.FinishForUntil()
+	t.jasm.FinishForUntil(ctx.GetStep().GetText())
 }
 
 func (t *TreeShapeListener) ExitForStatement(ctx *parsing.ForStatementContext) {
