@@ -441,7 +441,11 @@ repetetiveStatement
     ;
 
 whileStatement
-    : WHILE expression DO statement
+    : WHILE expression whileBlock
+    ;
+
+whileBlock
+    : DO statement
     ;
 
 repeatStatement

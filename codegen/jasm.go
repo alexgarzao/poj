@@ -13,6 +13,8 @@ type JASM struct {
 	endIfLabel              string
 	elseLabel               string
 	repeatLabel             string
+	whileTestLabel          string
+	nextStatementLabel      string
 	st                      *SymbolTable
 }
 
@@ -109,6 +111,21 @@ func (j *JASM) StartRepeatStatement() {
 
 func (j *JASM) FinishRepeatStatement() {
 	j.addOpcode("ifeq", j.repeatLabel)
+}
+
+func (j *JASM) StartWhileStatement() {
+	j.whileTestLabel = j.newLabel()
+	j.nextStatementLabel = j.newLabel()
+	j.addLabel(j.whileTestLabel)
+}
+
+func (j *JASM) FinishWhileStatement() {
+	j.addGotoOpcode(j.whileTestLabel)
+	j.addLabel(j.nextStatementLabel)
+}
+
+func (j *JASM) StartWhileBlock() {
+	j.addOpcode("ifeq", j.nextStatementLabel)
 }
 
 func (j *JASM) AddOperatorOpcode(op string) {

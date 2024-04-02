@@ -125,6 +125,18 @@ func (t *TreeShapeListener) ExitRepeatStatement(ctx *parsing.RepeatStatementCont
 	t.jasm.FinishRepeatStatement()
 }
 
+func (t *TreeShapeListener) EnterWhileStatement(ctx *parsing.WhileStatementContext) {
+	t.jasm.StartWhileStatement()
+}
+
+func (t *TreeShapeListener) ExitWhileStatement(ctx *parsing.WhileStatementContext) {
+	t.jasm.FinishWhileStatement()
+}
+
+func (t *TreeShapeListener) EnterWhileBlock(ctx *parsing.WhileBlockContext) {
+	t.jasm.StartWhileBlock()
+}
+
 func (t *TreeShapeListener) Code() string {
 	return t.jasm.Code()
 }
