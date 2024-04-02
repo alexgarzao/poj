@@ -1,4 +1,4 @@
-program Hello;
+program VarDeclarations;
 var
   msg1 : string;
   msg2 : string;

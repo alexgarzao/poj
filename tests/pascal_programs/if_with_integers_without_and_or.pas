@@ -1,4 +1,4 @@
-program SubIntegers;
+program IfWithInteger;
 begin
   {* Check > if then sentence (else true). *}
   write('111>222  must be false: ');
