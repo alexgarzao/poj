@@ -129,6 +129,22 @@ func (t *TreeShapeListener) EnterWhileStatement(ctx *parsing.WhileStatementConte
 	t.jasm.StartWhileStatement()
 }
 
+func (t *TreeShapeListener) ExitForInit(ctx *parsing.ForInitContext) {
+	t.jasm.FinishForInit(ctx.GetVarName().GetText())
+}
+
+func (t *TreeShapeListener) EnterForUntil(ctx *parsing.ForUntilContext) {
+	t.jasm.StartForUntil()
+}
+
+func (t *TreeShapeListener) ExitForUntil(ctx *parsing.ForUntilContext) {
+	t.jasm.FinishForUntil()
+}
+
+func (t *TreeShapeListener) ExitForStatement(ctx *parsing.ForStatementContext) {
+	t.jasm.FinishForStatement()
+}
+
 func (t *TreeShapeListener) ExitWhileStatement(ctx *parsing.WhileStatementContext) {
 	t.jasm.FinishWhileStatement()
 }
