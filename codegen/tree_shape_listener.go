@@ -129,12 +129,16 @@ func (t *TreeShapeListener) EnterWhileStatement(ctx *parsing.WhileStatementConte
 	t.jasm.StartWhileStatement()
 }
 
-func (t *TreeShapeListener) ExitForInit(ctx *parsing.ForInitContext) {
-	t.jasm.FinishForInit(ctx.GetVarName().GetText())
+func (t *TreeShapeListener) ExitWhileStatement(ctx *parsing.WhileStatementContext) {
+	t.jasm.FinishWhileStatement()
 }
 
-func (t *TreeShapeListener) EnterForUntil(ctx *parsing.ForUntilContext) {
-	t.jasm.StartForUntil()
+func (t *TreeShapeListener) EnterWhileBlock(ctx *parsing.WhileBlockContext) {
+	t.jasm.StartWhileBlock()
+}
+
+func (t *TreeShapeListener) ExitForInit(ctx *parsing.ForInitContext) {
+	t.jasm.FinishForInit(ctx.GetVarName().GetText())
 }
 
 func (t *TreeShapeListener) ExitForUntil(ctx *parsing.ForUntilContext) {
@@ -143,14 +147,6 @@ func (t *TreeShapeListener) ExitForUntil(ctx *parsing.ForUntilContext) {
 
 func (t *TreeShapeListener) ExitForStatement(ctx *parsing.ForStatementContext) {
 	t.jasm.FinishForStatement()
-}
-
-func (t *TreeShapeListener) ExitWhileStatement(ctx *parsing.WhileStatementContext) {
-	t.jasm.FinishWhileStatement()
-}
-
-func (t *TreeShapeListener) EnterWhileBlock(ctx *parsing.WhileBlockContext) {
-	t.jasm.StartWhileBlock()
 }
 
 func (t *TreeShapeListener) Code() string {

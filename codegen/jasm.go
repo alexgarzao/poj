@@ -133,9 +133,7 @@ func (j *JASM) StartWhileBlock() {
 func (j *JASM) FinishForInit(varName string) {
 	j.forVariable = varName
 	j.FinishAssignmentStatement(varName)
-}
 
-func (j *JASM) StartForUntil() {
 	j.forTestLabel = j.newLabel()
 	j.nextStatementLabel = j.newLabel()
 	j.addLabel(j.forTestLabel)
