@@ -1,5 +1,10 @@
 package codegen
 
+import (
+	"fmt"
+	"strings"
+)
+
 type SymbolType uint8
 
 const (
@@ -25,16 +30,24 @@ func NewSymbolTable() *SymbolTable {
 	}
 }
 
-func (st *SymbolTable) AddVariable(name string, ptype PascalType) {
+func (st *SymbolTable) AddVariable(name string, ptype PascalType) error {
+	name = strings.ToUpper(name)
+	if _, ok := st.symbols[name]; ok {
+		return fmt.Errorf("variable %s already declared", name)
+	}
+
 	st.count++
 	st.symbols[name] = Symbol{
 		SymbolType: Variable,
 		PascalType: ptype,
 		Index:      st.count,
 	}
+
+	return nil
 }
 
 func (st *SymbolTable) Get(name string) (bool, Symbol) {
+	name = strings.ToUpper(name)
 	symbol, ok := st.symbols[name]
 	if !ok {
 		return false, Symbol{

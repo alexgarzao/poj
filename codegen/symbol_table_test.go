@@ -15,10 +15,24 @@ func TestSymbolTable_AddVariable(t *testing.T) {
 	assert.Equal(t, codegen.Undefined, symbol.PascalType)
 	assert.Equal(t, -1, symbol.Index)
 
-	st.AddVariable("myvar", codegen.Integer)
+	err := st.AddVariable("myvar", codegen.Integer)
+	assert.Nil(t, err)
+
 	ok, symbol = st.Get("myvar")
 	assert.Equal(t, true, ok)
 	assert.Equal(t, codegen.Variable, symbol.SymbolType)
 	assert.Equal(t, codegen.Integer, symbol.PascalType)
 	assert.Equal(t, 1, symbol.Index)
+
+	ok, symbol = st.Get("MyVar")
+	assert.Equal(t, true, ok)
+	assert.Equal(t, codegen.Variable, symbol.SymbolType)
+	assert.Equal(t, codegen.Integer, symbol.PascalType)
+	assert.Equal(t, 1, symbol.Index)
+
+	err = st.AddVariable("myvar", codegen.Integer)
+	assert.NotNil(t, err)
+
+	err = st.AddVariable("MyVar", codegen.Integer)
+	assert.NotNil(t, err)
 }
