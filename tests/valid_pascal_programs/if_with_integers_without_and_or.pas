@@ -66,7 +66,7 @@ begin
   else
     writeln('false');
 
-  {* Check >= if then sentence (else true). *}
+  {* Check <= if then sentence (else true). *}
   write('222<=111 must be false: ');
   if ( 222 <= 111 ) then
     writeln('true')
