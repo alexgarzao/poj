@@ -11,8 +11,9 @@ import (
 )
 
 func Test_ValidPascalPrograms(t *testing.T) {
-	// Test all files in tests/pascal_programs/*.pas and tests/expected_jasm_files/*.jasm.
-	inputFiles, err := filepath.Glob("tests/pascal_programs/*.pas")
+	// Tests all files in tests/valid_pascal_programs/*.pas with his expected jasm output.
+	testPath := "tests/valid_pascal_programs/"
+	inputFiles, err := filepath.Glob(testPath + "*.pas")
 	if err != nil {
 		t.Errorf("reading inputFiles = %v", err)
 	}
@@ -24,13 +25,13 @@ func Test_ValidPascalPrograms(t *testing.T) {
 			inputFile = path.Base(inputFile)
 			inputFile = inputFile[:len(inputFile)-4]
 
-			got, _, _, err := genCode("tests/pascal_programs/" + inputFile)
+			got, _, _, err := genCode(testPath + inputFile)
 			if err != nil {
 				t.Errorf("genCode() error = %v", err)
 				return
 			}
 
-			expectedOutputFile := "tests/expected_jasm_files/" + inputFile + ".jasm"
+			expectedOutputFile := testPath + inputFile + ".jasm"
 
 			expectedOutput, err := os.ReadFile(expectedOutputFile)
 			if err != nil {
@@ -47,8 +48,9 @@ func Test_ValidPascalPrograms(t *testing.T) {
 }
 
 func Test_InvalidPascalPrograms(t *testing.T) {
-	// Test all files in tests/invalid_pascal_programs/*.pas and *.errors.
-	invalidInputFiles, err := filepath.Glob("tests/invalid_pascal_programs/*.pas")
+	// Tests all files in tests/invalid_pascal_programs/*.pas with his expected output errors.
+	testPath := "tests/invalid_pascal_programs/"
+	invalidInputFiles, err := filepath.Glob(testPath + "*.pas")
 	if err != nil {
 		t.Errorf("reading invalidInputFiles = %v", err)
 	}
@@ -60,11 +62,11 @@ func Test_InvalidPascalPrograms(t *testing.T) {
 			invalidInputFile = path.Base(invalidInputFile)
 			invalidInputFile = invalidInputFile[:len(invalidInputFile)-4]
 
-			got, lexerErrors, parserErrors, err := genCode("tests/invalid_pascal_programs/" + invalidInputFile)
+			got, lexerErrors, parserErrors, err := genCode(testPath + invalidInputFile)
 			assert.NotNil(t, err)
 			assert.Empty(t, got)
 
-			expectedOutputFileErrors := "tests/invalid_pascal_programs/" + invalidInputFile + ".errors"
+			expectedOutputFileErrors := testPath + invalidInputFile + ".errors"
 
 			expectedOutputError, err := os.ReadFile(expectedOutputFileErrors)
 			if err != nil {
