@@ -243,6 +243,9 @@ func (j *JASM) AddOperatorOpcode(op string) error {
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmple")
+		case String:
+			j.addOpcode("invokevirtual", "java/lang/String.compareTo(java/lang/String)I")
+			j.genBooleanOperatorTpl("iflt")
 		default:
 			return fmt.Errorf("invalid type in > operator: %s", pt1)
 		}
@@ -250,6 +253,9 @@ func (j *JASM) AddOperatorOpcode(op string) error {
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmpge")
+		case String:
+			j.addOpcode("invokevirtual", "java/lang/String.compareTo(java/lang/String)I")
+			j.genBooleanOperatorTpl("ifgt")
 		default:
 			return fmt.Errorf("invalid type in < operator: %s", pt1)
 		}
@@ -257,6 +263,9 @@ func (j *JASM) AddOperatorOpcode(op string) error {
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmplt")
+		case String:
+			j.addOpcode("invokevirtual", "java/lang/String.compareTo(java/lang/String)I")
+			j.genBooleanOperatorTpl("iflt")
 		default:
 			return fmt.Errorf("invalid type in >= operator: %s", pt1)
 		}
@@ -264,6 +273,9 @@ func (j *JASM) AddOperatorOpcode(op string) error {
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmpgt")
+		case String:
+			j.addOpcode("invokevirtual", "java/lang/String.compareTo(java/lang/String)I")
+			j.genBooleanOperatorTpl("ifgt")
 		default:
 			return fmt.Errorf("invalid type in <= operator: %s", pt1)
 		}
@@ -271,6 +283,9 @@ func (j *JASM) AddOperatorOpcode(op string) error {
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmpne")
+		case String:
+			j.addOpcode("invokevirtual", "java/lang/String.compareTo(java/lang/String)I")
+			j.genBooleanOperatorTpl("ifne")
 		default:
 			return fmt.Errorf("invalid type in = operator: %s", pt1)
 		}
@@ -278,6 +293,9 @@ func (j *JASM) AddOperatorOpcode(op string) error {
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmpeq")
+		case String:
+			j.addOpcode("invokevirtual", "java/lang/String.compareTo(java/lang/String)I")
+			j.genBooleanOperatorTpl("ifeq")
 		default:
 			return fmt.Errorf("invalid type in <> operator: %s", pt1)
 		}

@@ -1,6 +1,3 @@
-invalid type in < operator: string
-invalid types in operator and: boolean and undefined
 invalid types in operator <: string and integer
 invalid types in operator +: boolean and string
-invalid type in < operator: string
-invalid types in operator -: string and undefined
+invalid types in operator -: boolean and string
