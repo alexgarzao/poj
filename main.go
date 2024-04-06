@@ -25,14 +25,14 @@ func main() {
 
 	jasm, lexerErrors, parserErrors, err := genCode(inputFile)
 	if err != nil {
-		if len(lexerErrors.Errors) > 0 {
+		if lexerErrors != nil && len(lexerErrors.Errors) > 0 {
 			fmt.Printf("Lexer: %d errors found\n", len(lexerErrors.Errors))
 			for _, e := range lexerErrors.Errors {
 				fmt.Println("\t", e.Error())
 			}
 		}
 
-		if len(parserErrors.Errors) > 0 {
+		if parserErrors != nil && len(parserErrors.Errors) > 0 {
 			fmt.Printf("Parser: %d errors found\n", len(parserErrors.Errors))
 			for _, e := range parserErrors.Errors {
 				fmt.Println("\t", e.Error())
