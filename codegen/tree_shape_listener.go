@@ -6,14 +6,16 @@ import (
 
 type TreeShapeListener struct {
 	*parsing.BasePascalListener
-	filename string
-	jasm     *JASM
+	filename     string
+	jasm         *JASM
+	parserErrors *CustomErrorListener
 }
 
-func NewTreeShapeListener(filename string) *TreeShapeListener {
+func NewTreeShapeListener(filename string, parserErrors *CustomErrorListener) *TreeShapeListener {
 	return &TreeShapeListener{
-		filename: filename,
-		jasm:     NewJASM(),
+		filename:     filename,
+		jasm:         NewJASM(),
+		parserErrors: parserErrors,
 	}
 }
 
@@ -43,7 +45,9 @@ func (t *TreeShapeListener) EnterActualParameter(ctx *parsing.ActualParameterCon
 }
 
 func (t *TreeShapeListener) ExitActualParameter(ctx *parsing.ActualParameterContext) {
-	t.jasm.FinishParameter()
+	if err := t.jasm.FinishParameter(); err != nil {
+		t.parserErrors.Add(err)
+	}
 }
 
 func (t *TreeShapeListener) EnterBlock(ctx *parsing.BlockContext) {
@@ -56,27 +60,37 @@ func (t *TreeShapeListener) ExitBlock(ctx *parsing.BlockContext) {
 
 func (t *TreeShapeListener) ExitNotOp(ctx *parsing.NotOpContext) {
 	op := ctx.GetOp().GetText()
-	t.jasm.AddUnaryOperatorOpcode(op)
+	if err := t.jasm.AddUnaryOperatorOpcode(op); err != nil {
+		t.parserErrors.Add(err)
+	}
 }
 
 func (t *TreeShapeListener) ExitBoolOp(ctx *parsing.BoolOpContext) {
 	op := ctx.GetOp().GetText()
-	t.jasm.AddOperatorOpcode(op)
+	if err := t.jasm.AddOperatorOpcode(op); err != nil {
+		t.parserErrors.Add(err)
+	}
 }
 
 func (t *TreeShapeListener) ExitMulDivOp(ctx *parsing.MulDivOpContext) {
 	op := ctx.GetOp().GetText()
-	t.jasm.AddOperatorOpcode(op)
+	if err := t.jasm.AddOperatorOpcode(op); err != nil {
+		t.parserErrors.Add(err)
+	}
 }
 
 func (t *TreeShapeListener) ExitAddOp(ctx *parsing.AddOpContext) {
 	op := ctx.GetOp().GetText()
-	t.jasm.AddOperatorOpcode(op)
+	if err := t.jasm.AddOperatorOpcode(op); err != nil {
+		t.parserErrors.Add(err)
+	}
 }
 
 func (t *TreeShapeListener) ExitRelOp(ctx *parsing.RelOpContext) {
 	op := ctx.GetOp().GetText()
-	t.jasm.AddOperatorOpcode(op)
+	if err := t.jasm.AddOperatorOpcode(op); err != nil {
+		t.parserErrors.Add(err)
+	}
 }
 
 func (t *TreeShapeListener) EnterIfStatement(ctx *parsing.IfStatementContext) {
@@ -103,18 +117,24 @@ func (t *TreeShapeListener) ExitVariableDeclaration(ctx *parsing.VariableDeclara
 	varNames := ctx.GetVarNames()
 	pascalType := ctx.GetPascalType().GetText()
 	for _, id := range varNames.GetIds() {
-		t.jasm.NewVariable(id.GetText(), pascalType)
+		if err := t.jasm.NewVariable(id.GetText(), pascalType); err != nil {
+			t.parserErrors.Add(err)
+		}
 	}
 }
 
 func (t *TreeShapeListener) ExitAssignmentStatement(ctx *parsing.AssignmentStatementContext) {
 	varName := ctx.GetVarName().GetText()
-	t.jasm.FinishAssignmentStatement(varName)
+	if err := t.jasm.FinishAssignmentStatement(varName); err != nil {
+		t.parserErrors.Add(err)
+	}
 }
 
 func (t *TreeShapeListener) ExitFactorVariable(ctx *parsing.FactorVariableContext) {
 	varName := ctx.GetId().GetText()
-	t.jasm.LoadVarContent(varName)
+	if err := t.jasm.LoadVarContent(varName); err != nil {
+		t.parserErrors.Add(err)
+	}
 }
 
 func (t *TreeShapeListener) EnterRepeatStatement(ctx *parsing.RepeatStatementContext) {
