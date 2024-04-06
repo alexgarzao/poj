@@ -67,28 +67,28 @@ func (t *TreeShapeListener) ExitNotOp(ctx *parsing.NotOpContext) {
 
 func (t *TreeShapeListener) ExitBoolOp(ctx *parsing.BoolOpContext) {
 	op := ctx.GetOp().GetText()
-	if err := t.jasm.AddOperatorOpcode(op); err != nil {
+	if err := t.jasm.AddBooleanOperatorOpcode(op); err != nil {
 		t.parserErrors.Add(err)
 	}
 }
 
 func (t *TreeShapeListener) ExitMulDivOp(ctx *parsing.MulDivOpContext) {
 	op := ctx.GetOp().GetText()
-	if err := t.jasm.AddOperatorOpcode(op); err != nil {
+	if err := t.jasm.AddMulDivOperatorOpcode(op); err != nil {
 		t.parserErrors.Add(err)
 	}
 }
 
-func (t *TreeShapeListener) ExitAddOp(ctx *parsing.AddOpContext) {
+func (t *TreeShapeListener) ExitAddSubOp(ctx *parsing.AddSubOpContext) {
 	op := ctx.GetOp().GetText()
-	if err := t.jasm.AddOperatorOpcode(op); err != nil {
+	if err := t.jasm.AddAddSubOperatorOpcode(op); err != nil {
 		t.parserErrors.Add(err)
 	}
 }
 
 func (t *TreeShapeListener) ExitRelOp(ctx *parsing.RelOpContext) {
 	op := ctx.GetOp().GetText()
-	if err := t.jasm.AddOperatorOpcode(op); err != nil {
+	if err := t.jasm.AddRelationalOperatorOpcode(op); err != nil {
 		t.parserErrors.Add(err)
 	}
 }
