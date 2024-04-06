@@ -47,7 +47,7 @@ func (j *JASM) StartProcedureStatement(name string) {
 func (j *JASM) FinishProcedureStatement() {
 	if j.procedureDefinitionName == "writeln" {
 		j.addStaticPrintStream()
-		j.addInvokeVirtualPrintln()
+		j.addInvokeVirtual("java/io/PrintStream.println()V")
 	}
 
 	j.procedureDefinitionName = ""
@@ -99,11 +99,11 @@ func (j *JASM) StartIfStatement() {
 }
 
 func (j *JASM) EnterThenStatement() {
-	j.addOpcode("ifeq", j.elseLabel)
+	j.addIfEqOpcode(j.elseLabel)
 }
 
 func (j *JASM) FinishThenStatement() {
-	j.addOpcode("goto", j.endIfLabel)
+	j.addGotoOpcode(j.endIfLabel)
 	j.addLabel(j.elseLabel)
 }
 
@@ -117,7 +117,7 @@ func (j *JASM) StartRepeatStatement() {
 }
 
 func (j *JASM) FinishRepeatStatement() {
-	j.addOpcode("ifeq", j.repeatLabel)
+	j.addIfEqOpcode(j.repeatLabel)
 }
 
 func (j *JASM) StartWhileStatement() {
@@ -132,7 +132,7 @@ func (j *JASM) FinishWhileStatement() {
 }
 
 func (j *JASM) StartWhileBlock() {
-	j.addOpcode("ifeq", j.nextStatementLabel)
+	j.addIfEqOpcode(j.nextStatementLabel)
 }
 
 func (j *JASM) FinishForInit(varName string) error {
@@ -170,9 +170,9 @@ func (j *JASM) FinishForStatement() error {
 	j.addSiPushOpcode("1")
 
 	if j.forStep == "to" {
-		j.addOpcode("iadd")
+		j.addIAddOpcode()
 	} else {
-		j.addOpcode("isub")
+		j.addISubOpcode()
 	}
 
 	if err := j.FinishAssignmentStatement(j.forVariable); err != nil {
@@ -194,11 +194,9 @@ func (j *JASM) AddBooleanOperatorOpcode(op string) error {
 
 	switch {
 	case op == "and":
-		j.addOpcode("iand")
-		j.pst.Push(Boolean)
+		j.addIAndOpcode()
 	case op == "or":
-		j.addOpcode("ior")
-		j.pst.Push(Boolean)
+		j.addIOrOpcode()
 	default:
 		return fmt.Errorf("invalid boolean operator: %s", op)
 	}
@@ -215,9 +213,9 @@ func (j *JASM) AddMulDivOperatorOpcode(op string) error {
 
 	switch {
 	case op == "*":
-		j.addOpcode("imul")
+		j.addIMulOpcode()
 	case op == "/":
-		j.addOpcode("idiv")
+		j.addIDivOpcode()
 	}
 
 	j.pst.Push(Integer)
@@ -242,7 +240,7 @@ func (j *JASM) AddAddSubOperatorOpcode(op string) error {
 			j.finishInvokeDynamic()
 			j.pst.Push(String)
 		case Integer:
-			j.addOpcode("iadd")
+			j.addIAddOpcode()
 			j.pst.Push(Integer)
 		default:
 			return fmt.Errorf("invalid type in %s operator: %s", op, pt1)
@@ -250,7 +248,7 @@ func (j *JASM) AddAddSubOperatorOpcode(op string) error {
 	case op == "-":
 		switch pt1 {
 		case Integer:
-			j.addOpcode("isub")
+			j.addISubOpcode()
 			j.pst.Push(Integer)
 		default:
 			return fmt.Errorf("invalid type in %s operator: %s", op, pt1)
@@ -292,7 +290,7 @@ func (j *JASM) AddRelationalOperatorOpcode(op string) error {
 			"<>": "ifeq",
 		}
 
-		j.addOpcode("invokevirtual", "java/lang/String.compareTo(java/lang/String)I")
+		j.addInvokeVirtual("java/lang/String.compareTo(java/lang/String)I")
 		j.genBooleanOperatorTpl(jmps[op])
 	}
 
@@ -309,7 +307,7 @@ func (j *JASM) AddUnaryOperatorOpcode(op string) error {
 	case "not":
 		lfalse := j.newLabel()
 		lnext := j.newLabel()
-		j.addOpcode("ifne", lfalse)
+		j.addIfNeOpcode(lfalse)
 		j.addPushTrueOpcode()
 		j.addGotoOpcode(lnext)
 		j.addLabel(lfalse)
@@ -405,26 +403,60 @@ func (j *JASM) addPushFalseOpcode() {
 	j.addOpcode("iconst 0")
 }
 
+func (j *JASM) addIAddOpcode() {
+	j.addOpcode("iadd")
+}
+
+func (j *JASM) addISubOpcode() {
+	j.addOpcode("isub")
+}
+
+func (j *JASM) addIMulOpcode() {
+	j.addOpcode("imul")
+}
+
+func (j *JASM) addIDivOpcode() {
+	j.addOpcode("idiv")
+}
+
+func (j *JASM) addIAndOpcode() {
+	j.addOpcode("iand")
+	j.pst.Push(Boolean)
+}
+
+func (j *JASM) addIOrOpcode() {
+	j.addOpcode("ior")
+	j.pst.Push(Boolean)
+}
+
 func (j *JASM) addGotoOpcode(label string) {
 	j.addOpcode("goto", label)
+}
+
+func (j *JASM) addIfEqOpcode(label string) {
+	j.addOpcode("ifeq", label)
+}
+
+func (j *JASM) addIfNeOpcode(label string) {
+	j.addOpcode("ifne", label)
+}
+
+func (j *JASM) addInvokeVirtual(method string) {
+	j.addOpcode("invokevirtual", method)
 }
 
 func (j *JASM) addInvokeVirtualPrintWithType() error {
 	pt := j.pst.Pop()
 
 	if pt == String {
-		j.addOpcode("invokevirtual", "java/io/PrintStream.print(java/lang/String)V")
+		j.addInvokeVirtual("java/io/PrintStream.print(java/lang/String)V")
 	} else if pt == Integer {
-		j.addOpcode("invokevirtual", "java/io/PrintStream.print(I)V")
+		j.addInvokeVirtual("java/io/PrintStream.print(I)V")
 	} else {
 		return fmt.Errorf("undefined type %s in write/writeln", pt)
 	}
 
 	return nil
-}
-
-func (j *JASM) addInvokeVirtualPrintln() {
-	j.addOpcode("invokevirtual", "java/io/PrintStream.println()V")
 }
 
 func (j *JASM) addStaticPrintStream() {
