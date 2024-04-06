@@ -13,6 +13,6 @@ build: clean gen-parser
 
 compile-and-run-example:
 	rm -f $(program).jasm $(program).class
-	./bin/poj ./tests/pascal_programs/$(program)
+	./bin/poj ./tests/valid_pascal_programs/$(program)
 	jasm $(program).jasm
 	java $(program)

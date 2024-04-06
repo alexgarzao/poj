@@ -36,7 +36,7 @@ Segue abaixo o passo-a-passo para compilar o "Hello world!".
 
 ```
 # Executar o POJ para gerar o assembly Java (arquivo jasm)
-./bin/poj ./tests/pascal_programs/hello_world
+./bin/poj ./tests/valid_pascal_programs/hello_world
 
 # Executar o JASM (java assembler) para gerar o executável Java (arquivo class)
 jasm hello_world.jasm
