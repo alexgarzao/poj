@@ -23,42 +23,67 @@ func main() {
 
 	fmt.Println("Compiling ", inputFile)
 
-	jasm, err := genCode(inputFile)
+	jasm, lexerErrors, parserErrors, err := genCode(inputFile)
 	if err != nil {
-		fmt.Println(err)
+		if len(lexerErrors.Errors) > 0 {
+			fmt.Printf("Lexer: %d errors found\n", len(lexerErrors.Errors))
+			for _, e := range lexerErrors.Errors {
+				fmt.Println("\t", e.Error())
+			}
+		}
+
+		if len(parserErrors.Errors) > 0 {
+			fmt.Printf("Parser: %d errors found\n", len(parserErrors.Errors))
+			for _, e := range parserErrors.Errors {
+				fmt.Println("\t", e.Error())
+			}
+		}
+
+		fmt.Printf("error %s\n", err)
 		os.Exit(1)
 	}
 
 	err = genFile(inputFile, jasm)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("error %s\n", err)
 		os.Exit(1)
 	}
 }
 
-func genCode(inputFile string) (string, error) {
+func genCode(inputFile string) (string, *codegen.CustomErrorListener, *codegen.CustomErrorListener, error) {
 	inputStream, err := antlr.NewFileStream(inputFile + ".pas")
 	if err != nil {
-		return "", err
+		return "", nil, nil, err
 	}
 
 	filename := path.Base(inputFile)
 
+	lexerErrors := &codegen.CustomErrorListener{}
 	lexer := parsing.NewPascalLexer(inputStream)
+	lexer.RemoveErrorListeners()
+	lexer.AddErrorListener(lexerErrors)
+
+	parserErrors := &codegen.CustomErrorListener{}
 	stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
 	p := parsing.NewPascalParser(stream)
-	p.AddErrorListener(antlr.NewDiagnosticErrorListener(true))
+	p.RemoveErrorListeners()
+	p.AddErrorListener(parserErrors)
 
-	listener := codegen.NewTreeShapeListener(filename)
+	listener := codegen.NewTreeShapeListener(filename, parserErrors)
 	antlr.ParseTreeWalkerDefault.Walk(listener, p.Program())
 
-	return listener.Code(), nil
+	parserError := len(lexerErrors.Errors) > 0 || len(parserErrors.Errors) > 0
+	if parserError {
+		return "", lexerErrors, parserErrors, fmt.Errorf("during parsing")
+	}
+
+	return listener.Code(), nil, nil, nil
 }
 
 func genFile(inputFile string, jasm string) error {
 	filename := path.Base(inputFile)
 	if err := os.WriteFile(filename+".jasm", []byte(jasm), 0666); err != nil {
-		return err
+		return fmt.Errorf("during file generation: %w", err)
 	}
 
 	return nil
