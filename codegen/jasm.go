@@ -215,10 +215,12 @@ func (j *JASM) AddMulDivOperatorOpcode(op string) error {
 
 	switch {
 	case op == "*":
-		j.genMulIntegers()
+		j.addOpcode("imul")
 	case op == "/":
-		j.genDivIntegers()
+		j.addOpcode("idiv")
 	}
+
+	j.pst.Push(Integer)
 
 	return nil
 }
@@ -234,16 +236,22 @@ func (j *JASM) AddAddSubOperatorOpcode(op string) error {
 	case op == "+":
 		switch pt1 {
 		case String:
-			j.genAddStrings()
+			j.startInvokeDynamic(`makeConcatWithConstants(java/lang/String, java/lang/String)java/lang/String`)
+			j.addOpcode(`invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite`)
+			j.addOpcode(`[""]`)
+			j.finishInvokeDynamic()
+			j.pst.Push(String)
 		case Integer:
-			j.genAddIntegers()
+			j.addOpcode("iadd")
+			j.pst.Push(Integer)
 		default:
 			return fmt.Errorf("invalid type in %s operator: %s", op, pt1)
 		}
 	case op == "-":
 		switch pt1 {
 		case Integer:
-			j.genSubIntegers()
+			j.addOpcode("isub")
+			j.pst.Push(Integer)
 		default:
 			return fmt.Errorf("invalid type in %s operator: %s", op, pt1)
 		}
@@ -302,10 +310,10 @@ func (j *JASM) AddUnaryOperatorOpcode(op string) error {
 		lfalse := j.newLabel()
 		lnext := j.newLabel()
 		j.addOpcode("ifne", lfalse)
-		j.addPushTrue()
+		j.addPushTrueOpcode()
 		j.addGotoOpcode(lnext)
 		j.addLabel(lfalse)
-		j.addPushFalse()
+		j.addPushFalseOpcode()
 		j.addLabel(lnext)
 		j.pst.Push(Boolean)
 	default:
@@ -389,11 +397,11 @@ func (j *JASM) addSiPushOpcode(number string) {
 	j.pst.Push(Integer)
 }
 
-func (j *JASM) addPushTrue() {
+func (j *JASM) addPushTrueOpcode() {
 	j.addOpcode("iconst 1")
 }
 
-func (j *JASM) addPushFalse() {
+func (j *JASM) addPushFalseOpcode() {
 	j.addOpcode("iconst 0")
 }
 
@@ -460,42 +468,14 @@ func (j *JASM) decTab() {
 	j.code.DecTab()
 }
 
-func (j *JASM) genAddStrings() {
-	j.startInvokeDynamic(`makeConcatWithConstants(java/lang/String, java/lang/String)java/lang/String`)
-	j.addOpcode(`invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite`)
-	j.addOpcode(`[""]`)
-	j.finishInvokeDynamic()
-	j.pst.Push(String)
-}
-
-func (j *JASM) genAddIntegers() {
-	j.addOpcode("iadd")
-	j.pst.Push(Integer)
-}
-
-func (j *JASM) genSubIntegers() {
-	j.addOpcode("isub")
-	j.pst.Push(Integer)
-}
-
-func (j *JASM) genMulIntegers() {
-	j.addOpcode("imul")
-	j.pst.Push(Integer)
-}
-
-func (j *JASM) genDivIntegers() {
-	j.addOpcode("idiv")
-	j.pst.Push(Integer)
-}
-
 func (j *JASM) genBooleanOperatorTpl(ifOpcode string) {
 	lfalse := j.newLabel()
 	lnext := j.newLabel()
 	j.addOpcode(ifOpcode, lfalse)
-	j.addPushTrue()
+	j.addPushTrueOpcode()
 	j.addGotoOpcode(lnext)
 	j.addLabel(lfalse)
-	j.addPushFalse()
+	j.addPushFalseOpcode()
 	j.addLabel(lnext)
 	j.pst.Push(Boolean)
 }
