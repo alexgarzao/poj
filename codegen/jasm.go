@@ -185,44 +185,52 @@ func (j *JASM) FinishForStatement() error {
 	return nil
 }
 
-func (j *JASM) AddOperatorOpcode(op string) error {
+func (j *JASM) AddBooleanOperatorOpcode(op string) error {
 	pt1 := j.pst.Pop()
 	pt2 := j.pst.Pop()
-	if pt1 != pt2 {
-		return fmt.Errorf("invalid types in operator %s: %s and %s", op, pt1, pt2)
+	if pt1 != Boolean || pt2 != Boolean {
+		return fmt.Errorf("invalid types in %s operator: %s and %s", op, pt1, pt2)
 	}
 
 	switch {
 	case op == "and":
-		switch pt1 {
-		case Boolean:
-			j.addOpcode("iand")
-			j.pst.Push(Boolean)
-		default:
-			return fmt.Errorf("invalid type in and operator: %s", pt1)
-		}
+		j.addOpcode("iand")
+		j.pst.Push(Boolean)
 	case op == "or":
-		switch pt1 {
-		case Boolean:
-			j.addOpcode("ior")
-			j.pst.Push(Boolean)
-		default:
-			return fmt.Errorf("invalid type in or operator: %s", pt1)
-		}
+		j.addOpcode("ior")
+		j.pst.Push(Boolean)
+	default:
+		return fmt.Errorf("invalid boolean operator: %s", op)
+	}
+
+	return nil
+}
+
+func (j *JASM) AddMulDivOperatorOpcode(op string) error {
+	pt1 := j.pst.Pop()
+	pt2 := j.pst.Pop()
+	if pt1 != Integer || pt2 != Integer {
+		return fmt.Errorf("invalid types in %s operator: %s and %s", op, pt1, pt2)
+	}
+
+	switch {
 	case op == "*":
-		switch pt1 {
-		case Integer:
-			j.genMulIntegers()
-		default:
-			return fmt.Errorf("invalid type in mul operator: %s", pt1)
-		}
+		j.genMulIntegers()
 	case op == "/":
-		switch pt1 {
-		case Integer:
-			j.genDivIntegers()
-		default:
-			return fmt.Errorf("invalid type in div operator: %s", pt1)
-		}
+		j.genDivIntegers()
+	}
+
+	return nil
+}
+
+func (j *JASM) AddAddSubOperatorOpcode(op string) error {
+	pt1 := j.pst.Pop()
+	pt2 := j.pst.Pop()
+	if pt1 != pt2 {
+		return fmt.Errorf("invalid types in %s operator: %s and %s", op, pt1, pt2)
+	}
+
+	switch {
 	case op == "+":
 		switch pt1 {
 		case String:
@@ -230,75 +238,54 @@ func (j *JASM) AddOperatorOpcode(op string) error {
 		case Integer:
 			j.genAddIntegers()
 		default:
-			return fmt.Errorf("invalid type in add operator: %s", pt1)
+			return fmt.Errorf("invalid type in %s operator: %s", op, pt1)
 		}
 	case op == "-":
 		switch pt1 {
 		case Integer:
 			j.genSubIntegers()
 		default:
-			return fmt.Errorf("invalid type in sub operator: %s", pt1)
+			return fmt.Errorf("invalid type in %s operator: %s", op, pt1)
 		}
-	case op == ">":
-		switch pt1 {
-		case Integer:
-			j.genBooleanOperatorTpl("if_icmple")
-		case String:
-			j.addOpcode("invokevirtual", "java/lang/String.compareTo(java/lang/String)I")
-			j.genBooleanOperatorTpl("iflt")
-		default:
-			return fmt.Errorf("invalid type in > operator: %s", pt1)
+	}
+
+	return nil
+}
+
+func (j *JASM) AddRelationalOperatorOpcode(op string) error {
+	pt1 := j.pst.Pop()
+	pt2 := j.pst.Pop()
+	if pt1 != pt2 {
+		return fmt.Errorf("invalid types in %s operator: %s and %s", op, pt1, pt2)
+	}
+
+	if pt1 != Integer && pt1 != String {
+		return fmt.Errorf("invalid type in %s operator: %s", op, pt1)
+	}
+
+	if pt1 == Integer {
+		jmps := map[string]string{
+			">":  "if_icmple",
+			"<":  "if_icmpge",
+			">=": "if_icmplt",
+			"<=": "if_icmpgt",
+			"=":  "if_icmpne",
+			"<>": "if_icmpeq",
 		}
-	case op == "<":
-		switch pt1 {
-		case Integer:
-			j.genBooleanOperatorTpl("if_icmpge")
-		case String:
-			j.addOpcode("invokevirtual", "java/lang/String.compareTo(java/lang/String)I")
-			j.genBooleanOperatorTpl("ifgt")
-		default:
-			return fmt.Errorf("invalid type in < operator: %s", pt1)
+
+		j.genBooleanOperatorTpl(jmps[op])
+	} else if pt1 == String {
+		jmps := map[string]string{
+			">":  "iflt",
+			"<":  "ifgt",
+			">=": "iflt",
+			"<=": "ifgt",
+			"=":  "ifne",
+			"<>": "ifeq",
 		}
-	case op == ">=":
-		switch pt1 {
-		case Integer:
-			j.genBooleanOperatorTpl("if_icmplt")
-		case String:
-			j.addOpcode("invokevirtual", "java/lang/String.compareTo(java/lang/String)I")
-			j.genBooleanOperatorTpl("iflt")
-		default:
-			return fmt.Errorf("invalid type in >= operator: %s", pt1)
-		}
-	case op == "<=":
-		switch pt1 {
-		case Integer:
-			j.genBooleanOperatorTpl("if_icmpgt")
-		case String:
-			j.addOpcode("invokevirtual", "java/lang/String.compareTo(java/lang/String)I")
-			j.genBooleanOperatorTpl("ifgt")
-		default:
-			return fmt.Errorf("invalid type in <= operator: %s", pt1)
-		}
-	case op == "=":
-		switch pt1 {
-		case Integer:
-			j.genBooleanOperatorTpl("if_icmpne")
-		case String:
-			j.addOpcode("invokevirtual", "java/lang/String.compareTo(java/lang/String)I")
-			j.genBooleanOperatorTpl("ifne")
-		default:
-			return fmt.Errorf("invalid type in = operator: %s", pt1)
-		}
-	case op == "<>":
-		switch pt1 {
-		case Integer:
-			j.genBooleanOperatorTpl("if_icmpeq")
-		case String:
-			j.addOpcode("invokevirtual", "java/lang/String.compareTo(java/lang/String)I")
-			j.genBooleanOperatorTpl("ifeq")
-		default:
-			return fmt.Errorf("invalid type in <> operator: %s", pt1)
-		}
+
+		j.addOpcode("invokevirtual", "java/lang/String.compareTo(java/lang/String)I")
+		j.genBooleanOperatorTpl(jmps[op])
 	}
 
 	return nil

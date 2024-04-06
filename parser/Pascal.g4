@@ -298,7 +298,7 @@ expression
     | expression op = (AND | OR) expression         # BoolOp
     | expression op = relationaloperator expression # RelOp
     | expression op = (STAR | SLASH) expression     # MulDivOp
-    | expression op = additiveoperator expression   # AddOp
+    | expression op = addsuboperator expression     # AddSubOp
     | signedFactor                                  # ExpSignedFactor
     ;
 
@@ -312,7 +312,7 @@ relationaloperator
     | IN
     ;
 
-additiveoperator
+addsuboperator
     : PLUS
     | MINUS
     | OR
