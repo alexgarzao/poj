@@ -7,9 +7,10 @@ import (
 	"testing"
 
 	"github.com/sergi/go-diff/diffmatchpatch"
+	"github.com/stretchr/testify/assert"
 )
 
-func Test_genCode(t *testing.T) {
+func Test_ValidPascalPrograms(t *testing.T) {
 	// Test all files in tests/pascal_programs/*.pas and tests/expected_jasm_files/*.jasm.
 	inputFiles, err := filepath.Glob("tests/pascal_programs/*.pas")
 	if err != nil {
@@ -23,9 +24,7 @@ func Test_genCode(t *testing.T) {
 			inputFile = path.Base(inputFile)
 			inputFile = inputFile[:len(inputFile)-4]
 
-			t.Logf("Running expected output for %s", inputFile)
-
-			got, err := genCode("tests/pascal_programs/" + inputFile)
+			got, _, _, err := genCode("tests/pascal_programs/" + inputFile)
 			if err != nil {
 				t.Errorf("genCode() error = %v", err)
 				return
@@ -43,8 +42,43 @@ func Test_genCode(t *testing.T) {
 			if len(diffs) > 1 {
 				t.Errorf("diff = %v", dmp.DiffPrettyText(diffs))
 			}
+		})
+	}
+}
 
-			t.Logf("Expected output for %s is fine", inputFile)
+func Test_InvalidPascalPrograms(t *testing.T) {
+	// Test all files in tests/invalid_pascal_programs/*.pas and *.errors.
+	invalidInputFiles, err := filepath.Glob("tests/invalid_pascal_programs/*.pas")
+	if err != nil {
+		t.Errorf("reading invalidInputFiles = %v", err)
+	}
+
+	dmp := diffmatchpatch.New()
+
+	for _, invalidInputFile := range invalidInputFiles {
+		t.Run(invalidInputFile, func(t *testing.T) {
+			invalidInputFile = path.Base(invalidInputFile)
+			invalidInputFile = invalidInputFile[:len(invalidInputFile)-4]
+
+			got, lexerErrors, parserErrors, err := genCode("tests/invalid_pascal_programs/" + invalidInputFile)
+			assert.NotNil(t, err)
+			assert.Empty(t, got)
+
+			expectedOutputFileErrors := "tests/invalid_pascal_programs/" + invalidInputFile + ".errors"
+
+			expectedOutputError, err := os.ReadFile(expectedOutputFileErrors)
+			if err != nil {
+				t.Errorf("reading expectedOutputFileErrors = %v", err)
+				return
+			}
+
+			expectedErrors := lexerErrors.String() + parserErrors.String()
+
+			diffs := dmp.DiffMain(string(expectedOutputError), expectedErrors, false)
+			if len(diffs) > 1 {
+				t.Errorf("diff = %v", dmp.DiffPrettyText(diffs))
+				return
+			}
 		})
 	}
 }
