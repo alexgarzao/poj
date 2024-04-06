@@ -59,10 +59,14 @@ func (j *JASM) StartParameter() {
 	}
 }
 
-func (j *JASM) FinishParameter() {
+func (j *JASM) FinishParameter() error {
 	if j.procedureDefinitionName == "write" || j.procedureDefinitionName == "writeln" {
-		j.addInvokeVirtualPrintWithType()
+		if err := j.addInvokeVirtualPrintWithType(); err != nil {
+			return err
+		}
 	}
+
+	return nil
 }
 
 func (j *JASM) StartBlock() {
@@ -131,18 +135,26 @@ func (j *JASM) StartWhileBlock() {
 	j.addOpcode("ifeq", j.nextStatementLabel)
 }
 
-func (j *JASM) FinishForInit(varName string) {
-	j.forVariable = varName
-	j.FinishAssignmentStatement(varName)
+func (j *JASM) FinishForInit(varName string) error {
+	if err := j.FinishAssignmentStatement(varName); err != nil {
+		return err
+	}
 
+	j.forVariable = varName
 	j.forTestLabel = j.newLabel()
 	j.nextStatementLabel = j.newLabel()
 	j.addLabel(j.forTestLabel)
-	j.LoadVarContent(j.forVariable)
+
+	if err := j.LoadVarContent(j.forVariable); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (j *JASM) FinishForUntil(step string) {
 	j.forStep = step
+
 	if step == "to" {
 		j.addOpcode("if_icmpgt", j.nextStatementLabel)
 	} else {
@@ -150,25 +162,34 @@ func (j *JASM) FinishForUntil(step string) {
 	}
 }
 
-func (j *JASM) FinishForStatement() {
-	j.LoadVarContent(j.forVariable)
+func (j *JASM) FinishForStatement() error {
+	if err := j.LoadVarContent(j.forVariable); err != nil {
+		return err
+	}
+
 	j.addSiPushOpcode("1")
+
 	if j.forStep == "to" {
 		j.addOpcode("iadd")
 	} else {
 		j.addOpcode("isub")
 	}
-	j.FinishAssignmentStatement(j.forVariable)
+
+	if err := j.FinishAssignmentStatement(j.forVariable); err != nil {
+		return err
+	}
+
 	j.addGotoOpcode(j.forTestLabel)
 	j.addLabel(j.nextStatementLabel)
+
+	return nil
 }
 
-func (j *JASM) AddOperatorOpcode(op string) {
+func (j *JASM) AddOperatorOpcode(op string) error {
 	pt1 := j.pst.Pop()
 	pt2 := j.pst.Pop()
 	if pt1 != pt2 {
-		j.addOpcode("invalid types")
-		return
+		return fmt.Errorf("invalid types in operator %s: %s and %s", op, pt1, pt2)
 	}
 
 	switch {
@@ -178,7 +199,7 @@ func (j *JASM) AddOperatorOpcode(op string) {
 			j.addOpcode("iand")
 			j.pst.Push(Boolean)
 		default:
-			j.addOpcode("invalid type in boolean operator")
+			return fmt.Errorf("invalid type in and operator: %s", pt1)
 		}
 	case op == "or":
 		switch pt1 {
@@ -186,21 +207,21 @@ func (j *JASM) AddOperatorOpcode(op string) {
 			j.addOpcode("ior")
 			j.pst.Push(Boolean)
 		default:
-			j.addOpcode("invalid type in boolean operator")
+			return fmt.Errorf("invalid type in or operator: %s", pt1)
 		}
 	case op == "*":
 		switch pt1 {
 		case Integer:
 			j.genMulIntegers()
 		default:
-			j.addOpcode("invalid type in mul")
+			return fmt.Errorf("invalid type in mul operator: %s", pt1)
 		}
 	case op == "/":
 		switch pt1 {
 		case Integer:
 			j.genDivIntegers()
 		default:
-			j.addOpcode("invalid type in div")
+			return fmt.Errorf("invalid type in div operator: %s", pt1)
 		}
 	case op == "+":
 		switch pt1 {
@@ -209,65 +230,66 @@ func (j *JASM) AddOperatorOpcode(op string) {
 		case Integer:
 			j.genAddIntegers()
 		default:
-			j.addOpcode("invalid type in add")
+			return fmt.Errorf("invalid type in add operator: %s", pt1)
 		}
 	case op == "-":
 		switch pt1 {
 		case Integer:
 			j.genSubIntegers()
 		default:
-			j.addOpcode("invalid type in sub")
+			return fmt.Errorf("invalid type in sub operator: %s", pt1)
 		}
 	case op == ">":
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmple")
 		default:
-			j.addOpcode("invalid type in comparison")
+			return fmt.Errorf("invalid type in > operator: %s", pt1)
 		}
 	case op == "<":
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmpge")
 		default:
-			j.addOpcode("invalid type in comparison")
+			return fmt.Errorf("invalid type in < operator: %s", pt1)
 		}
 	case op == ">=":
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmplt")
 		default:
-			j.addOpcode("invalid type in comparison")
+			return fmt.Errorf("invalid type in >= operator: %s", pt1)
 		}
 	case op == "<=":
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmpgt")
 		default:
-			j.addOpcode("invalid type in comparison")
+			return fmt.Errorf("invalid type in <= operator: %s", pt1)
 		}
 	case op == "=":
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmpne")
 		default:
-			j.addOpcode("invalid type in comparison")
+			return fmt.Errorf("invalid type in = operator: %s", pt1)
 		}
 	case op == "<>":
 		switch pt1 {
 		case Integer:
 			j.genBooleanOperatorTpl("if_icmpeq")
 		default:
-			j.addOpcode("invalid type in comparison")
+			return fmt.Errorf("invalid type in <> operator: %s", pt1)
 		}
 	}
+
+	return nil
 }
 
-func (j *JASM) AddUnaryOperatorOpcode(op string) {
+func (j *JASM) AddUnaryOperatorOpcode(op string) error {
 	pt1 := j.pst.Pop()
 	if pt1 != Boolean {
-		j.addOpcode("invalid type in unary operator")
-		return
+		return fmt.Errorf("invalid type in unary operator: %s", pt1)
 	}
 
 	switch op {
@@ -281,19 +303,26 @@ func (j *JASM) AddUnaryOperatorOpcode(op string) {
 		j.addPushFalse()
 		j.addLabel(lnext)
 		j.pst.Push(Boolean)
+	default:
+		return fmt.Errorf("invalid unary operator: %s", op)
 	}
+
+	return nil
 }
 
-func (j *JASM) NewVariable(name, pst string) {
+func (j *JASM) NewVariable(name, pst string) error {
 	pt := ToPascalType(pst)
-	j.st.AddVariable(name, pt)
+	if err := j.st.AddVariable(name, pt); err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func (j *JASM) FinishAssignmentStatement(varName string) {
+func (j *JASM) FinishAssignmentStatement(varName string) error {
 	ok, symbol := j.st.Get(varName)
 	if !ok {
-		j.addOpcode("variable not found")
-		return
+		return fmt.Errorf("variable %s not found", varName)
 	}
 
 	switch symbol.PascalType {
@@ -304,16 +333,18 @@ func (j *JASM) FinishAssignmentStatement(varName string) {
 		j.addOpcode("istore", fmt.Sprintf("%d", symbol.Index))
 		j.pst.Pop()
 	default:
-		j.addOpcode("invalid type in assignment")
+		return fmt.Errorf("invalid type in assignment")
 	}
+
+	return nil
 }
 
-func (j *JASM) LoadVarContent(varName string) {
+func (j *JASM) LoadVarContent(varName string) error {
 	ok, symbol := j.st.Get(varName)
 	if !ok {
-		j.addOpcode("variable not found")
-		return
+		return fmt.Errorf("variable %s not found", varName)
 	}
+
 	switch symbol.PascalType {
 	case String:
 		j.addOpcode("aload", fmt.Sprintf("%d", symbol.Index))
@@ -322,8 +353,10 @@ func (j *JASM) LoadVarContent(varName string) {
 		j.addOpcode("iload", fmt.Sprintf("%d", symbol.Index))
 		j.pst.Push(Integer)
 	default:
-		j.addOpcode("invalid type in load")
+		return fmt.Errorf("invalid type %s in load var content", symbol.PascalType)
 	}
+
+	return nil
 }
 
 func (j *JASM) Code() string {
@@ -363,15 +396,18 @@ func (j *JASM) addGotoOpcode(label string) {
 	j.addOpcode("goto", label)
 }
 
-func (j *JASM) addInvokeVirtualPrintWithType() {
+func (j *JASM) addInvokeVirtualPrintWithType() error {
 	pt := j.pst.Pop()
+
 	if pt == String {
 		j.addOpcode("invokevirtual", "java/io/PrintStream.print(java/lang/String)V")
 	} else if pt == Integer {
 		j.addOpcode("invokevirtual", "java/io/PrintStream.print(I)V")
 	} else {
-		j.addOpcode("undefined type in write/writeln")
+		return fmt.Errorf("undefined type %s in write/writeln", pt)
 	}
+
+	return nil
 }
 
 func (j *JASM) addInvokeVirtualPrintln() {
