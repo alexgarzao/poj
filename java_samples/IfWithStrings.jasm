@@ -1,0 +1,52 @@
+/*
+ * Disassembled from IfWithStrings.class (originally IfWithStrings.java) by JASM
+ *
+ * Original class version: 55
+ * Signature: <no signature>
+ */
+public class IfWithStrings {
+    // <no signature>
+    // <no exceptions>
+    public <init>()V {
+        
+        label0:
+        aload 0
+        invokespecial java/lang/Object.<init>()V
+        return
+    }
+
+
+    // <no signature>
+    // <no exceptions>
+    public static main([java/lang/String)V {
+        
+        label0:
+        ldc "aaa"
+        astore 1
+        
+        label1:
+        ldc "bbb"
+        astore 2
+        
+        label2:
+        aload 1
+        aload 2
+        invokevirtual java/lang/String.compareTo(java/lang/String)I
+        ifle label3
+        
+        label4:
+        getstatic java/lang/System.out java/io/PrintStream
+        ldc "v1>v2"
+        invokevirtual java/io/PrintStream.println(java/lang/String)V
+        goto label5
+        
+        label3:
+        getstatic java/lang/System.out java/io/PrintStream
+        ldc "v1<=v2"
+        invokevirtual java/io/PrintStream.println(java/lang/String)V
+        
+        label5:
+        return
+    }
+
+}
