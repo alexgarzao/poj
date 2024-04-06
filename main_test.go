@@ -41,7 +41,7 @@ func Test_ValidPascalPrograms(t *testing.T) {
 
 			diffs := dmp.DiffMain(string(expectedOutput), got, false)
 			if len(diffs) > 1 {
-				t.Errorf("diff = %v", dmp.DiffPrettyText(diffs))
+				t.Errorf("diff = \n%v", dmp.DiffPrettyText(diffs))
 			}
 		})
 	}
@@ -78,7 +78,7 @@ func Test_InvalidPascalPrograms(t *testing.T) {
 
 			diffs := dmp.DiffMain(string(expectedOutputError), expectedErrors, false)
 			if len(diffs) > 1 {
-				t.Errorf("diff = %v", dmp.DiffPrettyText(diffs))
+				t.Errorf("diff = \n%v", dmp.DiffPrettyText(diffs))
 				return
 			}
 		})
