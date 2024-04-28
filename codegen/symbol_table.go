@@ -10,6 +10,7 @@ type SymbolType uint8
 const (
 	UndefinedSymbolType SymbolType = iota
 	Variable
+	Procedure
 )
 
 type Symbol struct {
@@ -41,6 +42,21 @@ func (st *SymbolTable) AddVariable(name string, ptype PascalType) error {
 		SymbolType: Variable,
 		PascalType: ptype,
 		Index:      st.count,
+	}
+
+	return nil
+}
+
+func (st *SymbolTable) AddProcedure(name string) error {
+	name = strings.ToUpper(name)
+	if _, ok := st.symbols[name]; ok {
+		return fmt.Errorf("procedure %s already declared", name)
+	}
+
+	st.symbols[name] = Symbol{ // REFACTOR: Symbol is only to variables?
+		SymbolType: Procedure,
+		// PascalType: ptype,
+		// Index:      st.count,
 	}
 
 	return nil
