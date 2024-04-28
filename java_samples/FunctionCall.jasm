@@ -1,0 +1,47 @@
+/*
+ * Disassembled from FunctionCall.class (originally FunctionCall.java) by JASM
+ *
+ * Original class version: 55
+ * Signature: <no signature>
+ */
+public class FunctionCall {
+    // <no signature>
+    // <no exceptions>
+    public <init>()V {
+        
+        label0:
+        aload 0
+        invokespecial java/lang/Object.<init>()V
+        return
+    }
+
+
+    // <no signature>
+    // <no exceptions>
+    public static main([java/lang/String)V {
+        
+        label0:
+        getstatic java/lang/System.out java/io/PrintStream
+        ldc "Hello from main!"
+        invokevirtual java/io/PrintStream.println(java/lang/String)V
+        
+        label1:
+        getstatic java/lang/System.out java/io/PrintStream
+        invokestatic FunctionCall.myMethod()java/lang/String
+        invokevirtual java/io/PrintStream.println(java/lang/String)V
+        
+        label2:
+        return
+    }
+
+
+    // <no signature>
+    // <no exceptions>
+    static myMethod()java/lang/String {
+        
+        label0:
+        ldc "Hello from myMethod!"
+        areturn
+    }
+
+}
