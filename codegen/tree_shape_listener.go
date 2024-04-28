@@ -190,6 +190,33 @@ func (t *TreeShapeListener) ExitProcedureDeclaration(ctx *parsing.ProcedureDecla
 	t.jasm.FinishProcedureDeclaration()
 }
 
+func (t *TreeShapeListener) EnterFunctionDeclaration(ctx *parsing.FunctionDeclarationContext) {
+	funcName := ctx.GetName().GetText()
+
+	paramTypes := []string{}
+	params := ctx.GetParamList()
+	if params != nil {
+		for _, param := range params.GetParams() {
+			// pascalType := param.GetParamType()
+			for range param.GetParamNames().GetIds() {
+				paramTypes = append(paramTypes, param.GetParamType().GetText())
+			}
+		}
+	}
+
+	returnType := ctx.GetReturnType().GetText()
+
+	if err := t.jasm.NewFunction(funcName, paramTypes, returnType); err != nil {
+		t.parserErrors.Add(err)
+	}
+
+	t.jasm.StartFunctionDeclaration(funcName, paramTypes, returnType)
+}
+
+func (t *TreeShapeListener) ExitFunctionDeclaration(ctx *parsing.FunctionDeclarationContext) {
+	t.jasm.FinishFunctionDeclaration()
+}
+
 func (t *TreeShapeListener) EnterFormalParameterSection(ctx *parsing.FormalParameterSectionContext) {
 	params := ctx.GetParamNames()
 	pascalType := ctx.GetParamType().GetText()
@@ -197,6 +224,13 @@ func (t *TreeShapeListener) EnterFormalParameterSection(ctx *parsing.FormalParam
 		if err := t.jasm.NewVariable(id.GetText(), pascalType); err != nil {
 			t.parserErrors.Add(err)
 		}
+	}
+}
+
+func (t *TreeShapeListener) ExitFunctionDesignator(ctx *parsing.FunctionDesignatorContext) {
+	funcName := ctx.GetFuncName().GetText()
+	if err := t.jasm.CallFunction(funcName); err != nil {
+		t.parserErrors.Add(err)
 	}
 }
 

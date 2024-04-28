@@ -5,12 +5,15 @@ import (
 	"strings"
 )
 
+const fixedFunctionVarIndex = 100
+
 type SymbolType uint8
 
 const (
 	UndefinedSymbolType SymbolType = iota
 	Variable
 	Procedure
+	Function
 )
 
 type Symbol struct {
@@ -60,6 +63,22 @@ func (st *SymbolTable) AddProcedure(name string, paramTypes []string) error {
 		ParamTypes: paramTypes[:],
 		// PascalType: ptype,
 		// Index:      st.count,
+	}
+
+	return nil
+}
+
+func (st *SymbolTable) AddFunction(name string, paramTypes []string, returnType string) error {
+	name = strings.ToUpper(name)
+	if _, ok := st.symbols[name]; ok {
+		return fmt.Errorf("function %s already declared", name)
+	}
+
+	st.symbols[name] = Symbol{
+		SymbolType: Function,
+		ParamTypes: paramTypes[:],
+		PascalType: ToPascalType(returnType),
+		Index:      fixedFunctionVarIndex,
 	}
 
 	return nil

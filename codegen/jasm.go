@@ -52,6 +52,12 @@ func (j *JASM) StartProcedureDeclaration(name string, paramTypes []string) {
 	j.incTab()
 }
 
+func (j *JASM) StartFunctionDeclaration(name string, paramTypes []string, returnType string) {
+	j.procedureDeclarationName = name
+	j.addLine(fmt.Sprintf("static %s(%s)%s {", name, j.genSignature(paramTypes), j.genSignature([]string{returnType})))
+	j.incTab()
+}
+
 func (j *JASM) genSignature(paramTypes []string) string {
 	javaParams := make([]string, len(paramTypes))
 	for i, p := range paramTypes {
@@ -60,7 +66,7 @@ func (j *JASM) genSignature(paramTypes []string) string {
 		} else if p == "integer" {
 			javaParams[i] = "I"
 		} else {
-			javaParams[i] = "UndefinedType"
+			javaParams[i] = "V"
 		}
 	}
 
@@ -72,6 +78,30 @@ func (j *JASM) FinishProcedureDeclaration() {
 	j.decTab()
 	j.addLine("}")
 	j.procedureDeclarationName = "main"
+}
+
+func (j *JASM) FinishFunctionDeclaration() error {
+	symbol, ok := j.st.Get(j.procedureDeclarationName)
+	if !ok {
+		return fmt.Errorf("bug: function %s not found", j.procedureDeclarationName)
+	}
+
+	switch symbol.PascalType {
+	case String:
+		j.addOpcode("aload", fmt.Sprintf("%d", symbol.Index))
+		j.addOpcode("areturn")
+	case Integer:
+		j.addOpcode("iload", fmt.Sprintf("%d", symbol.Index))
+		j.addOpcode("ireturn")
+	default:
+		return fmt.Errorf("invalid function type in return")
+	}
+
+	j.decTab()
+	j.addLine("}")
+	j.procedureDeclarationName = "main"
+
+	return nil
 }
 
 func (j *JASM) StartProcedureStatement(name string) {
@@ -88,7 +118,7 @@ func (j *JASM) FinishProcedureStatement() error {
 			return fmt.Errorf("procedure %s not found", j.procedureStatementName)
 		}
 
-		j.addInvokeStatic(j.procedureStatementName, j.genSignature(proc.ParamTypes))
+		j.addInvokeStatic(j.procedureStatementName, j.genSignature(proc.ParamTypes), j.genSignature([]string{proc.PascalType.String()}))
 	}
 
 	j.procedureStatementName = ""
@@ -413,6 +443,27 @@ func (j *JASM) NewProcedure(name string, paramTypes []string) error {
 	return nil
 }
 
+func (j *JASM) NewFunction(name string, paramTypes []string, returnType string) error {
+	if err := j.st.AddFunction(name, paramTypes, returnType); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (j *JASM) CallFunction(name string) error {
+
+	funcSymbol, ok := j.st.Get(name)
+	if !ok {
+		return fmt.Errorf("function %s not found", name)
+	}
+
+	j.addInvokeStatic(name, j.genSignature(funcSymbol.ParamTypes), j.genSignature([]string{funcSymbol.PascalType.String()}))
+	j.pst.Push(funcSymbol.PascalType)
+
+	return nil
+}
+
 func (j *JASM) Code() string {
 	return j.code.Code()
 }
@@ -488,8 +539,8 @@ func (j *JASM) addInvokeVirtual(method string) {
 	j.addOpcode("invokevirtual", method)
 }
 
-func (j *JASM) addInvokeStatic(method, signature string) {
-	j.addOpcode(fmt.Sprintf("invokestatic %s.%s(%s)V", j.className, method, signature))
+func (j *JASM) addInvokeStatic(method, signature string, returnType string) {
+	j.addOpcode(fmt.Sprintf("invokestatic %s.%s(%s)%s", j.className, method, signature, returnType))
 }
 
 func (j *JASM) addInvokeVirtualPrintWithType() error {
