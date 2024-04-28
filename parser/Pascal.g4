@@ -255,7 +255,7 @@ constList
     ;
 
 functionDeclaration
-    : FUNCTION identifier (formalParameterList)? COLON resultType SEMI block
+    : FUNCTION name = identifier (paramList = formalParameterList)? COLON returnType = resultType SEMI block
     ;
 
 resultType
@@ -345,7 +345,7 @@ unsignedConstant
     ;
 
 functionDesignator
-    : identifier LPAREN parameterList RPAREN
+    : funcName = identifier LPAREN (parameterList)? RPAREN
     ;
 
 parameterList
