@@ -1,0 +1,52 @@
+/*
+ * Disassembled from ProcedureCallWithTwoParams.class (originally ProcedureCallWithTwoParams.java) by JASM
+ *
+ * Original class version: 55
+ * Signature: <no signature>
+ */
+public class ProcedureCallWithTwoParams {
+    // <no signature>
+    // <no exceptions>
+    public <init>()V {
+        
+        label0:
+        aload 0
+        invokespecial java/lang/Object.<init>()V
+        return
+    }
+
+
+    // <no signature>
+    // <no exceptions>
+    public static main([java/lang/String)V {
+        
+        label0:
+        ldc "Hello"
+        ldc "World!"
+        invokestatic ProcedureCallWithTwoParams.myMethod(java/lang/String, java/lang/String)V
+        
+        label1:
+        return
+    }
+
+
+    // <no signature>
+    // <no exceptions>
+    static myMethod(java/lang/String, java/lang/String)V {
+        
+        label0:
+        getstatic java/lang/System.out java/io/PrintStream
+        aload 0
+        aload 1
+        invokedynamic makeConcatWithConstants(java/lang/String, java/lang/String)java/lang/String {
+            invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite
+            [" "]
+        }
+
+        invokevirtual java/io/PrintStream.println(java/lang/String)V
+        
+        label1:
+        return
+    }
+
+}
