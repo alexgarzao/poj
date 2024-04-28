@@ -167,12 +167,37 @@ func (t *TreeShapeListener) ExitForStatement(ctx *parsing.ForStatementContext) {
 
 func (t *TreeShapeListener) EnterProcedureDeclaration(ctx *parsing.ProcedureDeclarationContext) {
 	procName := ctx.GetName().GetText()
-	t.jasm.NewProcedure(procName) // TODO: deal with duplicated symbols
-	t.jasm.StartProcedureDeclaration(procName)
+
+	paramTypes := []string{}
+	params := ctx.GetParamList()
+	if params != nil {
+		for _, param := range params.GetParams() {
+			pascalType := param.GetParamType()
+			for range param.GetParamNames().GetIds() {
+				paramTypes = append(paramTypes, pascalType.GetText())
+			}
+		}
+	}
+
+	if err := t.jasm.NewProcedure(procName, paramTypes); err != nil {
+		t.parserErrors.Add(err)
+	}
+
+	t.jasm.StartProcedureDeclaration(procName, paramTypes)
 }
 
 func (t *TreeShapeListener) ExitProcedureDeclaration(ctx *parsing.ProcedureDeclarationContext) {
 	t.jasm.FinishProcedureDeclaration()
+}
+
+func (t *TreeShapeListener) EnterFormalParameterSection(ctx *parsing.FormalParameterSectionContext) {
+	params := ctx.GetParamNames()
+	pascalType := ctx.GetParamType().GetText()
+	for _, id := range params.GetIds() {
+		if err := t.jasm.NewVariable(id.GetText(), pascalType); err != nil {
+			t.parserErrors.Add(err)
+		}
+	}
 }
 
 func (t *TreeShapeListener) Code() string {

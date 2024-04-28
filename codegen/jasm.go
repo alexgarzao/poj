@@ -46,10 +46,25 @@ func (j *JASM) FinishMainClass() {
 	j.addLine("}")
 }
 
-func (j *JASM) StartProcedureDeclaration(name string) {
+func (j *JASM) StartProcedureDeclaration(name string, paramTypes []string) {
 	j.procedureDeclarationName = name
-	j.addLine(fmt.Sprintf("static %s()V {", name))
+	j.addLine(fmt.Sprintf("static %s(%s)V {", name, j.genSignature(paramTypes)))
 	j.incTab()
+}
+
+func (j *JASM) genSignature(paramTypes []string) string {
+	javaParams := make([]string, len(paramTypes))
+	for i, p := range paramTypes {
+		if p == "string" {
+			javaParams[i] = "java/lang/String"
+		} else if p == "integer" {
+			javaParams[i] = "I"
+		} else {
+			javaParams[i] = "UndefinedType"
+		}
+	}
+
+	return strings.Join(javaParams, ", ")
 }
 
 func (j *JASM) FinishProcedureDeclaration() {
@@ -63,15 +78,22 @@ func (j *JASM) StartProcedureStatement(name string) {
 	j.procedureStatementName = name
 }
 
-func (j *JASM) FinishProcedureStatement() {
+func (j *JASM) FinishProcedureStatement() error {
 	if j.procedureStatementName == "writeln" {
 		j.addStaticPrintStream()
 		j.addInvokeVirtual("java/io/PrintStream.println()V")
 	} else if j.procedureStatementName != "write" {
-		j.addInvokeStatic(j.procedureStatementName)
+		proc, ok := j.st.Get(j.procedureStatementName)
+		if !ok {
+			return fmt.Errorf("procedure %s not found", j.procedureStatementName)
+		}
+
+		j.addInvokeStatic(j.procedureStatementName, j.genSignature(proc.ParamTypes))
 	}
 
 	j.procedureStatementName = ""
+
+	return nil
 }
 
 func (j *JASM) StartParameter() {
@@ -344,7 +366,7 @@ func (j *JASM) NewVariable(name, pst string) error {
 }
 
 func (j *JASM) FinishAssignmentStatement(varName string) error {
-	ok, symbol := j.st.Get(varName)
+	symbol, ok := j.st.Get(varName)
 	if !ok {
 		return fmt.Errorf("variable %s not found", varName)
 	}
@@ -364,7 +386,7 @@ func (j *JASM) FinishAssignmentStatement(varName string) error {
 }
 
 func (j *JASM) LoadVarContent(varName string) error {
-	ok, symbol := j.st.Get(varName)
+	symbol, ok := j.st.Get(varName)
 	if !ok {
 		return fmt.Errorf("variable %s not found", varName)
 	}
@@ -383,8 +405,8 @@ func (j *JASM) LoadVarContent(varName string) error {
 	return nil
 }
 
-func (j *JASM) NewProcedure(name string) error {
-	if err := j.st.AddProcedure(name); err != nil {
+func (j *JASM) NewProcedure(name string, paramTypes []string) error {
+	if err := j.st.AddProcedure(name, paramTypes); err != nil {
 		return err
 	}
 
@@ -466,8 +488,8 @@ func (j *JASM) addInvokeVirtual(method string) {
 	j.addOpcode("invokevirtual", method)
 }
 
-func (j *JASM) addInvokeStatic(method string) {
-	j.addOpcode(fmt.Sprintf("invokestatic %s.%s()V", j.className, method))
+func (j *JASM) addInvokeStatic(method, signature string) {
+	j.addOpcode(fmt.Sprintf("invokestatic %s.%s(%s)V", j.className, method, signature))
 }
 
 func (j *JASM) addInvokeVirtualPrintWithType() error {

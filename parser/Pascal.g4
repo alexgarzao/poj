@@ -235,22 +235,15 @@ procedureOrFunctionDeclaration
     ;
 
 procedureDeclaration
-    : PROCEDURE name = identifier (formalParameterList)? SEMI block
+    : PROCEDURE name = identifier (paramList = formalParameterList)? SEMI block
     ;
 
 formalParameterList
-    : LPAREN formalParameterSection (SEMI formalParameterSection)* RPAREN
+    : LPAREN params += formalParameterSection (SEMI params += formalParameterSection)* RPAREN
     ;
 
 formalParameterSection
-    : parameterGroup
-    | VAR parameterGroup
-    | FUNCTION parameterGroup
-    | PROCEDURE parameterGroup
-    ;
-
-parameterGroup
-    : identifierList COLON typeIdentifier
+    : paramNames = identifierList COLON paramType = typeIdentifier
     ;
 
 identifierList
