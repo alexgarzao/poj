@@ -2,9 +2,9 @@
 public class while {
 	public static main([java/lang/String)V {
 		sipush 10
-		istore 1
+		istore 0
 		L1:
-		iload 1
+		iload 0
 		sipush 20
 		if_icmpge L3
 		iconst 1 
@@ -17,20 +17,20 @@ public class while {
 		ldc "i="
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
-		iload 1
+		iload 0
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		iload 1
+		iload 0
 		sipush 1
 		iadd 
-		istore 1
+		istore 0
 		goto L1
 		L2:
 		sipush 20
-		istore 1
+		istore 0
 		L5:
-		iload 1
+		iload 0
 		sipush 10
 		if_icmpgt L7
 		iconst 1 
@@ -43,14 +43,14 @@ public class while {
 		ldc "dont write i="
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
-		iload 1
+		iload 0
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		iload 1
+		iload 0
 		sipush 1
 		iadd 
-		istore 1
+		istore 0
 		goto L5
 		L6:
 		return
