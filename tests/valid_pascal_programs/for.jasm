@@ -2,63 +2,63 @@
 public class for {
 	public static main([java/lang/String)V {
 		sipush 10
-		istore 1
+		istore 0
 		L1:
-		iload 1
+		iload 0
 		sipush 19
 		if_icmpgt L2
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "inc i="
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
-		iload 1
+		iload 0
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		iload 1
+		iload 0
 		sipush 1
 		iadd 
-		istore 1
+		istore 0
 		goto L1
 		L2:
 		sipush 10
-		istore 1
+		istore 0
 		L3:
-		iload 1
+		iload 0
 		sipush 2
 		if_icmpgt L4
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "dont write i="
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
-		iload 1
+		iload 0
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		iload 1
+		iload 0
 		sipush 1
 		iadd 
-		istore 1
+		istore 0
 		goto L3
 		L4:
 		sipush 10
-		istore 1
+		istore 0
 		L5:
-		iload 1
+		iload 0
 		sipush 5
 		if_icmplt L6
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "dec i="
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
-		iload 1
+		iload 0
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		iload 1
+		iload 0
 		sipush 1
 		isub 
-		istore 1
+		istore 0
 		goto L5
 		L6:
 		return

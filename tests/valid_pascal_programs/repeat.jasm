@@ -2,21 +2,21 @@
 public class repeat {
 	public static main([java/lang/String)V {
 		sipush 10
-		istore 1
+		istore 0
 		L1:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "i="
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
-		iload 1
+		iload 0
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		iload 1
+		iload 0
 		sipush 1
 		iadd 
-		istore 1
-		iload 1
+		istore 0
+		iload 0
 		sipush 20
 		if_icmpne L2
 		iconst 1 
