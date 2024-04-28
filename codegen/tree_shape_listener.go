@@ -50,12 +50,8 @@ func (t *TreeShapeListener) ExitActualParameter(ctx *parsing.ActualParameterCont
 	}
 }
 
-func (t *TreeShapeListener) EnterBlock(ctx *parsing.BlockContext) {
-	t.jasm.StartBlock()
-}
-
-func (t *TreeShapeListener) ExitBlock(ctx *parsing.BlockContext) {
-	t.jasm.FinishBlock()
+func (t *TreeShapeListener) EnterCompoundStatement(ctx *parsing.CompoundStatementContext) {
+	t.jasm.StartMainBlock()
 }
 
 func (t *TreeShapeListener) ExitNotOp(ctx *parsing.NotOpContext) {
@@ -167,6 +163,16 @@ func (t *TreeShapeListener) ExitForUntil(ctx *parsing.ForUntilContext) {
 
 func (t *TreeShapeListener) ExitForStatement(ctx *parsing.ForStatementContext) {
 	t.jasm.FinishForStatement()
+}
+
+func (t *TreeShapeListener) EnterProcedureDeclaration(ctx *parsing.ProcedureDeclarationContext) {
+	procName := ctx.GetName().GetText()
+	t.jasm.NewProcedure(procName) // TODO: deal with duplicated symbols
+	t.jasm.StartProcedureDeclaration(procName)
+}
+
+func (t *TreeShapeListener) ExitProcedureDeclaration(ctx *parsing.ProcedureDeclarationContext) {
+	t.jasm.FinishProcedureDeclaration()
 }
 
 func (t *TreeShapeListener) Code() string {
