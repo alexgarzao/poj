@@ -1,6 +1,8 @@
 package codegen
 
 import (
+	"fmt"
+
 	"github.com/alexgarzao/poj/parsing"
 )
 
@@ -41,7 +43,9 @@ func (t *TreeShapeListener) ExitString(ctx *parsing.StringContext) {
 }
 
 func (t *TreeShapeListener) EnterActualParameter(ctx *parsing.ActualParameterContext) {
-	t.jasm.StartParameter()
+	if err := t.jasm.StartParameter(); err != nil {
+		t.parserErrors.Add(err)
+	}
 }
 
 func (t *TreeShapeListener) ExitActualParameter(ctx *parsing.ActualParameterContext) {
@@ -227,10 +231,19 @@ func (t *TreeShapeListener) EnterFormalParameterSection(ctx *parsing.FormalParam
 	}
 }
 
+func (t *TreeShapeListener) EnterFunctionDesignator(ctx *parsing.FunctionDesignatorContext) {
+	t.jasm.StartProcedureStatement(ctx.GetFunctionID().GetText())
+}
+
 func (t *TreeShapeListener) ExitFunctionDesignator(ctx *parsing.FunctionDesignatorContext) {
-	funcName := ctx.GetFuncName().GetText()
+	funcName := ctx.GetFunctionID().GetText()
 	if err := t.jasm.CallFunction(funcName); err != nil {
 		t.parserErrors.Add(err)
+	}
+
+	_, exists := t.jasm.ProcedureStatementContext.Pop()
+	if !exists {
+		t.parserErrors.Add(fmt.Errorf("during pop procedure statement context"))
 	}
 }
 

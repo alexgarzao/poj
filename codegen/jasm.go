@@ -12,7 +12,6 @@ type JASM struct {
 
 	className                string
 	procedureDeclarationName string
-	procedureStatementName   string
 	labelID                  int
 	endIfLabel               string
 	elseLabel                string
@@ -22,6 +21,9 @@ type JASM struct {
 	forTestLabel             string
 	forVariable              string
 	forStep                  string
+
+	// Stack contexts.
+	ProcedureStatementContext Stack[string]
 }
 
 func NewJASM() *JASM {
@@ -105,35 +107,55 @@ func (j *JASM) FinishFunctionDeclaration() error {
 }
 
 func (j *JASM) StartProcedureStatement(name string) {
-	j.procedureStatementName = name
+	j.ProcedureStatementContext.Push(name)
 }
 
 func (j *JASM) FinishProcedureStatement() error {
-	if j.procedureStatementName == "writeln" {
-		j.addStaticPrintStream()
-		j.addInvokeVirtual("java/io/PrintStream.println()V")
-	} else if j.procedureStatementName != "write" {
-		proc, ok := j.st.Get(j.procedureStatementName)
-		if !ok {
-			return fmt.Errorf("procedure %s not found", j.procedureStatementName)
-		}
-
-		j.addInvokeStatic(j.procedureStatementName, j.genSignature(proc.ParamTypes), j.genSignature([]string{proc.PascalType.String()}))
+	procedureStatementName, exists := j.ProcedureStatementContext.Top()
+	if !exists {
+		return fmt.Errorf("during getting procedure statement context")
 	}
 
-	j.procedureStatementName = ""
+	if procedureStatementName == "writeln" {
+		j.addStaticPrintStream()
+		j.addInvokeVirtual("java/io/PrintStream.println()V")
+	} else if procedureStatementName != "write" {
+		proc, ok := j.st.Get(procedureStatementName)
+		if !ok {
+			return fmt.Errorf("procedure %s not found", procedureStatementName)
+		}
+
+		j.addInvokeStatic(procedureStatementName, j.genSignature(proc.ParamTypes), j.genSignature([]string{proc.PascalType.String()}))
+	}
+
+	_, exists = j.ProcedureStatementContext.Pop()
+	if !exists {
+		return fmt.Errorf("during pop procedure statement context")
+	}
 
 	return nil
 }
 
-func (j *JASM) StartParameter() {
-	if j.procedureStatementName == "write" || j.procedureStatementName == "writeln" {
+func (j *JASM) StartParameter() error {
+	procedureStatementName, exists := j.ProcedureStatementContext.Top()
+	if !exists {
+		return fmt.Errorf("during getting procedure statement context")
+	}
+
+	if procedureStatementName == "write" || procedureStatementName == "writeln" {
 		j.addStaticPrintStream()
 	}
+
+	return nil
 }
 
 func (j *JASM) FinishParameter() error {
-	if j.procedureStatementName == "write" || j.procedureStatementName == "writeln" {
+	procedureStatementName, exists := j.ProcedureStatementContext.Top()
+	if !exists {
+		return fmt.Errorf("during getting procedure statement context")
+	}
+
+	if procedureStatementName == "write" || procedureStatementName == "writeln" {
 		if err := j.addInvokeVirtualPrintWithType(); err != nil {
 			return err
 		}
