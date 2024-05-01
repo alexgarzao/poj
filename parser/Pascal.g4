@@ -345,7 +345,7 @@ unsignedConstant
     ;
 
 functionDesignator
-    : funcName = identifier LPAREN (parameterList)? RPAREN
+    : functionID = identifier LPAREN (parameterList)? RPAREN
     ;
 
 parameterList
