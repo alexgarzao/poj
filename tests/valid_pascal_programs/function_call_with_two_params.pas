@@ -5,9 +5,6 @@ begin
     addvalues := value1 + value2;
 end;
 
-var
-    xpto: integer;
-
 begin
     writeln('2+4=', addvalues(2, 4));
 end.
