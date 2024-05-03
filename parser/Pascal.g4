@@ -741,6 +741,10 @@ COMMENT_2
     : '{' .*? '}' -> skip
     ;
 
+LINE_COMMENT
+    : '//' ~[\r\n]* -> skip
+    ;
+
 IDENT
     : ('A' .. 'Z') ('A' .. 'Z' | '0' .. '9' | '_')*
     ;
