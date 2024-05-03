@@ -1,0 +1,39 @@
+/*
+ * Disassembled from GlobalAndLocalVars.class (originally GlobalAndLocalVars.java) by JASM
+ *
+ * Original class version: 55
+ * Signature: <no signature>
+ */
+public class GlobalAndLocalVars {
+    // <no signature>
+    public static globalVar I
+
+    // <no signature>
+    // <no exceptions>
+    public <init>()V {
+        
+        label0:
+        aload 0
+        invokespecial java/lang/Object.<init>()V
+        return
+    }
+
+
+    // <no signature>
+    // <no exceptions>
+    public static main([java/lang/String)V {
+        
+        label0:
+        bipush 123
+        putstatic GlobalAndLocalVars.globalVar I
+        
+        label1:
+        getstatic java/lang/System.out java/io/PrintStream
+        getstatic GlobalAndLocalVars.globalVar I
+        invokevirtual java/io/PrintStream.println(I)V
+        
+        label2:
+        return
+    }
+
+}
