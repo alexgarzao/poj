@@ -34,3 +34,16 @@ func ToPascalType(s string) PascalType {
 		return Undefined
 	}
 }
+
+func (pt PascalType) JasmType() string {
+	switch pt {
+	case String:
+		return "java/lang/String"
+	case Integer:
+		return "I"
+	case Boolean:
+		return "I"
+	default:
+		return "undefined"
+	}
+}
