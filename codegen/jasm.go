@@ -23,7 +23,7 @@ type JASM struct {
 	forStep                  string
 
 	// Stack contexts.
-	ProcedureStatementContext Stack[string]
+	procedureStatementContext Stack[string]
 }
 
 func NewJASM() *JASM {
@@ -107,11 +107,11 @@ func (j *JASM) FinishFunctionDeclaration() error {
 }
 
 func (j *JASM) StartProcedureStatement(name string) {
-	j.ProcedureStatementContext.Push(name)
+	j.procedureStatementContext.Push(name)
 }
 
 func (j *JASM) FinishProcedureStatement() error {
-	procedureStatementName, exists := j.ProcedureStatementContext.Top()
+	procedureStatementName, exists := j.procedureStatementContext.Top()
 	if !exists {
 		return fmt.Errorf("during getting procedure statement context")
 	}
@@ -128,7 +128,7 @@ func (j *JASM) FinishProcedureStatement() error {
 		j.addInvokeStatic(procedureStatementName, j.genSignature(proc.ParamTypes), j.genSignature([]string{proc.PascalType.String()}))
 	}
 
-	_, exists = j.ProcedureStatementContext.Pop()
+	_, exists = j.procedureStatementContext.Pop()
 	if !exists {
 		return fmt.Errorf("during pop procedure statement context")
 	}
@@ -137,7 +137,7 @@ func (j *JASM) FinishProcedureStatement() error {
 }
 
 func (j *JASM) StartParameter() error {
-	procedureStatementName, exists := j.ProcedureStatementContext.Top()
+	procedureStatementName, exists := j.procedureStatementContext.Top()
 	if !exists {
 		return fmt.Errorf("during getting procedure statement context")
 	}
@@ -150,7 +150,7 @@ func (j *JASM) StartParameter() error {
 }
 
 func (j *JASM) FinishParameter() error {
-	procedureStatementName, exists := j.ProcedureStatementContext.Top()
+	procedureStatementName, exists := j.procedureStatementContext.Top()
 	if !exists {
 		return fmt.Errorf("during getting procedure statement context")
 	}

@@ -243,7 +243,7 @@ func (t *TreeShapeListener) ExitFunctionDesignator(ctx *parsing.FunctionDesignat
 		t.parserErrors.Add(err)
 	}
 
-	_, exists := t.jasm.ProcedureStatementContext.Pop()
+	_, exists := t.jasm.procedureStatementContext.Pop()
 	if !exists {
 		t.parserErrors.Add(fmt.Errorf("during pop procedure statement context"))
 	}
