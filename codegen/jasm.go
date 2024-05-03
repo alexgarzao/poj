@@ -52,12 +52,14 @@ func (j *JASM) StartProcedureDeclaration(name string, paramTypes []string) {
 	j.procedureDeclarationName = name
 	j.addLine(fmt.Sprintf("static %s(%s)V {", name, j.genSignature(paramTypes)))
 	j.incTab()
+	j.st.CleanLocalSymbols()
 }
 
 func (j *JASM) StartFunctionDeclaration(name string, paramTypes []string, returnType string) {
 	j.procedureDeclarationName = name
 	j.addLine(fmt.Sprintf("static %s(%s)%s {", name, j.genSignature(paramTypes), j.genSignature([]string{returnType})))
 	j.incTab()
+	j.st.CleanLocalSymbols()
 }
 
 func (j *JASM) genSignature(paramTypes []string) string {
@@ -80,6 +82,7 @@ func (j *JASM) FinishProcedureDeclaration() {
 	j.decTab()
 	j.addLine("}")
 	j.procedureDeclarationName = "main"
+	j.st.CleanLocalSymbols()
 }
 
 func (j *JASM) FinishFunctionDeclaration() error {
@@ -88,12 +91,12 @@ func (j *JASM) FinishFunctionDeclaration() error {
 		return fmt.Errorf("bug: function %s not found", j.procedureDeclarationName)
 	}
 
+	j.addLine(symbol.GenLoadOpcode(j.className))
+
 	switch symbol.PascalType {
 	case String:
-		j.addOpcode("aload", fmt.Sprintf("%d", symbol.Index))
 		j.addOpcode("areturn")
 	case Integer:
-		j.addOpcode("iload", fmt.Sprintf("%d", symbol.Index))
 		j.addOpcode("ireturn")
 	default:
 		return fmt.Errorf("invalid function type in return")
@@ -102,6 +105,8 @@ func (j *JASM) FinishFunctionDeclaration() error {
 	j.decTab()
 	j.addLine("}")
 	j.procedureDeclarationName = "main"
+
+	j.st.CleanLocalSymbols()
 
 	return nil
 }
@@ -415,9 +420,21 @@ func (j *JASM) AddUnaryOperatorOpcode(op string) error {
 }
 
 func (j *JASM) NewVariable(name, pst string) error {
+	globalDeclaration := j.procedureDeclarationName == "main"
 	pt := ToPascalType(pst)
-	if err := j.st.AddVariable(name, pt); err != nil {
-		return err
+
+	if globalDeclaration {
+		if err := j.st.AddGlobalVariable(name, pt); err != nil {
+			return err
+		}
+	} else {
+		if err := j.st.AddLocalVariable(name, pt); err != nil {
+			return err
+		}
+	}
+
+	if globalDeclaration && name != "args" {
+		j.addGlobalVarDefinition(name, pt.JasmType())
 	}
 
 	return nil
@@ -429,12 +446,12 @@ func (j *JASM) FinishAssignmentStatement(varName string) error {
 		return fmt.Errorf("variable %s not found", varName)
 	}
 
+	j.addLine(symbol.GenStoreOpcode(j.className))
+
 	switch symbol.PascalType {
 	case String:
-		j.addOpcode("astore", fmt.Sprintf("%d", symbol.Index))
 		j.pst.Pop()
 	case Integer:
-		j.addOpcode("istore", fmt.Sprintf("%d", symbol.Index))
 		j.pst.Pop()
 	default:
 		return fmt.Errorf("invalid type in assignment")
@@ -449,12 +466,11 @@ func (j *JASM) LoadVarContent(varName string) error {
 		return fmt.Errorf("variable %s not found", varName)
 	}
 
+	j.addLine(symbol.GenLoadOpcode(j.className))
 	switch symbol.PascalType {
 	case String:
-		j.addOpcode("aload", fmt.Sprintf("%d", symbol.Index))
 		j.pst.Push(String)
 	case Integer:
-		j.addOpcode("iload", fmt.Sprintf("%d", symbol.Index))
 		j.pst.Push(Integer)
 	default:
 		return fmt.Errorf("invalid type %s in load var content", symbol.PascalType)
@@ -636,4 +652,8 @@ func (j *JASM) genBooleanOperatorTpl(ifOpcode string) {
 	j.addPushFalseOpcode()
 	j.addLabel(lnext)
 	j.pst.Push(Boolean)
+}
+
+func (j *JASM) addGlobalVarDefinition(name string, jasmType string) {
+	j.addLine(fmt.Sprintf("public static %s %s", name, jasmType))
 }
