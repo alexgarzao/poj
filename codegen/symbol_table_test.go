@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSymbolTable_AddVariable(t *testing.T) {
+func TestSymbolTableAddGlobalVariable(t *testing.T) {
 	st := codegen.NewSymbolTable()
 	symbol, ok := st.Get("xpto")
 	assert.Equal(t, false, ok)
@@ -15,7 +15,7 @@ func TestSymbolTable_AddVariable(t *testing.T) {
 	assert.Equal(t, codegen.Undefined, symbol.PascalType)
 	assert.Equal(t, -1, symbol.Index)
 
-	err := st.AddVariable("myvar", codegen.Integer)
+	err := st.AddGlobalVariable("myvar", codegen.Integer)
 	assert.Nil(t, err)
 
 	symbol, ok = st.Get("myvar")
@@ -30,14 +30,63 @@ func TestSymbolTable_AddVariable(t *testing.T) {
 	assert.Equal(t, codegen.Integer, symbol.PascalType)
 	assert.Equal(t, 0, symbol.Index)
 
-	err = st.AddVariable("myvar", codegen.Integer)
+	err = st.AddGlobalVariable("myvar", codegen.Integer)
 	assert.NotNil(t, err)
 
-	err = st.AddVariable("MyVar", codegen.Integer)
+	err = st.AddGlobalVariable("MyVar", codegen.Integer)
 	assert.NotNil(t, err)
 }
 
-func TestSymbolTable_AddProcedure(t *testing.T) {
+func TestSymbolTableAddGlobalAndLocalVariables(t *testing.T) {
+	st := codegen.NewSymbolTable()
+	symbol, ok := st.Get("xpto")
+	assert.Equal(t, false, ok)
+	assert.Equal(t, codegen.UndefinedSymbolType, symbol.SymbolType)
+	assert.Equal(t, codegen.Undefined, symbol.PascalType)
+	assert.Equal(t, -1, symbol.Index)
+
+	err := st.AddGlobalVariable("myvar", codegen.Integer)
+	assert.Nil(t, err)
+
+	symbol, ok = st.Get("myvar")
+	assert.Equal(t, true, ok)
+	assert.Equal(t, codegen.Variable, symbol.SymbolType)
+	assert.Equal(t, codegen.Integer, symbol.PascalType)
+	assert.Equal(t, 0, symbol.Index)
+	assert.Equal(t, true, symbol.Global)
+
+	symbol, ok = st.Get("MyVar")
+	assert.Equal(t, true, ok)
+	assert.Equal(t, codegen.Variable, symbol.SymbolType)
+	assert.Equal(t, codegen.Integer, symbol.PascalType)
+	assert.Equal(t, 0, symbol.Index)
+	assert.Equal(t, true, symbol.Global)
+
+	err = st.AddLocalVariable("myvar", codegen.Integer)
+	assert.Nil(t, err)
+
+	symbol, ok = st.Get("myvar")
+	assert.Equal(t, true, ok)
+	assert.Equal(t, codegen.Variable, symbol.SymbolType)
+	assert.Equal(t, codegen.Integer, symbol.PascalType)
+	assert.Equal(t, 0, symbol.Index)
+	assert.Equal(t, false, symbol.Global)
+
+	err = st.AddLocalVariable("MyVar", codegen.Integer)
+	assert.NotNil(t, err)
+
+	err = st.AddLocalVariable("myvar2", codegen.Integer)
+	assert.Nil(t, err)
+
+	symbol, ok = st.Get("myvar2")
+	assert.Equal(t, true, ok)
+	assert.Equal(t, codegen.Variable, symbol.SymbolType)
+	assert.Equal(t, codegen.Integer, symbol.PascalType)
+	assert.Equal(t, 1, symbol.Index)
+	assert.Equal(t, false, symbol.Global)
+}
+
+func TestSymbolTableAddProcedure(t *testing.T) {
 	st := codegen.NewSymbolTable()
 	symbol, ok := st.Get("xpto")
 	assert.Equal(t, false, ok)
@@ -66,7 +115,7 @@ func TestSymbolTable_AddProcedure(t *testing.T) {
 	err = st.AddProcedure("MyProc", []string{})
 	assert.NotNil(t, err)
 
-	err = st.AddVariable("MyProc", codegen.Integer)
+	err = st.AddGlobalVariable("MyProc", codegen.Integer)
 	assert.NotNil(t, err)
 
 	err = st.AddProcedure("myproc2", []string{"integer", "string"})
