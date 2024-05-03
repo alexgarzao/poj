@@ -164,12 +164,18 @@ func (j *JASM) FinishParameter() error {
 	return nil
 }
 
-func (j *JASM) StartMainBlock() {
+func (j *JASM) StartMainBlock() error {
 	if j.procedureDeclarationName == "main" {
 		// Main block.
+		if err := j.NewVariable("args", "string"); err != nil {
+			return err
+		}
+
 		j.startMain()
 		j.procedureDeclarationName = ""
 	}
+
+	return nil
 }
 
 func (j *JASM) NewConstantString(constant string) {

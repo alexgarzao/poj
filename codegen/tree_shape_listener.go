@@ -55,7 +55,9 @@ func (t *TreeShapeListener) ExitActualParameter(ctx *parsing.ActualParameterCont
 }
 
 func (t *TreeShapeListener) EnterCompoundStatement(ctx *parsing.CompoundStatementContext) {
-	t.jasm.StartMainBlock()
+	if err := t.jasm.StartMainBlock(); err != nil {
+		t.parserErrors.Add(err)
+	}
 }
 
 func (t *TreeShapeListener) ExitNotOp(ctx *parsing.NotOpContext) {
