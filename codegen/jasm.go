@@ -13,17 +13,14 @@ type JASM struct {
 	className                string
 	procedureDeclarationName string
 	labelID                  int
-	endIfLabel               string
-	elseLabel                string
-	repeatLabel              string
-	whileTestLabel           string
-	nextStatementLabel       string
-	forTestLabel             string
-	forVariable              string
-	forStep                  string
+	nextStatementLabel string
+	forTestLabel       string
+	forVariable        string
+	forStep            string
 
 	// Stack contexts.
 	procedureStatementContext Stack[string]
+	labelsContext             *LabelsContext
 }
 
 func NewJASM() *JASM {
@@ -32,6 +29,7 @@ func NewJASM() *JASM {
 		pst:                      NewStackType(),
 		st:                       NewSymbolTable(),
 		procedureDeclarationName: "main",
+		labelsContext:            NewLabelsContext(),
 	}
 }
 
@@ -192,45 +190,46 @@ func (j *JASM) NewConstantInteger(constant string) {
 }
 
 func (j *JASM) StartIfStatement() {
-	j.elseLabel = j.newLabel()
-	j.endIfLabel = j.newLabel()
+	j.labelsContext.Add()
 }
 
 func (j *JASM) EnterThenStatement() {
-	j.addIfEqOpcode(j.elseLabel)
+	j.addIfEqOpcode(j.labelsContext.Else())
 }
 
 func (j *JASM) FinishThenStatement() {
-	j.addGotoOpcode(j.endIfLabel)
-	j.addLabel(j.elseLabel)
+	j.addGotoOpcode(j.labelsContext.NextStatement())
+	j.addLabel(j.labelsContext.Else())
 }
 
 func (j *JASM) FinishIfStatement() {
-	j.addLabel(j.endIfLabel)
+	j.addLabel(j.labelsContext.NextStatement())
+	j.labelsContext.Rem()
 }
 
 func (j *JASM) StartRepeatStatement() {
-	j.repeatLabel = j.newLabel()
-	j.addLabel(j.repeatLabel)
+	j.labelsContext.Add()
+	j.addLabel(j.labelsContext.IterationStart())
 }
 
 func (j *JASM) FinishRepeatStatement() {
-	j.addIfEqOpcode(j.repeatLabel)
+	j.addIfEqOpcode(j.labelsContext.IterationStart())
+	j.labelsContext.Rem()
 }
 
 func (j *JASM) StartWhileStatement() {
-	j.whileTestLabel = j.newLabel()
-	j.nextStatementLabel = j.newLabel()
-	j.addLabel(j.whileTestLabel)
+	j.labelsContext.Add()
+	j.addLabel(j.labelsContext.IterationStart())
 }
 
 func (j *JASM) FinishWhileStatement() {
-	j.addGotoOpcode(j.whileTestLabel)
-	j.addLabel(j.nextStatementLabel)
+	j.addGotoOpcode(j.labelsContext.IterationStart())
+	j.addLabel(j.labelsContext.NextStatement())
+	j.labelsContext.Rem()
 }
 
 func (j *JASM) StartWhileBlock() {
-	j.addIfEqOpcode(j.nextStatementLabel)
+	j.addIfEqOpcode(j.labelsContext.NextStatement())
 }
 
 func (j *JASM) FinishForInit(varName string) error {
