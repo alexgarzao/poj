@@ -7,18 +7,18 @@ public class if_with_strings_with_not {
 		ldc "aaa"
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		iflt L3
+		iflt L4
 		iconst 1 
-		goto L4
-		L3:
-		iconst 0 
+		goto L5
 		L4:
-		ifne L5
-		iconst 1 
-		goto L6
-		L5:
 		iconst 0 
+		L5:
+		ifne L6
+		iconst 1 
+		goto L7
 		L6:
+		iconst 0 
+		L7:
 		ifeq L1
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
@@ -39,301 +39,259 @@ public class if_with_strings_with_not {
 		ldc "aaa"
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		iflt L9
-		iconst 1 
-		goto L10
-		L9:
-		iconst 0 
-		L10:
-		ldc "bbb"
-		ldc "ccc"
-		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L11
 		iconst 1 
 		goto L12
 		L11:
 		iconst 0 
 		L12:
-		iand 
-		ifne L13
+		ldc "bbb"
+		ldc "ccc"
+		invokevirtual java/lang/String.compareTo(java/lang/String)I
+		iflt L13
 		iconst 1 
 		goto L14
 		L13:
 		iconst 0 
 		L14:
-		ifeq L7
+		iand 
+		ifne L15
+		iconst 1 
+		goto L16
+		L15:
+		iconst 0 
+		L16:
+		ifeq L8
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		goto L8
-		L7:
+		goto L9
+		L8:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "false"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		L8:
+		L9:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "not(aaa<bbb and bbb<ccc) must be false: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		ldc "aaa"
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		ifgt L17
+		ifgt L20
 		iconst 1 
-		goto L18
-		L17:
+		goto L21
+		L20:
 		iconst 0 
-		L18:
+		L21:
 		ldc "bbb"
 		ldc "ccc"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		ifgt L19
+		ifgt L22
 		iconst 1 
-		goto L20
-		L19:
-		iconst 0 
-		L20:
-		iand 
-		ifne L21
-		iconst 1 
-		goto L22
-		L21:
-		iconst 0 
+		goto L23
 		L22:
-		ifeq L15
+		iconst 0 
+		L23:
+		iand 
+		ifne L24
+		iconst 1 
+		goto L25
+		L24:
+		iconst 0 
+		L25:
+		ifeq L17
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		goto L16
-		L15:
+		goto L18
+		L17:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "false"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		L16:
+		L18:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "not(aaa>bbb and bbb<ccc) must be true: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		ldc "aaa"
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		iflt L25
-		iconst 1 
-		goto L26
-		L25:
-		iconst 0 
-		L26:
-		ldc "bbb"
-		ldc "ccc"
-		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		ifgt L27
-		iconst 1 
-		goto L28
-		L27:
-		iconst 0 
-		L28:
-		iand 
-		ifne L29
+		iflt L29
 		iconst 1 
 		goto L30
 		L29:
 		iconst 0 
 		L30:
-		ifeq L23
+		ldc "bbb"
+		ldc "ccc"
+		invokevirtual java/lang/String.compareTo(java/lang/String)I
+		ifgt L31
+		iconst 1 
+		goto L32
+		L31:
+		iconst 0 
+		L32:
+		iand 
+		ifne L33
+		iconst 1 
+		goto L34
+		L33:
+		iconst 0 
+		L34:
+		ifeq L26
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		goto L24
-		L23:
+		goto L27
+		L26:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "false"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		L24:
+		L27:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "not(aaa<bbb and bbb>ccc) must be true: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		ldc "aaa"
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		ifgt L33
+		ifgt L38
 		iconst 1 
-		goto L34
-		L33:
+		goto L39
+		L38:
 		iconst 0 
-		L34:
+		L39:
 		ldc "bbb"
 		ldc "ccc"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		iflt L35
+		iflt L40
 		iconst 1 
-		goto L36
-		L35:
+		goto L41
+		L40:
 		iconst 0 
-		L36:
+		L41:
 		iand 
-		ifne L37
+		ifne L42
 		iconst 1 
-		goto L38
-		L37:
+		goto L43
+		L42:
 		iconst 0 
-		L38:
-		ifeq L31
+		L43:
+		ifeq L35
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		goto L32
-		L31:
+		goto L36
+		L35:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "false"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		L32:
+		L36:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "not(aaa>bbb or bbb>ccc) must be true: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		ldc "aaa"
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		iflt L41
+		iflt L47
 		iconst 1 
-		goto L42
-		L41:
+		goto L48
+		L47:
 		iconst 0 
-		L42:
+		L48:
 		ldc "bbb"
 		ldc "ccc"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		iflt L43
+		iflt L49
 		iconst 1 
-		goto L44
-		L43:
+		goto L50
+		L49:
 		iconst 0 
-		L44:
+		L50:
 		ior 
-		ifne L45
+		ifne L51
 		iconst 1 
-		goto L46
-		L45:
+		goto L52
+		L51:
 		iconst 0 
-		L46:
-		ifeq L39
+		L52:
+		ifeq L44
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		goto L40
-		L39:
+		goto L45
+		L44:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "false"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		L40:
+		L45:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "not(aaa<bbb or bbb<ccc) must be false: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		ldc "aaa"
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		ifgt L49
+		ifgt L56
 		iconst 1 
-		goto L50
-		L49:
+		goto L57
+		L56:
 		iconst 0 
-		L50:
+		L57:
 		ldc "bbb"
 		ldc "ccc"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		ifgt L51
+		ifgt L58
 		iconst 1 
-		goto L52
-		L51:
+		goto L59
+		L58:
 		iconst 0 
-		L52:
+		L59:
 		ior 
-		ifne L53
+		ifne L60
 		iconst 1 
-		goto L54
-		L53:
+		goto L61
+		L60:
 		iconst 0 
-		L54:
-		ifeq L47
+		L61:
+		ifeq L53
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		goto L48
-		L47:
+		goto L54
+		L53:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "false"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		L48:
+		L54:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "not(aaa>bbb or bbb<ccc) must be false : "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		ldc "aaa"
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		iflt L57
-		iconst 1 
-		goto L58
-		L57:
-		iconst 0 
-		L58:
-		ldc "bbb"
-		ldc "ccc"
-		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		ifgt L59
-		iconst 1 
-		goto L60
-		L59:
-		iconst 0 
-		L60:
-		ior 
-		ifne L61
-		iconst 1 
-		goto L62
-		L61:
-		iconst 0 
-		L62:
-		ifeq L55
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "true"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		goto L56
-		L55:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "false"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		L56:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "not(aaa<bbb or bbb>ccc) must be false: "
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		ldc "aaa"
-		ldc "bbb"
-		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		ifgt L65
+		iflt L65
 		iconst 1 
 		goto L66
 		L65:
@@ -342,7 +300,7 @@ public class if_with_strings_with_not {
 		ldc "bbb"
 		ldc "ccc"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		iflt L67
+		ifgt L67
 		iconst 1 
 		goto L68
 		L67:
@@ -355,48 +313,48 @@ public class if_with_strings_with_not {
 		L69:
 		iconst 0 
 		L70:
-		ifeq L63
+		ifeq L62
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		goto L64
-		L63:
+		goto L63
+		L62:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "false"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		L64:
+		L63:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "(aaa<bbb) and not (bbb>ccc) must be true: "
+		ldc "not(aaa<bbb or bbb>ccc) must be false: "
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		ldc "aaa"
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		ifgt L73
+		ifgt L74
 		iconst 1 
-		goto L74
-		L73:
-		iconst 0 
+		goto L75
 		L74:
+		iconst 0 
+		L75:
 		ldc "bbb"
 		ldc "ccc"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
-		iflt L75
+		iflt L76
 		iconst 1 
-		goto L76
-		L75:
-		iconst 0 
+		goto L77
 		L76:
-		ifne L77
-		iconst 1 
-		goto L78
-		L77:
 		iconst 0 
+		L77:
+		ior 
+		ifne L78
+		iconst 1 
+		goto L79
 		L78:
-		iand 
+		iconst 0 
+		L79:
 		ifeq L71
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
@@ -411,6 +369,48 @@ public class if_with_strings_with_not {
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
 		L72:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "(aaa<bbb) and not (bbb>ccc) must be true: "
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		ldc "aaa"
+		ldc "bbb"
+		invokevirtual java/lang/String.compareTo(java/lang/String)I
+		ifgt L83
+		iconst 1 
+		goto L84
+		L83:
+		iconst 0 
+		L84:
+		ldc "bbb"
+		ldc "ccc"
+		invokevirtual java/lang/String.compareTo(java/lang/String)I
+		iflt L85
+		iconst 1 
+		goto L86
+		L85:
+		iconst 0 
+		L86:
+		ifne L87
+		iconst 1 
+		goto L88
+		L87:
+		iconst 0 
+		L88:
+		iand 
+		ifeq L80
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "true"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		goto L81
+		L80:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "false"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		L81:
 		return
 	}
 }

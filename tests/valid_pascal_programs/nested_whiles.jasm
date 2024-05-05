@@ -5,28 +5,28 @@ public class nested_whiles {
 	public static main([java/lang/String)V {
 		sipush 1
 		putstatic nested_whiles.i I
-		L103:
+		L3:
 		getstatic nested_whiles.i I
 		sipush 4
-		if_icmpgt L1
+		if_icmpgt L4
 		iconst 1 
-		goto L2
-		L1:
+		goto L5
+		L4:
 		iconst 0 
-		L2:
-		ifeq L102
+		L5:
+		ifeq L2
 		sipush 1
 		putstatic nested_whiles.j I
-		L106:
+		L8:
 		getstatic nested_whiles.j I
 		sipush 4
-		if_icmpgt L3
+		if_icmpgt L9
 		iconst 1 
-		goto L4
-		L3:
+		goto L10
+		L9:
 		iconst 0 
-		L4:
-		ifeq L105
+		L10:
+		ifeq L7
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "i="
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
@@ -45,14 +45,14 @@ public class nested_whiles {
 		sipush 1
 		iadd 
 		putstatic nested_whiles.j I
-		goto L106
-		L105:
+		goto L8
+		L7:
 		getstatic nested_whiles.i I
 		sipush 1
 		iadd 
 		putstatic nested_whiles.i I
-		goto L103
-		L102:
+		goto L3
+		L2:
 		return
 	}
 }

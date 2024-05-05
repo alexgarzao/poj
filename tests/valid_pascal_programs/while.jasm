@@ -4,15 +4,15 @@ public class while {
 	public static main([java/lang/String)V {
 		sipush 10
 		putstatic while.i I
-		L1:
+		L3:
 		getstatic while.i I
 		sipush 20
-		if_icmpge L3
+		if_icmpge L4
 		iconst 1 
-		goto L4
-		L3:
-		iconst 0 
+		goto L5
 		L4:
+		iconst 0 
+		L5:
 		ifeq L2
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "i="
@@ -26,20 +26,20 @@ public class while {
 		sipush 1
 		iadd 
 		putstatic while.i I
-		goto L1
+		goto L3
 		L2:
 		sipush 20
 		putstatic while.i I
-		L5:
+		L8:
 		getstatic while.i I
 		sipush 10
-		if_icmpgt L7
+		if_icmpgt L9
 		iconst 1 
-		goto L8
-		L7:
+		goto L10
+		L9:
 		iconst 0 
-		L8:
-		ifeq L6
+		L10:
+		ifeq L7
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "dont write i="
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
@@ -52,8 +52,8 @@ public class while {
 		sipush 1
 		iadd 
 		putstatic while.i I
-		goto L5
-		L6:
+		goto L8
+		L7:
 		return
 	}
 }

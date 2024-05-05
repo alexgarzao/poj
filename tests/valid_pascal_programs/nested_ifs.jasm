@@ -3,163 +3,52 @@ public class nested_ifs {
 	public static main([java/lang/String)V {
 		sipush 1
 		sipush 2
-		if_icmple L1
+		if_icmple L4
 		iconst 1 
-		goto L2
-		L1:
-		iconst 0 
-		L2:
-		ifeq L101
-		sipush 2
-		sipush 3
-		if_icmple L3
-		iconst 1 
-		goto L4
-		L3:
-		iconst 0 
+		goto L5
 		L4:
-		ifeq L104
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "1 > 2 and 2 > 3"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		goto L105
-		L104:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "1 > 2 and 2 <= 3"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		L105:
-		goto L102
-		L101:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "1 <= 2"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		L102:
-		sipush 1
-		sipush 2
-		if_icmpge L5
-		iconst 1 
-		goto L6
-		L5:
 		iconst 0 
-		L6:
-		ifeq L107
+		L5:
+		ifeq L1
 		sipush 2
 		sipush 3
-		if_icmpge L7
-		iconst 1 
-		goto L8
-		L7:
-		iconst 0 
-		L8:
-		ifeq L110
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "1 < 2 and 2 < 3"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		goto L111
-		L110:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "1 < 2 and 2 >= 3"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		L111:
-		goto L108
-		L107:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "1 >= 2"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		L108:
-		sipush 1
-		sipush 2
-		if_icmpge L9
+		if_icmple L9
 		iconst 1 
 		goto L10
 		L9:
 		iconst 0 
 		L10:
-		ifeq L113
-		sipush 2
-		sipush 3
-		if_icmple L11
-		iconst 1 
-		goto L12
-		L11:
-		iconst 0 
-		L12:
-		ifeq L116
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "1 < 2 and 2 > 3"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		goto L117
-		L116:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "1 < 2 and 2 <= 3"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		L117:
-		goto L114
-		L113:
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "1 >= 2"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
-		L114:
-		sipush 1
-		sipush 2
-		if_icmple L13
-		iconst 1 
-		goto L14
-		L13:
-		iconst 0 
-		L14:
-		ifeq L119
-		sipush 2
-		sipush 3
-		if_icmple L15
-		iconst 1 
-		goto L16
-		L15:
-		iconst 0 
-		L16:
-		ifeq L122
+		ifeq L6
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "1 > 2 and 2 > 3"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		goto L123
-		L122:
+		goto L7
+		L6:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "1 > 2 and 2 <= 3"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		L123:
-		goto L120
-		L119:
+		L7:
+		goto L2
+		L1:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "1 <= 2"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		L2:
 		sipush 1
 		sipush 2
-		if_icmpge L17
+		if_icmpge L14
 		iconst 1 
-		goto L18
-		L17:
+		goto L15
+		L14:
 		iconst 0 
-		L18:
-		ifeq L125
+		L15:
+		ifeq L11
 		sipush 2
 		sipush 3
 		if_icmpge L19
@@ -168,24 +57,135 @@ public class nested_ifs {
 		L19:
 		iconst 0 
 		L20:
-		ifeq L128
+		ifeq L16
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "1 < 2 and 2 < 3"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		goto L129
-		L128:
+		goto L17
+		L16:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "1 < 2 and 2 >= 3"
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		L129:
-		goto L126
-		L125:
-		L126:
-		L120:
+		L17:
+		goto L12
+		L11:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "1 >= 2"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		L12:
+		sipush 1
+		sipush 2
+		if_icmpge L24
+		iconst 1 
+		goto L25
+		L24:
+		iconst 0 
+		L25:
+		ifeq L21
+		sipush 2
+		sipush 3
+		if_icmple L29
+		iconst 1 
+		goto L30
+		L29:
+		iconst 0 
+		L30:
+		ifeq L26
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "1 < 2 and 2 > 3"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		goto L27
+		L26:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "1 < 2 and 2 <= 3"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		L27:
+		goto L22
+		L21:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "1 >= 2"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		L22:
+		sipush 1
+		sipush 2
+		if_icmple L34
+		iconst 1 
+		goto L35
+		L34:
+		iconst 0 
+		L35:
+		ifeq L31
+		sipush 2
+		sipush 3
+		if_icmple L39
+		iconst 1 
+		goto L40
+		L39:
+		iconst 0 
+		L40:
+		ifeq L36
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "1 > 2 and 2 > 3"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		goto L37
+		L36:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "1 > 2 and 2 <= 3"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		L37:
+		goto L32
+		L31:
+		sipush 1
+		sipush 2
+		if_icmpge L44
+		iconst 1 
+		goto L45
+		L44:
+		iconst 0 
+		L45:
+		ifeq L41
+		sipush 2
+		sipush 3
+		if_icmpge L49
+		iconst 1 
+		goto L50
+		L49:
+		iconst 0 
+		L50:
+		ifeq L46
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "1 < 2 and 2 < 3"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		goto L47
+		L46:
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc "1 < 2 and 2 >= 3"
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
+		getstatic java/lang/System.out java/io/PrintStream
+		invokevirtual java/io/PrintStream.println()V
+		L47:
+		goto L42
+		L41:
+		L42:
+		L32:
 		return
 	}
 }
