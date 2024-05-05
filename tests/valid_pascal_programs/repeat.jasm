@@ -4,7 +4,7 @@ public class repeat {
 	public static main([java/lang/String)V {
 		sipush 10
 		putstatic repeat.i I
-		L1:
+		L3:
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "i="
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
@@ -19,13 +19,13 @@ public class repeat {
 		putstatic repeat.i I
 		getstatic repeat.i I
 		sipush 20
-		if_icmpne L2
+		if_icmpne L4
 		iconst 1 
-		goto L3
-		L2:
+		goto L5
+		L4:
 		iconst 0 
-		L3:
-		ifeq L1
+		L5:
+		ifeq L3
 		return
 	}
 }

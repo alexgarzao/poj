@@ -5,16 +5,19 @@ public class nested_repeats {
 	public static main([java/lang/String)V {
 		sipush 1
 		putstatic nested_repeats.i I
-		L103:
+		L3:
 		sipush 1
 		putstatic nested_repeats.j I
-		L106:
+		L6:
 		getstatic java/lang/System.out java/io/PrintStream
-		ldc "i,j="
+		ldc "i="
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		getstatic nested_repeats.i I
 		invokevirtual java/io/PrintStream.print(I)V
+		getstatic java/lang/System.out java/io/PrintStream
+		ldc " j="
+		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		getstatic nested_repeats.j I
 		invokevirtual java/io/PrintStream.print(I)V
@@ -26,26 +29,26 @@ public class nested_repeats {
 		putstatic nested_repeats.j I
 		getstatic nested_repeats.j I
 		sipush 5
-		if_icmplt L1
+		if_icmplt L7
 		iconst 1 
-		goto L2
-		L1:
+		goto L8
+		L7:
 		iconst 0 
-		L2:
-		ifeq L106
+		L8:
+		ifeq L6
 		getstatic nested_repeats.i I
 		sipush 1
 		iadd 
 		putstatic nested_repeats.i I
 		getstatic nested_repeats.i I
 		sipush 5
-		if_icmplt L3
+		if_icmplt L9
 		iconst 1 
-		goto L4
-		L3:
+		goto L10
+		L9:
 		iconst 0 
-		L4:
-		ifeq L103
+		L10:
+		ifeq L3
 		return
 	}
 }

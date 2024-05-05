@@ -4,7 +4,7 @@ public class for {
 	public static main([java/lang/String)V {
 		sipush 10
 		putstatic for.i I
-		L1:
+		L3:
 		getstatic for.i I
 		sipush 19
 		if_icmpgt L2
@@ -20,14 +20,14 @@ public class for {
 		sipush 1
 		iadd 
 		putstatic for.i I
-		goto L1
+		goto L3
 		L2:
 		sipush 10
 		putstatic for.i I
-		L3:
+		L6:
 		getstatic for.i I
 		sipush 2
-		if_icmpgt L4
+		if_icmpgt L5
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "dont write i="
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
@@ -40,14 +40,14 @@ public class for {
 		sipush 1
 		iadd 
 		putstatic for.i I
-		goto L3
-		L4:
+		goto L6
+		L5:
 		sipush 10
 		putstatic for.i I
-		L5:
+		L9:
 		getstatic for.i I
 		sipush 5
-		if_icmplt L6
+		if_icmplt L8
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "dec i="
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
@@ -60,8 +60,8 @@ public class for {
 		sipush 1
 		isub 
 		putstatic for.i I
-		goto L5
-		L6:
+		goto L9
+		L8:
 		return
 	}
 }
