@@ -16,27 +16,25 @@ type LabelsContext struct {
 func NewLabelsContext() *LabelsContext {
 	return &LabelsContext{
 		labels:  NewStack[Labels](),
-		labelID: 100, // TODO: must be zero :-)
+		labelID: 0,
 	}
 }
 
 func (l *LabelsContext) Add() {
-	labels := Labels{}
-
-	l.labelID++
-	labels.Else = fmt.Sprintf("L%d", l.labelID)
-
-	l.labelID++
-	labels.NextStatement = fmt.Sprintf("L%d", l.labelID)
-
-	l.labelID++
-	labels.IterationStart = fmt.Sprintf("L%d", l.labelID)
-
-	l.labels.Push(labels)
+	l.labels.Push(Labels{
+		Else:           l.NewLabel(),
+		NextStatement:  l.NewLabel(),
+		IterationStart: l.NewLabel(),
+	})
 }
 
 func (l *LabelsContext) Rem() {
 	l.labels.Pop()
+}
+
+func (l *LabelsContext) NewLabel() string {
+	l.labelID++
+	return fmt.Sprintf("L%d", l.labelID)
 }
 
 func (l *LabelsContext) Else() string {

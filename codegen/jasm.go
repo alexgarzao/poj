@@ -12,15 +12,12 @@ type JASM struct {
 
 	className                string
 	procedureDeclarationName string
-	labelID                  int
-	nextStatementLabel string
-	forTestLabel       string
-	forVariable        string
-	forStep            string
+	forStep                  string
 
 	// Stack contexts.
 	procedureStatementContext Stack[string]
 	labelsContext             *LabelsContext
+	forVariableContext        Stack[string]
 }
 
 func NewJASM() *JASM {
@@ -237,12 +234,11 @@ func (j *JASM) FinishForInit(varName string) error {
 		return err
 	}
 
-	j.forVariable = varName
-	j.forTestLabel = j.newLabel()
-	j.nextStatementLabel = j.newLabel()
-	j.addLabel(j.forTestLabel)
+	j.forVariableContext.Push(varName)
+	j.labelsContext.Add()
+	j.addLabel(j.labelsContext.IterationStart())
 
-	if err := j.LoadVarContent(j.forVariable); err != nil {
+	if err := j.LoadVarContent(varName); err != nil {
 		return err
 	}
 
@@ -253,14 +249,15 @@ func (j *JASM) FinishForUntil(step string) {
 	j.forStep = step
 
 	if step == "to" {
-		j.addOpcode("if_icmpgt", j.nextStatementLabel)
+		j.addOpcode("if_icmpgt", j.labelsContext.NextStatement())
 	} else {
-		j.addOpcode("if_icmplt", j.nextStatementLabel)
+		j.addOpcode("if_icmplt", j.labelsContext.NextStatement())
 	}
 }
 
 func (j *JASM) FinishForStatement() error {
-	if err := j.LoadVarContent(j.forVariable); err != nil {
+	forVariable, _ := j.forVariableContext.Pop()
+	if err := j.LoadVarContent(forVariable); err != nil {
 		return err
 	}
 
@@ -272,12 +269,14 @@ func (j *JASM) FinishForStatement() error {
 		j.addISubOpcode()
 	}
 
-	if err := j.FinishAssignmentStatement(j.forVariable); err != nil {
+	if err := j.FinishAssignmentStatement(forVariable); err != nil {
 		return err
 	}
 
-	j.addGotoOpcode(j.forTestLabel)
-	j.addLabel(j.nextStatementLabel)
+	j.addGotoOpcode(j.labelsContext.IterationStart())
+	j.addLabel(j.labelsContext.NextStatement())
+
+	j.labelsContext.Rem()
 
 	return nil
 }
@@ -402,8 +401,8 @@ func (j *JASM) AddUnaryOperatorOpcode(op string) error {
 
 	switch op {
 	case "not":
-		lfalse := j.newLabel()
-		lnext := j.newLabel()
+		lfalse := j.labelsContext.NewLabel()
+		lnext := j.labelsContext.NewLabel()
 		j.addIfNeOpcode(lfalse)
 		j.addPushTrueOpcode()
 		j.addGotoOpcode(lnext)
@@ -624,11 +623,6 @@ func (j *JASM) finishInvokeDynamic() {
 	j.addLine("}")
 }
 
-func (j *JASM) newLabel() string {
-	j.labelID++
-	return fmt.Sprintf("L%d", j.labelID)
-}
-
 func (j *JASM) addLine(line string) {
 	j.code.AddLine(line)
 }
@@ -642,8 +636,8 @@ func (j *JASM) decTab() {
 }
 
 func (j *JASM) genBooleanOperatorTpl(ifOpcode string) {
-	lfalse := j.newLabel()
-	lnext := j.newLabel()
+	lfalse := j.labelsContext.NewLabel()
+	lnext := j.labelsContext.NewLabel()
 	j.addOpcode(ifOpcode, lfalse)
 	j.addPushTrueOpcode()
 	j.addGotoOpcode(lnext)
