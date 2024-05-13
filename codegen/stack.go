@@ -36,3 +36,7 @@ func (s *Stack[T]) Top() (T, bool) {
 
 	return elem, true
 }
+
+func (s *Stack[T]) Size() int {
+	return len(s.elements)
+}
