@@ -1,6 +1,10 @@
 package codegen
 
-import "github.com/antlr4-go/antlr/v4"
+import (
+	"fmt"
+
+	"github.com/antlr4-go/antlr/v4"
+)
 
 type CustomSyntaxError struct {
 	line, column int
@@ -16,8 +20,8 @@ type CustomErrorListener struct {
 	Errors                      []error
 }
 
-func (c *CustomErrorListener) Add(err error) {
-	c.Errors = append(c.Errors, err)
+func (c *CustomErrorListener) Add(line int, err error) {
+	c.Errors = append(c.Errors, fmt.Errorf("line %d: %s", line, err))
 }
 
 func (c *CustomErrorListener) String() string {
