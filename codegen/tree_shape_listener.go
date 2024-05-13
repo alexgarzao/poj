@@ -44,54 +44,54 @@ func (t *TreeShapeListener) ExitString(ctx *parsing.StringContext) {
 
 func (t *TreeShapeListener) EnterActualParameter(ctx *parsing.ActualParameterContext) {
 	if err := t.jasm.StartParameter(); err != nil {
-		t.parserErrors.Add(err)
+		t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 	}
 }
 
 func (t *TreeShapeListener) ExitActualParameter(ctx *parsing.ActualParameterContext) {
 	if err := t.jasm.FinishParameter(); err != nil {
-		t.parserErrors.Add(err)
+		t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 	}
 }
 
 func (t *TreeShapeListener) EnterCompoundStatement(ctx *parsing.CompoundStatementContext) {
 	if err := t.jasm.StartMainBlock(); err != nil {
-		t.parserErrors.Add(err)
+		t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 	}
 }
 
 func (t *TreeShapeListener) ExitNotOp(ctx *parsing.NotOpContext) {
 	op := ctx.GetOp().GetText()
 	if err := t.jasm.AddUnaryOperatorOpcode(op); err != nil {
-		t.parserErrors.Add(err)
+		t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 	}
 }
 
 func (t *TreeShapeListener) ExitBoolOp(ctx *parsing.BoolOpContext) {
 	op := ctx.GetOp().GetText()
 	if err := t.jasm.AddBooleanOperatorOpcode(op); err != nil {
-		t.parserErrors.Add(err)
+		t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 	}
 }
 
 func (t *TreeShapeListener) ExitMulDivOp(ctx *parsing.MulDivOpContext) {
 	op := ctx.GetOp().GetText()
 	if err := t.jasm.AddMulDivOperatorOpcode(op); err != nil {
-		t.parserErrors.Add(err)
+		t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 	}
 }
 
 func (t *TreeShapeListener) ExitAddSubOp(ctx *parsing.AddSubOpContext) {
 	op := ctx.GetOp().GetText()
 	if err := t.jasm.AddAddSubOperatorOpcode(op); err != nil {
-		t.parserErrors.Add(err)
+		t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 	}
 }
 
 func (t *TreeShapeListener) ExitRelOp(ctx *parsing.RelOpContext) {
 	op := ctx.GetOp().GetText()
 	if err := t.jasm.AddRelationalOperatorOpcode(op); err != nil {
-		t.parserErrors.Add(err)
+		t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 	}
 }
 
@@ -120,7 +120,7 @@ func (t *TreeShapeListener) ExitVariableDeclaration(ctx *parsing.VariableDeclara
 	pascalType := ctx.GetPascalType().GetText()
 	for _, id := range varNames.GetIds() {
 		if err := t.jasm.NewVariable(id.GetText(), pascalType); err != nil {
-			t.parserErrors.Add(err)
+			t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 		}
 	}
 }
@@ -128,14 +128,14 @@ func (t *TreeShapeListener) ExitVariableDeclaration(ctx *parsing.VariableDeclara
 func (t *TreeShapeListener) ExitAssignmentStatement(ctx *parsing.AssignmentStatementContext) {
 	varName := ctx.GetVarName().GetText()
 	if err := t.jasm.FinishAssignmentStatement(varName); err != nil {
-		t.parserErrors.Add(err)
+		t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 	}
 }
 
 func (t *TreeShapeListener) ExitFactorVariable(ctx *parsing.FactorVariableContext) {
 	varName := ctx.GetId().GetText()
 	if err := t.jasm.LoadVarContent(varName); err != nil {
-		t.parserErrors.Add(err)
+		t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 	}
 }
 
@@ -186,7 +186,7 @@ func (t *TreeShapeListener) EnterProcedureDeclaration(ctx *parsing.ProcedureDecl
 	}
 
 	if err := t.jasm.NewProcedure(procName, paramTypes); err != nil {
-		t.parserErrors.Add(err)
+		t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 	}
 
 	t.jasm.StartProcedureDeclaration(procName, paramTypes)
@@ -213,7 +213,7 @@ func (t *TreeShapeListener) EnterFunctionDeclaration(ctx *parsing.FunctionDeclar
 	returnType := ctx.GetReturnType().GetText()
 
 	if err := t.jasm.NewFunction(funcName, paramTypes, returnType); err != nil {
-		t.parserErrors.Add(err)
+		t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 	}
 
 	t.jasm.StartFunctionDeclaration(funcName, paramTypes, returnType)
@@ -228,7 +228,7 @@ func (t *TreeShapeListener) EnterFormalParameterSection(ctx *parsing.FormalParam
 	pascalType := ctx.GetParamType().GetText()
 	for _, id := range params.GetIds() {
 		if err := t.jasm.NewVariable(id.GetText(), pascalType); err != nil {
-			t.parserErrors.Add(err)
+			t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 		}
 	}
 }
@@ -240,12 +240,13 @@ func (t *TreeShapeListener) EnterFunctionDesignator(ctx *parsing.FunctionDesigna
 func (t *TreeShapeListener) ExitFunctionDesignator(ctx *parsing.FunctionDesignatorContext) {
 	funcName := ctx.GetFunctionID().GetText()
 	if err := t.jasm.CallFunction(funcName); err != nil {
-		t.parserErrors.Add(err)
+		t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 	}
 
+	// TODO: refactor
 	_, exists := t.jasm.procedureStatementContext.Pop()
 	if !exists {
-		t.parserErrors.Add(fmt.Errorf("during pop procedure statement context"))
+		t.parserErrors.Add(ctx.GetStart().GetLine(), fmt.Errorf("during pop procedure statement context"))
 	}
 }
 
