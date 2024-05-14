@@ -134,7 +134,7 @@ func (t *TreeShapeListener) ExitAssignmentStatement(ctx *parsing.AssignmentState
 
 func (t *TreeShapeListener) ExitFactorVariable(ctx *parsing.FactorVariableContext) {
 	varName := ctx.GetId().GetText()
-	if err := t.jasm.LoadVarContent(varName); err != nil {
+	if err := t.jasm.LoadOrStoreVarContent(varName); err != nil {
 		t.parserErrors.Add(ctx.GetStart().GetLine(), err)
 	}
 }

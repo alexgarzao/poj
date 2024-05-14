@@ -144,6 +144,8 @@ func (j *JASM) StartParameter() error {
 
 	if procedureStatementName == "write" || procedureStatementName == "writeln" {
 		j.addStaticPrintStream()
+	} else if procedureStatementName == "readln" {
+		j.addOpcode("invokestatic", "java/lang/System.console()java/io/Console")
 	}
 
 	return nil
@@ -238,7 +240,7 @@ func (j *JASM) FinishForInit(varName string) error {
 	j.labelsContext.Add()
 	j.addLabel(j.labelsContext.IterationStart())
 
-	if err := j.LoadVarContent(varName); err != nil {
+	if err := j.LoadOrStoreVarContent(varName); err != nil {
 		return err
 	}
 
@@ -257,7 +259,7 @@ func (j *JASM) FinishForUntil(step string) {
 
 func (j *JASM) FinishForStatement() error {
 	forVariable, _ := j.forVariableContext.Pop()
-	if err := j.LoadVarContent(forVariable); err != nil {
+	if err := j.LoadOrStoreVarContent(forVariable); err != nil {
 		return err
 	}
 
@@ -446,6 +448,7 @@ func (j *JASM) FinishAssignmentStatement(varName string) error {
 
 	j.addLine(symbol.GenStoreOpcode(j.className))
 
+	// TODO: In all cases, j.pst.Pop is executed.
 	switch symbol.PascalType {
 	case String:
 		j.pst.Pop()
@@ -458,10 +461,26 @@ func (j *JASM) FinishAssignmentStatement(varName string) error {
 	return nil
 }
 
-func (j *JASM) LoadVarContent(varName string) error {
+func (j *JASM) LoadOrStoreVarContent(varName string) error {
+	procedureStatementName, _ := j.procedureStatementContext.Top()
+
 	symbol, ok := j.st.Get(varName)
 	if !ok {
 		return fmt.Errorf("variable %s not found", varName)
+	}
+
+	if procedureStatementName == "readln" { // TODO: case insensitive?
+		// In readln, we need to store the value for each variable.
+		j.pst.Push(symbol.PascalType)
+		if procedureStatementName == "readln" {
+			if err := j.addInvokeReadLineWithType(); err != nil {
+				return err
+			}
+		}
+
+		j.addLine(symbol.GenStoreOpcode(j.className))
+
+		return nil
 	}
 
 	j.addLine(symbol.GenLoadOpcode(j.className))
@@ -583,6 +602,22 @@ func (j *JASM) addInvokeVirtual(method string) {
 
 func (j *JASM) addInvokeStatic(method, signature string, returnType string) {
 	j.addOpcode(fmt.Sprintf("invokestatic %s.%s(%s)%s", j.className, method, signature, returnType))
+}
+
+func (j *JASM) addInvokeReadLineWithType() error {
+	pt := j.pst.Pop()
+
+	j.addInvokeVirtual("java/io/Console.readLine()java/lang/String")
+
+	if pt == String {
+		return nil
+	} else if pt == Integer {
+		j.addOpcode("invokestatic", "java/lang/Integer.parseInt(java/lang/String)I")
+	} else {
+		return fmt.Errorf("undefined type %s in read/readln", pt)
+	}
+
+	return nil
 }
 
 func (j *JASM) addInvokeVirtualPrintWithType() error {
