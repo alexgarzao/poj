@@ -1,0 +1,54 @@
+/*
+ * Disassembled from InputData.class (originally InputData.java) by JASM
+ *
+ * Original class version: 55
+ * Signature: <no signature>
+ */
+public class InputData {
+    // <no signature>
+    public static name java/lang/String
+
+    // <no signature>
+    public static age I
+
+    // <no signature>
+    // <no exceptions>
+    public <init>()V {
+        
+        label0:
+        aload 0
+        invokespecial java/lang/Object.<init>()V
+        return
+    }
+
+
+    // <no signature>
+    // <no exceptions>
+    public static main([java/lang/String)V {
+        
+        label0:
+        invokestatic java/lang/System.console()java/io/Console
+        invokevirtual java/io/Console.readLine()java/lang/String
+        putstatic InputData.name java/lang/String
+        
+        label1:
+        invokestatic java/lang/System.console()java/io/Console
+        invokevirtual java/io/Console.readLine()java/lang/String
+        invokestatic java/lang/Integer.parseInt(java/lang/String)I
+        putstatic InputData.age I
+        
+        label2:
+        getstatic java/lang/System.out java/io/PrintStream
+        getstatic InputData.name java/lang/String
+        invokedynamic makeConcatWithConstants(java/lang/String)java/lang/String {
+            invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite
+            ["You entered string "]
+        }
+
+        invokevirtual java/io/PrintStream.println(java/lang/String)V
+        
+        label3:
+        return
+    }
+
+}
