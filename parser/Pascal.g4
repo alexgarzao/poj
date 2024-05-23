@@ -44,33 +44,7 @@ identifier
     ;
 
 block
-    : (
-        constantDefinitionPart
-        | typeDefinitionPart
-        | variableDeclarationPart
-        | procedureAndFunctionDeclarationPart
-    )* compoundStatement
-    ;
-
-constantDefinitionPart
-    : CONST (constantDefinition SEMI)+
-    ;
-
-constantDefinition
-    : identifier EQUAL constant
-    ;
-
-constantChr
-    : CHR LPAREN unsignedInteger RPAREN
-    ;
-
-constant
-    : unsignedNumber
-    | sign unsignedNumber
-    | identifier
-    | sign identifier
-    | string
-    | constantChr
+    : (variableDeclarationPart | procedureAndFunctionDeclarationPart)* compoundStatement
     ;
 
 unsignedNumber
@@ -86,11 +60,6 @@ unsignedReal
     : NUM_REAL
     ;
 
-sign
-    : PLUS
-    | MINUS
-    ;
-
 bool_
     : TRUE
     | FALSE
@@ -100,121 +69,9 @@ string
     : STRING_LITERAL {$STRING_LITERAL.SetText($STRING_LITERAL.GetText()[1:len($STRING_LITERAL.GetText())-1])}
     ;
 
-typeDefinitionPart
-    : TYPE (typeDefinition SEMI)+
-    ;
-
-typeDefinition
-    : identifier EQUAL (type_ | functionType | procedureType)
-    ;
-
-functionType
-    : FUNCTION (formalParameterList)? COLON resultType
-    ;
-
-procedureType
-    : PROCEDURE (formalParameterList)?
-    ;
-
-type_
-    : simpleType
-    | structuredType
-    | pointerType
-    ;
-
-simpleType
-    : scalarType
-    | subrangeType
-    | typeIdentifier
-    | stringtype
-    ;
-
-scalarType
-    : LPAREN identifierList RPAREN
-    ;
-
-subrangeType
-    : constant DOTDOT constant
-    ;
-
 typeIdentifier
     : identifier
-    | (CHAR | BOOLEAN | INTEGER | REAL | STRING)
-    ;
-
-structuredType
-    : arrayType
-    | recordType
-    | setType
-    | fileType
-    ;
-
-stringtype
-    : STRING LBRACK (identifier | unsignedNumber) RBRACK
-    ;
-
-arrayType
-    : ARRAY LBRACK typeList RBRACK OF componentType
-    | ARRAY LBRACK2 typeList RBRACK2 OF componentType
-    ;
-
-typeList
-    : indexType (COMMA indexType)*
-    ;
-
-indexType
-    : simpleType
-    ;
-
-componentType
-    : type_
-    ;
-
-recordType
-    : RECORD fieldList? END
-    ;
-
-fieldList
-    : fixedPart (SEMI variantPart)?
-    | variantPart
-    ;
-
-fixedPart
-    : recordSection (SEMI recordSection)*
-    ;
-
-recordSection
-    : identifierList COLON type_
-    ;
-
-variantPart
-    : CASE tag OF variant (SEMI variant)*
-    ;
-
-tag
-    : identifier COLON typeIdentifier
-    | typeIdentifier
-    ;
-
-variant
-    : constList COLON LPAREN fieldList RPAREN
-    ;
-
-setType
-    : SET OF baseType
-    ;
-
-baseType
-    : simpleType
-    ;
-
-fileType
-    : FILE OF type_
-    | FILE
-    ;
-
-pointerType
-    : POINTER typeIdentifier
+    | (BOOLEAN | INTEGER | REAL | STRING)
     ;
 
 variableDeclarationPart
@@ -222,7 +79,7 @@ variableDeclarationPart
     ;
 
 variableDeclaration
-    : varNames = identifierList COLON pascalType = type_
+    : varNames = identifierList COLON pascalType = typeIdentifier
     ;
 
 procedureAndFunctionDeclarationPart
@@ -250,16 +107,8 @@ identifierList
     : ids += identifier (COMMA ids += identifier)*
     ;
 
-constList
-    : constant (COMMA constant)*
-    ;
-
 functionDeclaration
-    : FUNCTION name = identifier (paramList = formalParameterList)? COLON returnType = resultType SEMI block
-    ;
-
-resultType
-    : typeIdentifier
+    : FUNCTION name = identifier (paramList = formalParameterList)? COLON returnType = typeIdentifier SEMI block
     ;
 
 statement
@@ -278,12 +127,7 @@ assignmentStatement
     ;
 
 variable
-    : (AT identifier | identifier) (
-        LBRACK expression (COMMA expression)* RBRACK
-        | LBRACK2 expression (COMMA expression)* RBRACK2
-        | DOT identifier
-        | POINTER
-    )*
+    : identifier (LBRACK expression (COMMA expression)* RBRACK | DOT identifier)*
     ;
 
 expression
@@ -302,7 +146,6 @@ relationaloperator
     | LE
     | GE
     | GT
-    | IN
     ;
 
 addsuboperator
@@ -332,16 +175,13 @@ factor
     | LPAREN expression RPAREN # factorExpression
     | functionDesignator       # factorFunctionDesignator
     | unsignedConstant         # factorUnsignedConstant
-    | set_                     # factorSet
     // | NOT factor
     | bool_ # factorBool
     ;
 
 unsignedConstant
     : unsignedNumber
-    | constantChr
     | string
-    | NIL
     ;
 
 functionDesignator
@@ -350,20 +190,6 @@ functionDesignator
 
 parameterList
     : actualParameter (COMMA actualParameter)*
-    ;
-
-set_
-    : LBRACK elementList RBRACK
-    | LBRACK2 elementList RBRACK2
-    ;
-
-elementList
-    : element (COMMA element)*
-    |
-    ;
-
-element
-    : expression (DOTDOT expression)?
     ;
 
 procedureStatement
@@ -382,16 +208,10 @@ emptyStatement_
     :
     ;
 
-empty_
-    :
-    /* empty */
-    ;
-
 structuredStatement
     : compoundStatement
     | conditionalStatement
     | repetetiveStatement
-    | withStatement
     ;
 
 compoundStatement
@@ -404,7 +224,6 @@ statements
 
 conditionalStatement
     : ifStatement
-    | caseStatement
     ;
 
 ifStatement
@@ -417,14 +236,6 @@ thenStatement
 
 elseStatement
     : ELSE statement
-    ;
-
-caseStatement
-    : CASE expression OF caseListElement (SEMI caseListElement)* (SEMI ELSE statements)? END
-    ;
-
-caseListElement
-    : constList COLON statement
     ;
 
 repetetiveStatement
@@ -457,20 +268,8 @@ forUntil
     : step = (TO | DOWNTO) expression
     ;
 
-withStatement
-    : WITH recordVariableList DO statement
-    ;
-
-recordVariableList
-    : variable (COMMA variable)*
-    ;
-
 AND
     : 'AND'
-    ;
-
-ARRAY
-    : 'ARRAY'
     ;
 
 BEGIN
@@ -479,22 +278,6 @@ BEGIN
 
 BOOLEAN
     : 'BOOLEAN'
-    ;
-
-CASE
-    : 'CASE'
-    ;
-
-CHAR
-    : 'CHAR'
-    ;
-
-CHR
-    : 'CHR'
-    ;
-
-CONST
-    : 'CONST'
     ;
 
 DIV
@@ -517,10 +300,6 @@ END
     : 'END'
     ;
 
-FILE
-    : 'FILE'
-    ;
-
 FOR
     : 'FOR'
     ;
@@ -533,20 +312,12 @@ IF
     : 'IF'
     ;
 
-IN
-    : 'IN'
-    ;
-
 INTEGER
     : 'INTEGER'
     ;
 
 MOD
     : 'MOD'
-    ;
-
-NIL
-    : 'NIL'
     ;
 
 NOT
@@ -573,16 +344,8 @@ REAL
     : 'REAL'
     ;
 
-RECORD
-    : 'RECORD'
-    ;
-
 REPEAT
     : 'REPEAT'
-    ;
-
-SET
-    : 'SET'
     ;
 
 THEN
@@ -591,10 +354,6 @@ THEN
 
 TO
     : 'TO'
-    ;
-
-TYPE
-    : 'TYPE'
     ;
 
 UNTIL
@@ -607,10 +366,6 @@ VAR
 
 WHILE
     : 'WHILE'
-    ;
-
-WITH
-    : 'WITH'
     ;
 
 PLUS
@@ -691,14 +446,6 @@ RBRACK
 
 RBRACK2
     : '.)'
-    ;
-
-POINTER
-    : '^'
-    ;
-
-AT
-    : '@'
     ;
 
 DOT
