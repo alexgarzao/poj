@@ -15,7 +15,7 @@ A Figura abaixo contém as etapas necessárias para criarmos o nosso compilador 
 
 Quando falamos em _subset_ de Pascal entendam um programa Pascal válido, mas com um conjunto reduzido de instruções e operações:
 
-- Declaração de variáveis utilizando os tipos básicos: integer, real, boolean e string;
+- Declaração de variáveis utilizando os tipos básicos: integer, boolean e string;
 - Estruturas condicionais: If/Else;
 - Estruturas de repetição: For, While, Repeat;
 - Entrada e saída de dados via console: Write, WriteLn, Read, ReadLn;

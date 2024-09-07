@@ -11,9 +11,9 @@ POJ é um projeto com escopo simples (na medida do possível) e de fácil entend
 - Git
 - Go 1.22
 - Make
-- ANTLR 4.13.1: pacote está versionado junto com este projeto na pasta parser
-- JAVA: para poder executar o ANTLR e para executar o arquivo class (bytecode java) gerado
-- JASM 0.7.0: instruções sobre como baixar [aqui](https://github.com/roscopeco/jasm)
+- ANTLR 4.13.1: Gerador de parsers (pacote está versionado junto com este projeto na pasta parser)
+- JAVA: Runtime do Java (necessário para executar o ANTLR e para executar o arquivo class (bytecode java) gerado)
+- JASM 0.7.0: Assemblador Java assembly (necessário para gerar o arquivo class (instruções sobre como baixar [aqui](https://github.com/roscopeco/jasm)))
 
 # Como gerar o executável do POJ
 
@@ -28,7 +28,7 @@ make test
 make build
 ```
 
-Após isso, o binário do POJ estará em na pasta bin.
+Após isso, o binário do POJ estará na pasta bin.
 
 # Passos para compilar o hello_world.pas
 
@@ -51,7 +51,7 @@ Uma forma mais enxuta é utilizar o make:
 make compile-and-run-example program=hello_world
 ```
 
-# Exemplos de programas aceitos
+# Exemplos de programas aceitos pelo POJ
 
 Abaixo é possível ver o clássico “Hello world!” em Pascal:
 
@@ -102,34 +102,21 @@ begin
 end.
 ```
 
-No momento, apenas o "Hello world!" pode ser compilado com o POJ. Para quem tiver interesse de ver a execução destes outros programas, sugiro utilizar o [Free Pascal Compiler](https://www.freepascal.org/). Nas próximas semanas poderemos utilizar o POJ com todos estes exemplos :-)
 
-# Ajustes e melhorias
+# Recursos implementados do Pascal
 
-O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
+O POJ implementa um subconjunto das funcionalidades existentes em compiladores de Pascal modernos. Este subconjunto compreende:
 
-- [x] Definir qual gerador de parser será utilizado
-- [x] Encontrar uma gramática de Pascal pronta no formato do gerador de parsers (ANTLR)
-- [x] Ajustar a gramática para reconhecer o subset de Pascal esperado
-- [x] No parser identificar a definição de procedimentos Pascal para determinar o bloco Pascal principal
-- [x] Encontrar um montador Java assembly (JASM)
-- [x] POJ gerar um código assembly Java válido para o assemblador
-- [x] Criar o README inicial
-- [ ] Declaração e uso de variáveis string
-- [ ] Saída de dados (terminal)
-- [ ] Instrução If/Else
-- [ ] Declaração e uso de variáveis inteiras
-- [ ] Operações aritméticas sem precedência de operadores
-- [ ] Instrução For
-- [ ] Instrução Repeat
-- [ ] Instrução While
-- [ ] Operações aritméticas com precedência de operadores
-- [ ] Entrada de dados (terminal)
-- [ ] Declaração e uso de variáveis booleanas
-- [ ] Declaração e uso de variáveis de ponto flutuante (Real)
-- [ ] Declaração e uso de procedures
-- [ ] Declaração e uso de funções
-- [ ] Uso de funções recursivas
+- Declaração e uso de variáveis dos tipos string, int e bool
+- Entrada e saída de dados (terminal)
+- Instruções de controle: If/Else, For, Repeat e While
+- Operações aritméticas com precedência de operadores
+- Declaração e uso de procedures e funções
+- Uso de funções recursivas
+
+# Documentação do projeto
+
+Maiores informações sobre o funcionamento e a arquitetura do projeto podem ser vistas nesta série de publicações [aqui](https://dev.to/alexgarzao/series/26440). Além disso, temos a [visão macro](docs/visao_macro.md) bem como as ["internals"](docs/internals.md) do projeto.
 
 # Licença
 
