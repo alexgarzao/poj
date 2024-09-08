@@ -11,11 +11,6 @@ public class procedure_call_add_numbers {
 		return
 	}
 	public static main([java/lang/String)V {
-		getstatic java/lang/System.out java/io/PrintStream
-		ldc "Hello from main!"
-		invokevirtual java/io/PrintStream.print(java/lang/String)V
-		getstatic java/lang/System.out java/io/PrintStream
-		invokevirtual java/io/PrintStream.println()V
 		sipush 4
 		sipush 6
 		invokestatic procedure_call_add_numbers.add(I, I)V 
