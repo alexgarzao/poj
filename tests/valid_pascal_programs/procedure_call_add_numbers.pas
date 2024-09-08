@@ -6,6 +6,5 @@ begin
 end;
 
 begin
-    writeln('Hello from main!');
     add(4, 6);
 end.
