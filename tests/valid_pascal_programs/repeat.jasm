@@ -20,10 +20,10 @@ public class repeat {
 		getstatic repeat.i I
 		sipush 20
 		if_icmpne L4
-		iconst 1 
+		iconst 1
 		goto L5
 		L4:
-		iconst 0 
+		iconst 0
 		L5:
 		ifeq L3
 		return

@@ -8,10 +8,10 @@ public class while {
 		getstatic while.i I
 		sipush 20
 		if_icmpge L4
-		iconst 1 
+		iconst 1
 		goto L5
 		L4:
-		iconst 0 
+		iconst 0
 		L5:
 		ifeq L2
 		getstatic java/lang/System.out java/io/PrintStream
@@ -34,10 +34,10 @@ public class while {
 		getstatic while.i I
 		sipush 10
 		if_icmpgt L9
-		iconst 1 
+		iconst 1
 		goto L10
 		L9:
-		iconst 0 
+		iconst 0
 		L10:
 		ifeq L7
 		getstatic java/lang/System.out java/io/PrintStream

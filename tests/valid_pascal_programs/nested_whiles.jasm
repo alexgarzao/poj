@@ -9,10 +9,10 @@ public class nested_whiles {
 		getstatic nested_whiles.i I
 		sipush 4
 		if_icmpgt L4
-		iconst 1 
+		iconst 1
 		goto L5
 		L4:
-		iconst 0 
+		iconst 0
 		L5:
 		ifeq L2
 		sipush 1
@@ -21,10 +21,10 @@ public class nested_whiles {
 		getstatic nested_whiles.j I
 		sipush 4
 		if_icmpgt L9
-		iconst 1 
+		iconst 1
 		goto L10
 		L9:
-		iconst 0 
+		iconst 0
 		L10:
 		ifeq L7
 		getstatic java/lang/System.out java/io/PrintStream

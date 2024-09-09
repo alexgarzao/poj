@@ -551,11 +551,11 @@ func (j *JASM) addSiPushOpcode(number string) {
 }
 
 func (j *JASM) addPushTrueOpcode() {
-	j.addOpcode("iconst 1")
+	j.addOpcode("iconst", "1")
 }
 
 func (j *JASM) addPushFalseOpcode() {
-	j.addOpcode("iconst 0")
+	j.addOpcode("iconst", "0")
 }
 
 func (j *JASM) addIAddOpcode() {

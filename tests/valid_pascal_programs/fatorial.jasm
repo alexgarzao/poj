@@ -5,10 +5,10 @@ public class fatorial {
 		iload 0
 		sipush 0
 		if_icmpge L4
-		iconst 1 
+		iconst 1
 		goto L5
 		L4:
-		iconst 0 
+		iconst 0
 		L5:
 		ifeq L1
 		sipush 0
@@ -18,10 +18,10 @@ public class fatorial {
 		iload 0
 		sipush 1
 		if_icmpgt L9
-		iconst 1 
+		iconst 1
 		goto L10
 		L9:
-		iconst 0 
+		iconst 0
 		L10:
 		ifeq L6
 		sipush 1
