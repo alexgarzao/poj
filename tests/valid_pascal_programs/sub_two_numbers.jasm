@@ -4,7 +4,7 @@ public class sub_two_numbers {
 		getstatic java/lang/System.out java/io/PrintStream
 		sipush 4
 		sipush 3
-		isub 
+		isub
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V

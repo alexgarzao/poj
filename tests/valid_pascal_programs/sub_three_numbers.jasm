@@ -4,9 +4,9 @@ public class sub_three_numbers {
 		getstatic java/lang/System.out java/io/PrintStream
 		sipush 8
 		sipush 4
-		isub 
+		isub
 		sipush 2
-		isub 
+		isub
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V

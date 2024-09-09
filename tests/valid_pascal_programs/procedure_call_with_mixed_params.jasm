@@ -7,7 +7,7 @@ public class procedure_call_with_mixed_params {
 		getstatic java/lang/System.out java/io/PrintStream
 		iload 1
 		iload 2
-		iadd 
+		iadd
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
@@ -17,7 +17,7 @@ public class procedure_call_with_mixed_params {
 		ldc "2+4="
 		sipush 2
 		sipush 4
-		invokestatic procedure_call_with_mixed_params.addvalues(java/lang/String, I, I)V 
+		invokestatic procedure_call_with_mixed_params.addvalues(java/lang/String, I, I)V
 		return
 	}
 }

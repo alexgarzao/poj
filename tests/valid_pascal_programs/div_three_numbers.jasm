@@ -4,9 +4,9 @@ public class div_three_numbers {
 		getstatic java/lang/System.out java/io/PrintStream
 		sipush 60
 		sipush 5
-		idiv 
+		idiv
 		sipush 3
-		idiv 
+		idiv
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V

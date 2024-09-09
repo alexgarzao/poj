@@ -18,7 +18,7 @@ public class for_example {
 		invokevirtual java/io/PrintStream.println()V
 		getstatic for_example.i I
 		sipush 1
-		iadd 
+		iadd
 		putstatic for_example.i I
 		goto L3
 		L2:

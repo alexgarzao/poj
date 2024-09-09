@@ -54,7 +54,7 @@ public class if_with_strings_with_not {
 		L13:
 		iconst 0
 		L14:
-		iand 
+		iand
 		ifne L15
 		iconst 1
 		goto L16
@@ -96,7 +96,7 @@ public class if_with_strings_with_not {
 		L22:
 		iconst 0
 		L23:
-		iand 
+		iand
 		ifne L24
 		iconst 1
 		goto L25
@@ -138,7 +138,7 @@ public class if_with_strings_with_not {
 		L31:
 		iconst 0
 		L32:
-		iand 
+		iand
 		ifne L33
 		iconst 1
 		goto L34
@@ -180,7 +180,7 @@ public class if_with_strings_with_not {
 		L40:
 		iconst 0
 		L41:
-		iand 
+		iand
 		ifne L42
 		iconst 1
 		goto L43
@@ -222,7 +222,7 @@ public class if_with_strings_with_not {
 		L49:
 		iconst 0
 		L50:
-		ior 
+		ior
 		ifne L51
 		iconst 1
 		goto L52
@@ -264,7 +264,7 @@ public class if_with_strings_with_not {
 		L58:
 		iconst 0
 		L59:
-		ior 
+		ior
 		ifne L60
 		iconst 1
 		goto L61
@@ -306,7 +306,7 @@ public class if_with_strings_with_not {
 		L67:
 		iconst 0
 		L68:
-		ior 
+		ior
 		ifne L69
 		iconst 1
 		goto L70
@@ -348,7 +348,7 @@ public class if_with_strings_with_not {
 		L76:
 		iconst 0
 		L77:
-		ior 
+		ior
 		ifne L78
 		iconst 1
 		goto L79
@@ -396,7 +396,7 @@ public class if_with_strings_with_not {
 		L87:
 		iconst 0
 		L88:
-		iand 
+		iand
 		ifeq L80
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"

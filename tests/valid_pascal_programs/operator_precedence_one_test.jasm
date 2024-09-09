@@ -5,15 +5,15 @@ public class operator_precedence_one_test {
 		sipush 10
 		sipush 4
 		sipush 2
-		imul 
-		isub 
+		imul
+		isub
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		sipush 10
 		sipush 4
-		isub 
+		isub
 		sipush 2
-		imul 
+		imul
 		invokevirtual java/io/PrintStream.print(I)V
 		return
 	}

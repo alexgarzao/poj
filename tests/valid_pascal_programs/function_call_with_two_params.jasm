@@ -3,10 +3,10 @@ public class function_call_with_two_params {
 	static addvalues(I, I)I {
 		iload 0
 		iload 1
-		iadd 
+		iadd
 		istore 100
 		iload 100
-		ireturn 
+		ireturn
 	}
 	public static main([java/lang/String)V {
 		getstatic java/lang/System.out java/io/PrintStream
@@ -15,7 +15,7 @@ public class function_call_with_two_params {
 		getstatic java/lang/System.out java/io/PrintStream
 		sipush 2
 		sipush 4
-		invokestatic function_call_with_two_params.addvalues(I, I)I 
+		invokestatic function_call_with_two_params.addvalues(I, I)I
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V

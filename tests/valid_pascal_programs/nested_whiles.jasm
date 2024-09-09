@@ -43,13 +43,13 @@ public class nested_whiles {
 		invokevirtual java/io/PrintStream.println()V
 		getstatic nested_whiles.j I
 		sipush 1
-		iadd 
+		iadd
 		putstatic nested_whiles.j I
 		goto L8
 		L7:
 		getstatic nested_whiles.i I
 		sipush 1
-		iadd 
+		iadd
 		putstatic nested_whiles.i I
 		goto L3
 		L2:

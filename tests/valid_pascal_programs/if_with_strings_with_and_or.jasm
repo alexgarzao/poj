@@ -74,7 +74,7 @@ public class if_with_strings_with_and_or {
 		L16:
 		iconst 0
 		L17:
-		iand 
+		iand
 		ifeq L11
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
@@ -110,7 +110,7 @@ public class if_with_strings_with_and_or {
 		L23:
 		iconst 0
 		L24:
-		iand 
+		iand
 		ifeq L18
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
@@ -146,7 +146,7 @@ public class if_with_strings_with_and_or {
 		L30:
 		iconst 0
 		L31:
-		iand 
+		iand
 		ifeq L25
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
@@ -182,7 +182,7 @@ public class if_with_strings_with_and_or {
 		L37:
 		iconst 0
 		L38:
-		iand 
+		iand
 		ifeq L32
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
@@ -218,7 +218,7 @@ public class if_with_strings_with_and_or {
 		L44:
 		iconst 0
 		L45:
-		ior 
+		ior
 		ifeq L39
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
@@ -254,7 +254,7 @@ public class if_with_strings_with_and_or {
 		L51:
 		iconst 0
 		L52:
-		ior 
+		ior
 		ifeq L46
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
@@ -290,7 +290,7 @@ public class if_with_strings_with_and_or {
 		L58:
 		iconst 0
 		L59:
-		ior 
+		ior
 		ifeq L53
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
@@ -326,7 +326,7 @@ public class if_with_strings_with_and_or {
 		L65:
 		iconst 0
 		L66:
-		ior 
+		ior
 		ifeq L60
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"

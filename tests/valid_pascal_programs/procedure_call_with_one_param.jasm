@@ -5,13 +5,13 @@ public class procedure_call_with_one_param {
 		ldc "Hello "
 		aload 0
 		invokedynamic makeConcatWithConstants(java/lang/String, java/lang/String)java/lang/String {
-			invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite 
-			[""] 
+			invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite
+			[""]
 		}
 		ldc "!"
 		invokedynamic makeConcatWithConstants(java/lang/String, java/lang/String)java/lang/String {
-			invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite 
-			[""] 
+			invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite
+			[""]
 		}
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
@@ -25,7 +25,7 @@ public class procedure_call_with_one_param {
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
 		ldc "Alex"
-		invokestatic procedure_call_with_one_param.myprocedure(java/lang/String)V 
+		invokestatic procedure_call_with_one_param.myprocedure(java/lang/String)V
 		return
 	}
 }

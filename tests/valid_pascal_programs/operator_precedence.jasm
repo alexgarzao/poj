@@ -7,9 +7,9 @@ public class operator_precedence {
 		getstatic java/lang/System.out java/io/PrintStream
 		sipush 8
 		sipush 4
-		imul 
+		imul
 		sipush 2
-		isub 
+		isub
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
@@ -20,8 +20,8 @@ public class operator_precedence {
 		sipush 10
 		sipush 4
 		sipush 2
-		imul 
-		isub 
+		imul
+		isub
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
@@ -32,8 +32,8 @@ public class operator_precedence {
 		sipush 10
 		sipush 4
 		sipush 2
-		imul 
-		isub 
+		imul
+		isub
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
@@ -43,9 +43,9 @@ public class operator_precedence {
 		getstatic java/lang/System.out java/io/PrintStream
 		sipush 10
 		sipush 4
-		isub 
+		isub
 		sipush 2
-		imul 
+		imul
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
@@ -55,11 +55,11 @@ public class operator_precedence {
 		getstatic java/lang/System.out java/io/PrintStream
 		sipush 10
 		sipush 2
-		idiv 
+		idiv
 		sipush 2
-		imul 
+		imul
 		sipush 1
-		isub 
+		isub
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
@@ -69,11 +69,11 @@ public class operator_precedence {
 		getstatic java/lang/System.out java/io/PrintStream
 		sipush 10
 		sipush 2
-		idiv 
+		idiv
 		sipush 2
-		imul 
+		imul
 		sipush 1
-		isub 
+		isub
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V

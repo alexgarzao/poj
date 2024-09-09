@@ -18,7 +18,7 @@ public class for {
 		invokevirtual java/io/PrintStream.println()V
 		getstatic for.i I
 		sipush 1
-		iadd 
+		iadd
 		putstatic for.i I
 		goto L3
 		L2:
@@ -38,7 +38,7 @@ public class for {
 		invokevirtual java/io/PrintStream.println()V
 		getstatic for.i I
 		sipush 1
-		iadd 
+		iadd
 		putstatic for.i I
 		goto L6
 		L5:
@@ -58,7 +58,7 @@ public class for {
 		invokevirtual java/io/PrintStream.println()V
 		getstatic for.i I
 		sipush 1
-		isub 
+		isub
 		putstatic for.i I
 		goto L9
 		L8:

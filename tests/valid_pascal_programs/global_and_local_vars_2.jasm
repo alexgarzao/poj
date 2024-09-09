@@ -5,23 +5,23 @@ public class global_and_local_vars_2 {
 	static addvalues(I, I)I {
 		iload 0
 		iload 1
-		iadd 
+		iadd
 		istore 2
 		iload 2
 		getstatic global_and_local_vars_2.addedValue I
-		iadd 
+		iadd
 		istore 3
 		iload 3
 		istore 100
 		iload 100
-		ireturn 
+		ireturn
 	}
 	public static main([java/lang/String)V {
 		sipush 5
 		putstatic global_and_local_vars_2.addedValue I
 		sipush 2
 		sipush 4
-		invokestatic global_and_local_vars_2.addvalues(I, I)I 
+		invokestatic global_and_local_vars_2.addvalues(I, I)I
 		putstatic global_and_local_vars_2.myglobal1 I
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "addedValue="

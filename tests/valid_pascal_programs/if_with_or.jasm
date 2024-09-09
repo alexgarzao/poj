@@ -17,7 +17,7 @@ public class if_with_or {
 		L6:
 		iconst 0
 		L7:
-		ior 
+		ior
 		ifeq L1
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "true"
