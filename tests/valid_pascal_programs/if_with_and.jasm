@@ -4,18 +4,18 @@ public class if_with_and {
 		sipush 111
 		sipush 222
 		if_icmpge L4
-		iconst 1 
+		iconst 1
 		goto L5
 		L4:
-		iconst 0 
+		iconst 0
 		L5:
 		sipush 222
 		sipush 333
 		if_icmpge L6
-		iconst 1 
+		iconst 1
 		goto L7
 		L6:
-		iconst 0 
+		iconst 0
 		L7:
 		iand 
 		ifeq L1

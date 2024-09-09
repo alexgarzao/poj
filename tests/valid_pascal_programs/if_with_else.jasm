@@ -4,10 +4,10 @@ public class if_with_else {
 		sipush 111
 		sipush 222
 		if_icmple L4
-		iconst 1 
+		iconst 1
 		goto L5
 		L4:
-		iconst 0 
+		iconst 0
 		L5:
 		ifeq L1
 		getstatic java/lang/System.out java/io/PrintStream

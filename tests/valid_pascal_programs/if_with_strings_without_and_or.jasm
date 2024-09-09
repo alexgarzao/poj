@@ -8,10 +8,10 @@ public class if_with_strings_without_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L4
-		iconst 1 
+		iconst 1
 		goto L5
 		L4:
-		iconst 0 
+		iconst 0
 		L5:
 		ifeq L1
 		getstatic java/lang/System.out java/io/PrintStream
@@ -34,10 +34,10 @@ public class if_with_strings_without_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L9
-		iconst 1 
+		iconst 1
 		goto L10
 		L9:
-		iconst 0 
+		iconst 0
 		L10:
 		ifeq L6
 		getstatic java/lang/System.out java/io/PrintStream
@@ -62,10 +62,10 @@ public class if_with_strings_without_and_or {
 		ldc "d"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L14
-		iconst 1 
+		iconst 1
 		goto L15
 		L14:
-		iconst 0 
+		iconst 0
 		L15:
 		ifeq L11
 		getstatic java/lang/System.out java/io/PrintStream
@@ -83,10 +83,10 @@ public class if_with_strings_without_and_or {
 		ldc "b"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L19
-		iconst 1 
+		iconst 1
 		goto L20
 		L19:
-		iconst 0 
+		iconst 0
 		L20:
 		ifeq L16
 		getstatic java/lang/System.out java/io/PrintStream
@@ -104,10 +104,10 @@ public class if_with_strings_without_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifgt L24
-		iconst 1 
+		iconst 1
 		goto L25
 		L24:
-		iconst 0 
+		iconst 0
 		L25:
 		ifeq L21
 		getstatic java/lang/System.out java/io/PrintStream
@@ -130,10 +130,10 @@ public class if_with_strings_without_and_or {
 		ldc "aaa"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifgt L29
-		iconst 1 
+		iconst 1
 		goto L30
 		L29:
-		iconst 0 
+		iconst 0
 		L30:
 		ifeq L26
 		getstatic java/lang/System.out java/io/PrintStream
@@ -156,10 +156,10 @@ public class if_with_strings_without_and_or {
 		ldc "aaa"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L34
-		iconst 1 
+		iconst 1
 		goto L35
 		L34:
-		iconst 0 
+		iconst 0
 		L35:
 		ifeq L31
 		getstatic java/lang/System.out java/io/PrintStream
@@ -182,10 +182,10 @@ public class if_with_strings_without_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L39
-		iconst 1 
+		iconst 1
 		goto L40
 		L39:
-		iconst 0 
+		iconst 0
 		L40:
 		ifeq L36
 		getstatic java/lang/System.out java/io/PrintStream
@@ -208,10 +208,10 @@ public class if_with_strings_without_and_or {
 		ldc "aaa"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L44
-		iconst 1 
+		iconst 1
 		goto L45
 		L44:
-		iconst 0 
+		iconst 0
 		L45:
 		ifeq L41
 		getstatic java/lang/System.out java/io/PrintStream
@@ -234,10 +234,10 @@ public class if_with_strings_without_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifgt L49
-		iconst 1 
+		iconst 1
 		goto L50
 		L49:
-		iconst 0 
+		iconst 0
 		L50:
 		ifeq L46
 		getstatic java/lang/System.out java/io/PrintStream
@@ -260,10 +260,10 @@ public class if_with_strings_without_and_or {
 		ldc "aaa"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifgt L54
-		iconst 1 
+		iconst 1
 		goto L55
 		L54:
-		iconst 0 
+		iconst 0
 		L55:
 		ifeq L51
 		getstatic java/lang/System.out java/io/PrintStream
@@ -286,10 +286,10 @@ public class if_with_strings_without_and_or {
 		ldc "aaa"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifgt L59
-		iconst 1 
+		iconst 1
 		goto L60
 		L59:
-		iconst 0 
+		iconst 0
 		L60:
 		ifeq L56
 		getstatic java/lang/System.out java/io/PrintStream
@@ -312,10 +312,10 @@ public class if_with_strings_without_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifne L64
-		iconst 1 
+		iconst 1
 		goto L65
 		L64:
-		iconst 0 
+		iconst 0
 		L65:
 		ifeq L61
 		getstatic java/lang/System.out java/io/PrintStream
@@ -338,10 +338,10 @@ public class if_with_strings_without_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifne L69
-		iconst 1 
+		iconst 1
 		goto L70
 		L69:
-		iconst 0 
+		iconst 0
 		L70:
 		ifeq L66
 		getstatic java/lang/System.out java/io/PrintStream
@@ -364,10 +364,10 @@ public class if_with_strings_without_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifeq L74
-		iconst 1 
+		iconst 1
 		goto L75
 		L74:
-		iconst 0 
+		iconst 0
 		L75:
 		ifeq L71
 		getstatic java/lang/System.out java/io/PrintStream
@@ -390,10 +390,10 @@ public class if_with_strings_without_and_or {
 		ldc "aaa"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifeq L79
-		iconst 1 
+		iconst 1
 		goto L80
 		L79:
-		iconst 0 
+		iconst 0
 		L80:
 		ifeq L76
 		getstatic java/lang/System.out java/io/PrintStream

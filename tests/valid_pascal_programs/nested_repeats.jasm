@@ -30,10 +30,10 @@ public class nested_repeats {
 		getstatic nested_repeats.j I
 		sipush 5
 		if_icmplt L7
-		iconst 1 
+		iconst 1
 		goto L8
 		L7:
-		iconst 0 
+		iconst 0
 		L8:
 		ifeq L6
 		getstatic nested_repeats.i I
@@ -43,10 +43,10 @@ public class nested_repeats {
 		getstatic nested_repeats.i I
 		sipush 5
 		if_icmplt L9
-		iconst 1 
+		iconst 1
 		goto L10
 		L9:
-		iconst 0 
+		iconst 0
 		L10:
 		ifeq L3
 		return

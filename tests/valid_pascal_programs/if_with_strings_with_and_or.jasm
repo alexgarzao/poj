@@ -8,10 +8,10 @@ public class if_with_strings_with_and_or {
 		ldc "a"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L4
-		iconst 1 
+		iconst 1
 		goto L5
 		L4:
-		iconst 0 
+		iconst 0
 		L5:
 		ifeq L1
 		getstatic java/lang/System.out java/io/PrintStream
@@ -34,10 +34,10 @@ public class if_with_strings_with_and_or {
 		ldc "b"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L9
-		iconst 1 
+		iconst 1
 		goto L10
 		L9:
-		iconst 0 
+		iconst 0
 		L10:
 		ifeq L6
 		getstatic java/lang/System.out java/io/PrintStream
@@ -60,19 +60,19 @@ public class if_with_strings_with_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L14
-		iconst 1 
+		iconst 1
 		goto L15
 		L14:
-		iconst 0 
+		iconst 0
 		L15:
 		ldc "bbb"
 		ldc "ccc"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L16
-		iconst 1 
+		iconst 1
 		goto L17
 		L16:
-		iconst 0 
+		iconst 0
 		L17:
 		iand 
 		ifeq L11
@@ -96,19 +96,19 @@ public class if_with_strings_with_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifgt L21
-		iconst 1 
+		iconst 1
 		goto L22
 		L21:
-		iconst 0 
+		iconst 0
 		L22:
 		ldc "bbb"
 		ldc "ccc"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifgt L23
-		iconst 1 
+		iconst 1
 		goto L24
 		L23:
-		iconst 0 
+		iconst 0
 		L24:
 		iand 
 		ifeq L18
@@ -132,19 +132,19 @@ public class if_with_strings_with_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L28
-		iconst 1 
+		iconst 1
 		goto L29
 		L28:
-		iconst 0 
+		iconst 0
 		L29:
 		ldc "bbb"
 		ldc "ccc"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifgt L30
-		iconst 1 
+		iconst 1
 		goto L31
 		L30:
-		iconst 0 
+		iconst 0
 		L31:
 		iand 
 		ifeq L25
@@ -168,19 +168,19 @@ public class if_with_strings_with_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifgt L35
-		iconst 1 
+		iconst 1
 		goto L36
 		L35:
-		iconst 0 
+		iconst 0
 		L36:
 		ldc "bbb"
 		ldc "ccc"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L37
-		iconst 1 
+		iconst 1
 		goto L38
 		L37:
-		iconst 0 
+		iconst 0
 		L38:
 		iand 
 		ifeq L32
@@ -204,19 +204,19 @@ public class if_with_strings_with_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L42
-		iconst 1 
+		iconst 1
 		goto L43
 		L42:
-		iconst 0 
+		iconst 0
 		L43:
 		ldc "bbb"
 		ldc "ccc"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L44
-		iconst 1 
+		iconst 1
 		goto L45
 		L44:
-		iconst 0 
+		iconst 0
 		L45:
 		ior 
 		ifeq L39
@@ -240,19 +240,19 @@ public class if_with_strings_with_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifgt L49
-		iconst 1 
+		iconst 1
 		goto L50
 		L49:
-		iconst 0 
+		iconst 0
 		L50:
 		ldc "bbb"
 		ldc "ccc"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifgt L51
-		iconst 1 
+		iconst 1
 		goto L52
 		L51:
-		iconst 0 
+		iconst 0
 		L52:
 		ior 
 		ifeq L46
@@ -276,19 +276,19 @@ public class if_with_strings_with_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L56
-		iconst 1 
+		iconst 1
 		goto L57
 		L56:
-		iconst 0 
+		iconst 0
 		L57:
 		ldc "bbb"
 		ldc "ccc"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifgt L58
-		iconst 1 
+		iconst 1
 		goto L59
 		L58:
-		iconst 0 
+		iconst 0
 		L59:
 		ior 
 		ifeq L53
@@ -312,19 +312,19 @@ public class if_with_strings_with_and_or {
 		ldc "bbb"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		ifgt L63
-		iconst 1 
+		iconst 1
 		goto L64
 		L63:
-		iconst 0 
+		iconst 0
 		L64:
 		ldc "bbb"
 		ldc "ccc"
 		invokevirtual java/lang/String.compareTo(java/lang/String)I
 		iflt L65
-		iconst 1 
+		iconst 1
 		goto L66
 		L65:
-		iconst 0 
+		iconst 0
 		L66:
 		ior 
 		ifeq L60
