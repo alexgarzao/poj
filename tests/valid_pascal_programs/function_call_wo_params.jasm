@@ -4,7 +4,7 @@ public class function_call_wo_params {
 		ldc "Hello from myfunction!"
 		astore 100
 		aload 100
-		areturn 
+		areturn
 	}
 	public static main([java/lang/String)V {
 		getstatic java/lang/System.out java/io/PrintStream
@@ -13,7 +13,7 @@ public class function_call_wo_params {
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
 		getstatic java/lang/System.out java/io/PrintStream
-		invokestatic function_call_wo_params.myfunction()java/lang/String 
+		invokestatic function_call_wo_params.myfunction()java/lang/String
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V

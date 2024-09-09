@@ -4,22 +4,22 @@ public class all_numeric_operators {
 		getstatic java/lang/System.out java/io/PrintStream
 		sipush 1
 		sipush 1
-		iadd 
+		iadd
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		sipush 2
 		sipush 2
-		isub 
+		isub
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		sipush 3
 		sipush 3
-		imul 
+		imul
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		sipush 4
 		sipush 4
-		idiv 
+		idiv
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V

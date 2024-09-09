@@ -4,7 +4,7 @@ public class add_two_numbers {
 		getstatic java/lang/System.out java/io/PrintStream
 		sipush 1
 		sipush 2
-		iadd 
+		iadd
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V

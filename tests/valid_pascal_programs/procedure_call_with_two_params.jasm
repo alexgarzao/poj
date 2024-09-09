@@ -5,18 +5,18 @@ public class procedure_call_with_two_params {
 		aload 0
 		ldc " "
 		invokedynamic makeConcatWithConstants(java/lang/String, java/lang/String)java/lang/String {
-			invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite 
-			[""] 
+			invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite
+			[""]
 		}
 		aload 1
 		invokedynamic makeConcatWithConstants(java/lang/String, java/lang/String)java/lang/String {
-			invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite 
-			[""] 
+			invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite
+			[""]
 		}
 		ldc "!"
 		invokedynamic makeConcatWithConstants(java/lang/String, java/lang/String)java/lang/String {
-			invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite 
-			[""] 
+			invokestatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants(java/lang/invoke/MethodHandles$Lookup, java/lang/String, java/lang/invoke/MethodType, java/lang/String, [java/lang/Object)java/lang/invoke/CallSite
+			[""]
 		}
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
@@ -31,7 +31,7 @@ public class procedure_call_with_two_params {
 		invokevirtual java/io/PrintStream.println()V
 		ldc "Hello"
 		ldc "Alex"
-		invokestatic procedure_call_with_two_params.myprocedure(java/lang/String, java/lang/String)V 
+		invokestatic procedure_call_with_two_params.myprocedure(java/lang/String, java/lang/String)V
 		return
 	}
 }

@@ -31,14 +31,14 @@ public class fatorial_fixed_number {
 		iload 0
 		iload 0
 		sipush 1
-		isub 
-		invokestatic fatorial_fixed_number.fatorial(I)I 
-		imul 
+		isub
+		invokestatic fatorial_fixed_number.fatorial(I)I
+		imul
 		istore 100
 		L7:
 		L2:
 		iload 100
-		ireturn 
+		ireturn
 	}
 	public static main([java/lang/String)V {
 		sipush 5
@@ -54,7 +54,7 @@ public class fatorial_fixed_number {
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		getstatic fatorial_fixed_number.numero I
-		invokestatic fatorial_fixed_number.fatorial(I)I 
+		invokestatic fatorial_fixed_number.fatorial(I)I
 		invokevirtual java/io/PrintStream.print(I)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V

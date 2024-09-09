@@ -15,7 +15,7 @@ public class repeat {
 		invokevirtual java/io/PrintStream.println()V
 		getstatic repeat.i I
 		sipush 1
-		iadd 
+		iadd
 		putstatic repeat.i I
 		getstatic repeat.i I
 		sipush 20

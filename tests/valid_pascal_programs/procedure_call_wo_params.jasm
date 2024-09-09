@@ -14,7 +14,7 @@ public class procedure_call_wo_params {
 		invokevirtual java/io/PrintStream.print(java/lang/String)V
 		getstatic java/lang/System.out java/io/PrintStream
 		invokevirtual java/io/PrintStream.println()V
-		invokestatic procedure_call_wo_params.myprocedure()V 
+		invokestatic procedure_call_wo_params.myprocedure()V
 		return
 	}
 }

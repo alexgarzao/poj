@@ -7,61 +7,61 @@ public class global_and_local_vars_4 {
 	static addvalues(I, I)I {
 		iload 0
 		iload 1
-		iadd 
+		iadd
 		istore 2
 		iload 2
 		getstatic global_and_local_vars_4.addedValue I
-		iadd 
+		iadd
 		istore 3
 		iload 3
 		istore 100
 		iload 100
-		ireturn 
+		ireturn
 	}
 	static mulvalues(I, I)I {
 		iload 0
 		iload 1
-		imul 
+		imul
 		istore 2
 		iload 2
 		getstatic global_and_local_vars_4.addedValue I
-		iadd 
+		iadd
 		istore 3
 		iload 3
 		istore 100
 		iload 100
-		ireturn 
+		ireturn
 	}
 	static subvalues(I, I)I {
 		sipush 10
 		istore 4
 		iload 0
 		iload 1
-		isub 
+		isub
 		istore 2
 		iload 2
 		iload 4
-		iadd 
+		iadd
 		istore 3
 		iload 3
 		istore 100
 		iload 100
-		ireturn 
+		ireturn
 	}
 	public static main([java/lang/String)V {
 		sipush 5
 		putstatic global_and_local_vars_4.addedValue I
 		sipush 2
 		sipush 4
-		invokestatic global_and_local_vars_4.addvalues(I, I)I 
+		invokestatic global_and_local_vars_4.addvalues(I, I)I
 		putstatic global_and_local_vars_4.myglobal1 I
 		sipush 6
 		sipush 8
-		invokestatic global_and_local_vars_4.mulvalues(I, I)I 
+		invokestatic global_and_local_vars_4.mulvalues(I, I)I
 		putstatic global_and_local_vars_4.myglobal2 I
 		sipush 8
 		sipush 4
-		invokestatic global_and_local_vars_4.subvalues(I, I)I 
+		invokestatic global_and_local_vars_4.subvalues(I, I)I
 		putstatic global_and_local_vars_4.myglobal3 I
 		getstatic java/lang/System.out java/io/PrintStream
 		ldc "addedValue="

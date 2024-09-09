@@ -24,7 +24,7 @@ public class while {
 		invokevirtual java/io/PrintStream.println()V
 		getstatic while.i I
 		sipush 1
-		iadd 
+		iadd
 		putstatic while.i I
 		goto L3
 		L2:
@@ -50,7 +50,7 @@ public class while {
 		invokevirtual java/io/PrintStream.println()V
 		getstatic while.i I
 		sipush 1
-		iadd 
+		iadd
 		putstatic while.i I
 		goto L8
 		L7:

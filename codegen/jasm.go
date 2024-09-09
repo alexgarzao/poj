@@ -659,6 +659,7 @@ func (j *JASM) finishInvokeDynamic() {
 }
 
 func (j *JASM) addLine(line string) {
+	line = strings.Trim(line, " ")
 	j.code.AddLine(line)
 }
 
